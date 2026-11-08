@@ -1,0 +1,103 @@
+{
+  "id": "./",
+  "name": "Carer Hub",
+  "short_name": "Carer Hub",
+  "description": "Book, manage and pay for NDIS and Support at Home care for the people you look after, all in one place.",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait",
+  "background_color": "#fff7f5",
+  "theme_color": "#fff7f5",
+  "lang": "en-AU",
+  "dir": "ltr",
+  "categories": [
+    "health",
+    "lifestyle",
+    "medical"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/c04-home.jpg",
+      "sizes": "800x1720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Everything that needs you, on one screen"
+    },
+    {
+      "src": "screenshots/c07-calendar.jpg",
+      "sizes": "800x1720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "See who is coming each day"
+    },
+    {
+      "src": "screenshots/c14-value.jpg",
+      "sizes": "800x1720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Where the budget went"
+    },
+    {
+      "src": "screenshots/p08-today.jpg",
+      "sizes": "800x1720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Check in and out of visits"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book a visit",
+      "short_name": "Book",
+      "url": "./?tab=book",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Budget",
+      "short_name": "Budget",
+      "url": "./?tab=budget",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
