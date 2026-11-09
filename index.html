@@ -16,8 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="application-name" content="Carer Hub">
 <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -610,7 +609,6 @@ function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeou
 function whoSeg(){return `<div class="row" role="group" aria-label="Who you are managing">${S.people.map(k=>`<button class="chip who ${S.who==k?'on':''}" data-a="who" data-v="${k}" aria-pressed="${S.who==k}">${face(k,28)}<span>${esc(P[k].first)} <span class="m">${esc(P[k].rel)}</span></span></button>`).join('')}</div>`}
 const onLeave=(p,d)=>(S.leave[p]||[]).includes(d);
 const gapJobs=()=>S.jobs.filter(j=>j.st=='ok'&&onLeave(j.prov,j.d));
-function free(p,date){const k=iso(date),pr=P[p];if(!pr.days||!pr.days.includes(date.getDay())||onLeave(p,k))return[];return SL.filter(t=>!S.jobs.some(j=>j.prov==p&&j.d==k&&j.t==t&&j.st!='no'))}
 function nextFree(p){for(let i=1;i<90;i++){const d=addD(i),f=free(p,d);if(f.length)return[iso(d),f[0]]}return null}
 function usual(p,w){const c={};S.jobs.filter(j=>j.prov==p&&j.who==w).forEach(j=>{const k=pd(j.d).getDay()+'|'+j.t;c[k]=(c[k]||0)+1});const best=Object.entries(c).sort((a,b)=>b[1]-a[1])[0];if(!best||best[1]<2)return null;const[dw,t]=best[0].split('|');return{dw:+dw,t}}
 const DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -836,57 +834,6 @@ V.budget=()=>{const p=P[S.who];
  if(p.pending)return h+`<section class="sec"><div class="card"><div class="alert info">${ico('wallet')}<div><b>No budget yet</b><p>${esc(p.first)}'s budget appears here once the plan or classification is approved.</p></div></div></div></section>`+pendingCard();
  return h+(p.prog=='ndis'?ndisBudget():sahBudget())+invoiceSec();
 };
-function ndisBudget(){const pc=ndisPace(),tot=NDIS.cats.reduce((a,c)=>a+c.a,0),spent=[pc.cum,NDIS.cb,NDIS.cap],sp=spent.reduce((a,b)=>a+b,0),left=days(TODAY,pd(NDIS.end));
- const m=S.selM,mo=m!=null?NDIS.core[m]:null,mi=m!=null?2+m:null;
- const rows=NDIS.hist.filter(x=>(S.hf=='all'||x.cat==S.hf)&&(mi==null||pd(x.d).getMonth()==mi));
- const mCB=mi!=null?NDIS.hist.filter(x=>x.cat=='Capacity Building'&&pd(x.d).getMonth()==mi).reduce((a,b)=>a+b.amt,0):0;
- const prev=m?NDIS.core[m-1][1]:null;
- return `<section class="sec">${H2('wallet','Overview')}<div class="stats">
-  <div class="stat"><span class="lab">Total balance ${qbtn('ndis-total')}</span><strong>${money(tot-sp)}</strong><span class="m">of ${money(tot)}</span></div>
-  <div class="stat"><span class="lab">Spent so far</span><strong>${money(sp)}</strong><span class="m">${Math.round(sp/tot*100)}% of plan</span></div>
-  <div class="stat"><span class="lab">Plan ends ${qbtn('ndis-days')}</span><strong>${left} days</strong><span class="m">${fmt(NDIS.end)}</span></div>
-  <div class="stat pred"><span class="lab">${ico('spark')}Core runs out</span><strong>${pc.early>0?fmtS(iso(pc.runDate)):'On track'}</strong><span class="m">${pc.early>0?`About ${Math.round(pc.early/7)} weeks early`:'Lasts the plan'}</span></div></div>
- <div class="card">${NDIS.cats.map((c,i)=>{const u=Math.round(spent[i]/c.a*100);return `<div class="brow"><div class="top"><b>${c.n}</b><span class="row" style="gap:6px"><span class="num m">${money(c.a-spent[i])} left</span>${qbtn(c.info)}</span></div><div class="hbar" role="img" aria-label="${c.n}: ${u}% used"><i class="${u>70?'hi':''}" style="width:${Math.max(u,1)}%"></i></div><p class="m num">${money(spent[i])} of ${money(c.a)} used</p></div>`}).join('')}</div></section>
- <section class="sec" id="pace">${H2('spark','Will Core last the plan?','green',qbtn('ndis-pace'))}<div class="card">
-  ${pc.early>0?`<div class="alert warn">${ico('excl')}<div><b>Predicted to run out around ${fmtS(iso(pc.runDate))}</b>Based on the last 3 months, that's about ${Math.round(pc.early/7)} weeks before the plan ends. To last, Core needs to average ${money(Math.round((pc.bud-pc.cum)/((pc.Nd-pc.T)/30.4)))} a month from now.</div></div>`:`<div class="alert ok">${ico('check')}<div>Core spending is on track for the plan.</div></div>`}
-  <div class="legend"><span class="key"><i></i>Spent</span><span class="key"><i class="pace"></i>Even pace</span><span class="key"><i class="proj" style="border-color:var(--green)"></i>Forecast</span></div>
-  ${paceChart()}
-  <div class="row"><button class="btn sm" data-a="tab" data-v="book">Review services</button><button class="btn sm ghost" data-a="go" data-v="support|advice">How to ask for a reassessment</button></div></div></section>
- <section class="sec" id="months">${H2('calendar','Core spending by month')}<div class="card">
-  <p class="m">Tap a month to see its breakdown below.</p>
-  ${bars(NDIS.core.map(([mm,v],i)=>({l:mm,v,part:i==NDIS.core.length-1,tip:`${mm}${i==NDIS.core.length-1?' so far':''}: ${money(v)}`})),{ymax:1600,ticks:[0,500,1000,1500],sel:m,act:'selm'})}
-  ${mo?`<div class="selbar">${ico('calendar')}<span class="grow">Showing ${mo[0]} 2026</span><button class="btn sm ghost" data-a="selm" data-v="">Show all</button></div>
-  <div class="stats"><div class="stat"><span class="lab">Core</span><strong>${money(mo[1])}</strong><span class="m">${prev?`${mo[1]>=prev?'Up':'Down'} ${Math.abs(Math.round((mo[1]/prev-1)*100))}% on ${NDIS.core[m-1][0]}`:'First month of plan'}</span></div><div class="stat"><span class="lab">Capacity Building</span><strong>${money(mCB)}</strong><span class="m">${NDIS.hist.filter(x=>x.cat=='Capacity Building'&&pd(x.d).getMonth()==mi).length} sessions</span></div><div class="stat"><span class="lab">Visits</span><strong>${NDIS.hist.filter(x=>pd(x.d).getMonth()==mi&&x.cat=='Core').length}</strong><span class="m">Core payments</span></div></div>`:`<p class="m">Spending has risen each month since April, mostly from extra cleaning and outings.</p>`}</div></section>
- <section class="sec">${H2('file',mo?`History, ${mo[0]}`:'History','',`<div class="row">${['all','Core','Capacity Building'].map(k=>`<button class="chip ${S.hf==k?'on':''}" data-a="hf" data-v="${k}">${k=='all'?'All':k}</button>`).join('')}</div>`)}
- <div class="card tablewrap"><table class="hist"><thead><tr><th>Date</th><th>Support</th><th>Budget</th><th class="r">Amount</th></tr></thead><tbody>${rows.slice(0,mo?40:12).map(x=>`<tr><td class="num">${fmtS(x.d)}</td><td><b>${esc(x.who)}</b><br><span class="m">${esc(x.item)}</span></td><td>${esc(x.cat)}${x.st!='Paid'?`<br><span class="pill warn">${esc(x.st)}</span>`:''}</td><td class="r">${money(x.amt)}</td></tr>`).join('')}</tbody></table>${!mo&&rows.length>12?`<p class="m">Showing the latest 12. Tap a month in the chart to see all its payments.</p>`:''}</div></section>`;
-}
-function sahBudget(){const c=curQ(),qi=S.selQ,q=SAH.quarters[qi],pool=c.pool,sp=qSpent(q),cp=qCopay(q),isCur=!!q.cur;
- const types=['Everyday living','Independence','Personal care','Clinical'],by={};q.hist.forEach(h=>{const t=sahType(h.cat);by[t]=by[t]||{spend:0,cp:0};by[t].spend+=h.amt;by[t].cp+=h.amt*copayOn(h)});
- const mx=Math.max(1,...types.map(t=>(by[t]||{spend:0}).spend));
- const rows=q.hist.filter(x=>S.hf=='all'||sahType(x.cat)==S.hf);
- const unspent=pool-sp,carried=Math.min(Math.max(unspent,0),c.roll),returned=Math.max(0,unspent-c.roll);
- const lifeTo=SAH.lifetime+SAH.quarters.slice(0,qi+1).reduce((a,x)=>a+(x.cur?qCopay(x):0),0);
- return `<section class="sec" id="pace">${H2('calendar','Quarters','',qbtn('sah-rollover'))}<div class="card">
-  <p class="m">Tap a quarter to see its breakdown below.</p>
-  <div class="legend"><span class="key"><i class="blk"></i>Spent</span><span class="key"><i class="out" style="border-color:var(--green)"></i>Forecast</span><span class="key"><i class="pace"></i>Services budget</span></div>
-  ${bars(SAH.quarters.map(x=>({l:x.l.replace(' to ','–'),v:qSpent(x),proj:x.cur?c.proj:null,part:x.cur,tip:x.cur?`${x.l}: ${money(qSpent(x))} so far, ${money(c.proj)} forecast`:`${x.l}: ${money(qSpent(x))}`})),{ymax:5500,ticks:[0,2000,4000],ref:pool,refLabel:`Services ${money(pool)}`,sel:qi,act:'selq'})}
-  <div class="selbar">${ico('calendar')}<span class="grow">Showing ${q.l} ${q.y}${isCur?' (this quarter)':''}</span>${isCur?'':`<button class="btn sm ghost" data-a="selq" data-v="3">Back to this quarter</button>`}</div></div></section>
- <section class="sec">${H2('wallet',`${q.l} ${q.y}`)}<div class="stats">
-  <div class="stat"><span class="lab">Quarterly budget ${qbtn('sah-quarter')}</span><strong>${money(SAH.budget)}</strong><span class="m">${money(SAH.cm)} care management ${qbtn('sah-cm')}</span></div>
-  <div class="stat"><span class="lab">Spent on services</span><strong>${money(sp)}</strong><span class="m">${q.hist.length} services, ${Math.round(sp/pool*100)}% of ${money(pool)}</span></div>
-  ${isCur?`<div class="stat pred"><span class="lab">${ico('spark')}Forecast at 31 Dec</span><strong>${money(c.unspent)}</strong><span class="m">left, ${money(c.roll)} can carry over</span></div>`
-  :`<div class="stat"><span class="lab">Unspent</span><strong>${money(Math.max(unspent,0))}</strong><span class="m">${money(carried)} carried over${returned?`, ${money(returned)} returned`:''}</span></div>`}
-  <div class="stat"><span class="lab">Margaret paid ${qbtn('sah-copay')}</span><strong>${money(cp)}</strong><span class="m">in co-payments</span></div></div>
-  ${isCur&&c.lost>0?`<div class="alert warn">${ico('spark')}<div><b>Predicted: about ${money(c.lost)} could go back unused</b>At this pace Margaret will have ${money(c.unspent)} left on 31 Dec, but only ${money(c.roll)} can carry over. Consider extra visits, respite or equipment before the quarter ends.</div></div>
-  <div class="row"><button class="btn sm" data-a="tab" data-v="book">Book more support</button><button class="btn sm ghost" data-a="go" data-v="support|equip">See equipment ideas</button></div>`:''}
-  ${!isCur?`<div class="alert info">${ico('clock')}<div>${unspent<0?`This quarter went ${money(-unspent)} over the services budget, covered by carried-over funds.`:`Quarter closed. ${money(carried)} carried over to the next quarter${returned?` and ${money(returned)} went back to the government`:''}.`}</div></div>`:''}</section>
- <section class="sec">${H2('heart','Where the money went','green')}<div class="card">
-  ${types.map(t=>{const x=by[t]||{spend:0,cp:0};return `<div class="brow"><div class="top"><b>${t}</b><span class="m num">${t=='Personal care'&&q.qe<'2026-10-01'?'5%':pct(SAHRATE[t])} co-pay</span></div><div class="hbar"><i style="width:${x.spend?Math.max(x.spend/mx*100,1):0}%"></i></div><p class="m num">${money(x.spend)} of services, Margaret paid ${money(x.cp)}</p></div>`}).join('')}
-  <div class="brow"><div class="top"><b>Lifetime cap</b>${qbtn('sah-cap')}</div><div class="hbar"><i style="width:${Math.max(lifeTo/SAH.cap*100,1)}%"></i></div><p class="m num">${money(lifeTo)} of ${money(SAH.cap)} contributed so far</p></div></div></section>
- <section class="sec" id="athm">${H2('tool','Equipment and home changes','coral',qbtn('sah-athm'))}<div class="card"><div class="brow"><div class="top"><b>${SAH.athm.tier} tier</b><span class="m num">${money(SAH.athm.amt-SAH.athm.used)} left</span></div><div class="hbar"><i style="width:1%"></i></div><p class="m">Separate from the quarterly budget. Available until ${SAH.athm.ends}.</p></div><button class="btn sm" style="align-self:flex-start" data-a="go" data-v="support|equip">Browse equipment</button></div></section>
- <section class="sec">${H2('file',`History, ${q.l}`,'',`<div class="row">${['all','Everyday living','Personal care','Independence','Clinical'].map(k=>`<button class="chip ${S.hf==k?'on':''}" data-a="hf" data-v="${k}">${k=='all'?'All':k}</button>`).join('')}</div>`)}
- <div class="card tablewrap"><table class="hist"><thead><tr><th>Date</th><th>Service</th><th class="r">Cost</th><th class="r">Margaret paid</th></tr></thead><tbody>${rows.map(x=>`<tr><td class="num">${fmtS(x.d)}</td><td><b>${esc(x.who)}</b><br><span class="m">${esc(x.item)}. ${sahType(x.cat)}</span></td><td class="r">${money(x.amt)}</td><td class="r">${money(x.amt*copayOn(x))}</td></tr>`).join('')}</tbody></table></div></section>`;
-}
 function invoiceSec(){const list=S.invs.filter(v=>v.who==S.who),isN=prog(S.who)=='ndis';
  return `<section class="sec" id="inv">${H2('shield','Invoices to check','green',isN?`<div class="row" role="group" aria-label="Funding type, demo only"><span class="m">Demo:</span><button class="chip ${!S.ndia?'on':''}" data-a="ndia" data-v="0">Self-managed</button><button class="chip ${S.ndia?'on':''}" data-a="ndia" data-v="1">NDIA-managed</button></div>`:'')}
  <p class="m">${isN?(S.ndia?'NDIA-managed claims above a price limit are blocked.':'Self-managed plans can pay above a price limit, so we flag it for you to decide.'):'We check each invoice against the price in your service agreement.'}</p>
@@ -1051,10 +998,6 @@ V.pjobs=()=>{const mine=S.jobs.filter(j=>j.prov=='priya'),req=mine.filter(j=>j.s
  ${urg.length?`<section class="sec">${H2('bolt','Urgent requests nearby','coral')}${urg.map(u=>`<div class="card"><div class="row"><span class="pill bad">Urgent</span><b>${esc(u.when)}</b></div><p>${esc(u.fam)}: ${esc(CAT(u.cat).name.toLowerCase())}, ${u.km} km away.</p><p class="m">Your usual rate applies. The first worker to accept is booked.</p><div class="row"><button class="btn coral" data-a="purg" data-v="${S.purg.indexOf(u)}|ok">Accept</button><button class="btn ghost" data-a="purg" data-v="${S.purg.indexOf(u)}|no">Not this time</button></div></div>`).join('')}</section>`:''}
  <section class="sec">${H2('inbox','Booking requests')}${req.length?req.map(j=>`<div class="card"><div class="li" style="padding:0">${face(j.who,46)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(P[j.who].first)}'s family: ${esc(j.items.join(', '))}${j.rep?`. Repeats ${esc(j.rep)}`:''}</p></div><span class="pill warn">Confirm</span></div><div class="row"><button class="btn p" data-a="pacc" data-v="${j.id}|ok">I'm available</button><button class="btn ghost" data-a="pacc" data-v="${j.id}|no">Can't make it</button></div></div>`).join(''):'<p class="m">No new requests.</p>'}</section>
  <section class="sec">${H2('calendar','Coming up','green')}<div class="card">${up.length?up.map(j=>`<div class="li">${face(j.who,42)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(P[j.who].name)}: ${esc(j.items.join(', '))}</p></div>${onLeave('priya',j.d)?'<span class="pill bad">You\'re on leave</span>':''}</div>`).join(''):'<p class="m">Nothing booked.</p>'}</div></section>`};
-function pDayCard(k,showHead=true){const d=pd(k),wk=P.priya.days.includes(d.getDay()),bl=S.leave.priya.includes(k);
- return `<div class="card">${showHead?`<div class="sec-h"><b style="font-family:var(--f-display)">${fmt(k)}</b>${bl?'<span class="pill bad">Leave</span>':!wk?'<span class="pill info">Day off</span>':''}</div>`:''}<div class="stack" style="gap:6px">${SL.map(t=>{const j=S.jobs.find(x=>x.prov=='priya'&&x.d==k&&x.t==t&&x.st!='no');
-   return `<div class="evc ${j?(j.st=='ok'?(bl?'gap':''):'new'):(!wk||bl?'lv':'')}" ${!j&&wk&&!bl?'style="background:var(--green-soft)"':''}><b class="num" style="min-width:70px">${t}</b><p class="grow">${j?esc(P[j.who].first)+': '+esc(j.items[0])+(j.st=='new'?' (to confirm)':''):!wk||bl?'Unavailable':'Open'}</p></div>`}).join('')}</div>
-  <button class="btn sm ghost" style="align-self:flex-start" data-a="leave" data-v="${k}">${bl?'Remove leave':'Block this day'}</button></div>`}
 V.pcal=()=>{const v=S.pv,l=S.leave.priya;
  const label=v.mode=='week'?(()=>{const s=wkStart(v.w),e=new Date(s);e.setDate(e.getDate()+6);return `${fmtS(iso(s))} to ${fmtS(iso(e))}`})():(()=>{const d=new Date(D0.getFullYear(),D0.getMonth()+v.m,1);return `${MON[d.getMonth()]} ${d.getFullYear()}`})();
  let h=`<section class="sec"><h1>My calendar</h1><p class="m">Your working days come from your profile. Block a day to mark leave. Families see you as unavailable.</p>
@@ -1161,16 +1104,6 @@ function sheetHTML(){const s=S.sheet,x=`<button class="x" data-a="close" aria-la
 /* ---------- AI chat ---------- */
 let sampleFn=null,chatCtl=null;
 (async()=>{try{sampleFn=window.claude&&window.claude.use?await window.claude.use('sample'):null}catch(e){sampleFn=null}S.ai=sampleFn?'on':'off';renderChat()})();
-function chatContext(){
- if(S.role=='provider'){const fc=provForecast();return `The user is Priya Nair, a verified support helper (cleaning and companionship, $${S.pp.rate}/hr) on Carer Hub. Clients: Margaret Chen (Support at Home) and Jamie Chen (NDIS). Pending booking requests: ${S.jobs.filter(j=>j.prov=='priya'&&j.st=='new').length}. Forecast earnings this month: ${money(fc.earn)}. Public liability insurance expires in 9 days; NDIS Worker Screening Check expires in 21 days. Leave booked 21 to 23 Dec. Cleaning price limit $60.10/hr (NDIS 2026-27, item 01_020_0120_1_1).`}
- const w=S.who,p=P[w];let ctx=`The user is Sarah Chen, a family carer. She is currently looking at ${p.name} (${p.rel}).`;
- if(p.pending)ctx+=` ${p.first} is not approved for funding yet; setup checklist: ${obChecklist(p.ob).join('; ')}.`;
- else if(p.prog=='ndis'){const pc=ndisPace();ctx+=` Jamie is 17, NDIS self-managed. Plan ${NDIS.start} to ${NDIS.end}. Core $14,200 with ${money(pc.cum)} spent; predicted to run out around ${fmtS(iso(pc.runDate))}. Capacity Building $4,500 with ${money(NDIS.cb)} spent. Capital $1,200 unspent. Turns 18 near plan end.`}
- else{const c=curQ();ctx+=` Margaret is 82, Support at Home classification 3 (sample). Quarterly budget $5,500, 10% care management, ${money(c.pool)} for services. Spent ${money(c.sp)} this quarter, forecast ${money(c.unspent)} unspent at 31 Dec but only ${money(c.roll)} carries over. Co-payments (full pensioner sample): everyday living 17.5%, independence 5%, clinical 0%, personal care 0% since 1 Oct 2026. Personal care use is up this year. AT-HM medium tier $2,000 unused.`}
- const up=S.jobs.filter(j=>(j.who==w)&&j.d>=iso(D0)&&j.st!='no').sort(byDate).slice(0,4).map(j=>`${fmt(j.d)} ${j.t} ${P[j.prov].name} (${j.items.join(', ')})`).join('; ');if(up)ctx+=` Upcoming visits: ${up}.`;
- if(gapJobs().length)ctx+=' Priya Nair is on leave 21 to 23 Dec, so the 22 Dec cleaning needs cover.';
- return ctx;
-}
 const RULES=()=>`You are the AI assistant inside Carer Hub, a proof-of-concept app that helps Australian families manage NDIS and Support at Home (aged care) supports and their own workers.
 Reply in plain, warm Australian English, in under 120 words, as plain text without markdown, headings or bullet symbols.
 Give practical, factual guidance. You are not a lawyer or financial adviser: for decisions, suggest checking with the NDIA (1800 800 110), My Aged Care (1800 200 422) or their provider. For scams: Scamwatch, and IDCARE on 1800 595 160.
@@ -1223,24 +1156,6 @@ function renderChat(){const fab=$('#chatfab'),w=$('#chatw'),hide=S.stage=='new'|
 
 /* ---------- render ---------- */
 function applyTheme(){const r=document.documentElement;if(S.theme=='system'){if(HOST_THEME)r.setAttribute('data-theme',HOST_THEME);else r.removeAttribute('data-theme')}else r.setAttribute('data-theme',S.theme)}
-function testBar(){const fam=S.role=='family';
- return `<div class="tb"><span class="tb-label">${ico('tool')}Testing only, sample data</span>
- <div class="tb-seg" role="group" aria-label="View as">${[['family','Family carer'],['provider','Provider']].map(([v,l])=>`<button data-a="role" data-v="${v}" class="${S.role==v?'on':''}" aria-pressed="${S.role==v}">${l}</button>`).join('')}</div>
- <div class="tb-seg" role="group" aria-label="Account stage">${[['new',fam?'New customer':'New provider'],['setup',fam?'Set-up customer':'Set-up provider']].map(([v,l])=>`<button data-a="stage" data-v="${v}" class="${S.stage==v?'on':''}" aria-pressed="${S.stage==v}">${l}</button>`).join('')}</div>
- <button class="tb-btn" data-a="reset">Reset demo</button></div>`}
-function appHead(){const fam=S.role=='family';return `<div class="apphead">${brand()}<div class="row" style="gap:10px"><button class="iconbtn" data-a="tab" data-v="settings" aria-label="Settings">${ico('gear')}</button><button class="avbtn" data-a="tab" data-v="${fam?'profile':'pme'}" aria-label="Your profile">${face(fam?'sarah':'priya',44)}</button></div></div>`}
-function R(){
- applyTheme();document.documentElement.classList.toggle('big',S.big);
- $('#test').innerHTML=testBar();
- const onb=S.stage=='new',T=S.role=='family'?FT:PT,lo=S.loggedOut;
- if(!onb&&!lo&&S.tab!='settings'&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
- $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):appHead()+V[S.tab]();
- const nav=$('#nav');nav.hidden=onb||lo;nav.innerHTML=onb||lo?'':`<div class="in">${T.map(([k,l,ic])=>`<button data-a="tab" data-v="${k}" class="${S.tab==k?'on':''}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span></button>`).join('')}</div>`;
- const un=S.notes.filter(n=>n.role==roleKey()&&!n.read&&(S.set.predict||!n.t.startsWith('Predicted'))),bell=$('#bell');bell.hidden=onb||lo||!un.length;
- if(un.length){const crit=un.some(n=>n.lvl=='crit');bell.className='fab '+(crit?'crit':'note');bell.innerHTML=`${ico('excl')}<span class="n">${un.length}</span>`;bell.setAttribute('aria-label',`${un.length} unread notification${un.length>1?'s':''}${crit?', including critical':''}`)}
- const sh=$('#sheet');sh.hidden=!S.sheet;sh.innerHTML=S.sheet?`<div class="sheet" role="dialog" aria-modal="true">${sheetHTML()}</div>`:'';
- renderChat();
-}
 function goto(tab,anchor){S.tab=tab;S.sheet=null;R();if(anchor){const e=document.getElementById(anchor);if(e){e.scrollIntoView({block:'start'});return}}window.scrollTo(0,0)}
 function addNote(role,lvl,t,b,go){S.notes.unshift(N(role,lvl,t,b,go))}
 

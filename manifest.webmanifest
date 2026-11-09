@@ -83,7 +83,7 @@
       "url": "./?tab=book",
       "icons": [
         {
-          "src": "icons/icon-192.png",
+          "src": "icon-192.png",
           "sizes": "192x192"
         }
       ]
@@ -94,7 +94,7 @@
       "url": "./?tab=budget",
       "icons": [
         {
-          "src": "icons/icon-192.png",
+          "src": "icon-192.png",
           "sizes": "192x192"
         }
       ]
