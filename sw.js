@@ -1,16 +1,15 @@
 /* Carer Hub service worker: works offline after the first visit.
    Bump VERSION whenever you publish a new index.html so phones pick it up. */
-const VERSION = 'carer-hub-v1';
+const VERSION = 'carer-hub-v2';
 const CORE = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/maskable-192.png',
-  './icons/maskable-512.png',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png',
   './icons/apple-touch-icon.png',
-  './icons/favicon-32.png',
+  './icons/favicon.png',
   './icons/icon.svg'
 ];
 
