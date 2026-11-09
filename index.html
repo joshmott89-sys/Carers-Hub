@@ -516,6 +516,34 @@ button.kpi.on{background:var(--sel);box-shadow:inset 0 -3px 0 var(--brand)}
 .ohead .iconbtn{width:38px;height:38px}
 @media (min-width:720px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:1023px){.qbar2{flex-direction:column;align-items:stretch}.qbar2 .osel{width:100%}.tlk .mods{display:none}.ohead .iconbtn{display:none}}
+
+/* ---------- forced desktop view (test bar), for showing the console on a phone ---------- */
+:root.fd.ops main{max-width:none;padding:0}
+:root.fd.ops #nav{display:none!important}
+:root.fd.ops #app{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto 1fr;gap:0;min-height:calc(100vh - 58px)}
+:root.fd.ops .ohead{grid-column:1/-1;height:56px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--line)}
+:root.fd.ops .tenant{display:inline-flex}
+:root.fd.ops .oside{display:flex}
+:root.fd.ops .omain{padding:24px 28px 40px}
+:root.fd .qwrap{grid-template-columns:minmax(0,1fr) minmax(360px,400px)}
+:root.fd .qrow{grid-template-columns:10px 64px minmax(0,1fr) 92px 132px 96px;padding:10px 14px}
+:root.fd .qrow .mst{display:none}
+:root.fd .qrow.qh{display:grid}
+:root.fd .qrow .id,:root.fd .qrow .ow,:root.fd .qrow .stc{display:block}
+:root.fd .qdetail{display:block;position:sticky;top:72px;max-height:calc(100vh - 88px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+:root.fd .pgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+:root.fd .lrow{grid-template-columns:32px minmax(0,1fr) 260px 130px 110px 84px;padding:10px 14px}
+:root.fd .lrow.lh{display:grid}
+:root.fd .lrow .mods{display:flex}
+:root.fd .lrow .lc{display:block}
+:root.fd main{width:1440px;max-width:none;zoom:var(--fz,1)}
+:root.fd .qbar2{flex-direction:row;align-items:center}:root.fd .qbar2 .osel{width:auto}
+:root.fd .kpi.kx{display:flex}:root.fd .kpi{flex:1 1 120px;padding:12px 16px}:root.fd .kpi strong{font-size:1.375rem}
+:root.fd .cf-row{grid-template-columns:repeat(3,minmax(0,1fr))}:root.fd .drow{flex-wrap:nowrap}
+:root.fd .dl{grid-template-columns:132px minmax(0,1fr);gap:10px 16px}:root.fd .dl dd{margin-bottom:0}
+:root.fd .phead .acts{width:auto}:root.fd .tlk .mods{display:flex}:root.fd .ohead .iconbtn{display:grid}
+:root.fd .tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:1024px){.fdbtn{display:none}}
 </style>
 
 <div id="test"></div>
@@ -1558,11 +1586,11 @@ function testBar(){const fam=S.role=='family',stf=S.role=='staff';
  ${fam||stf?'':`<div class="tb-seg" role="group" aria-label="Provider type">${[['priya','Sole trader'],['fresh','Business']].map(([v,l])=>`<button data-a="persona" data-v="${v}" class="${S.persona==v?'on':''}" aria-pressed="${S.persona==v}">${l}</button>`).join('')}</div>`}
  ${stf?'':`<div class="tb-seg" role="group" aria-label="Account stage">${[['new',fam?'New customer':'New provider'],['setup',fam?'Set-up customer':'Set-up provider']].map(([v,l])=>`<button data-a="stage" data-v="${v}" class="${S.stage==v?'on':''}" aria-pressed="${S.stage==v}">${l}</button>`).join('')}</div>`}
  <label style="display:inline-flex;gap:6px;align-items:center">Pricing model <select id="tbmodel" aria-label="Pricing model">${[['gov','Paid from funding'],['sub','Subscription'],['pct','% per service']].map(([v,l])=>`<option value="${v}" ${S.model==v?'selected':''}>${l}</option>`).join('')}</select></label>
- <button class="tb-btn" data-a="reset">Reset demo</button></div>`}
+ ${S.role=='staff'?`<button class="tb-btn fdbtn" data-a="fdesk" aria-pressed="${!!S.fd}">${S.fd?'Phone view':'Desktop view'}</button>`:''}<button class="tb-btn" data-a="reset">Reset demo</button></div>`}
 const BT=[['borders','Orders','inbox'],['bteam','Team','users'],['bmenu','Menu','meal'],['bbill','Invoices','file'],['bme','Profile','user']];
 function tabsNow(){return S.role=='family'?FT:S.role=='staff'?ST:S.persona=='fresh'?BT:PT}
 function R(){
- applyTheme();document.documentElement.classList.toggle('big',S.big);document.documentElement.classList.toggle('ops',S.role=='staff');
+ applyTheme();document.documentElement.classList.toggle('big',S.big);document.documentElement.classList.toggle('ops',S.role=='staff');document.documentElement.classList.toggle('fd',S.role=='staff'&&!!S.fd);document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));
  $('#test').innerHTML=testBar();
  const onb=S.stage=='new'&&S.role!='staff',T=tabsNow(),lo=S.loggedOut;
  if(!onb&&!lo&&!['settings','inbox'].includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
@@ -2069,7 +2097,7 @@ const TTOOLS={
  statement:[{l:'Statement builder',sys:'statement builder',ic:'file'},{l:'Email Noah Patel',href:'mailto:noah.p@example.com?subject=October%20statement',ic:'mail'},{l:'Plan manager guidance',href:'https://www.ndis.gov.au/providers/working-participants/plan-managers/how-support-participants-plan-manager',ic:'file'}],
  planend:[{l:'Spending report',sys:'reporting',ic:'trend'},{l:'Email Noah Patel',href:'mailto:noah.p@example.com?subject=Plan%20reassessment',ic:'mail'}],
  screen:[{l:'Text Omar Haddad',href:'sms:0412555330',ic:'chat'},{l:'Open worker record',sys:'worker records',ic:'user'}]};
-const isDesk=()=>matchMedia('(min-width:1024px)').matches;
+const isDesk=()=>(S.role=='staff'&&!!S.fd)||matchMedia('(min-width:1024px)').matches;
 function tixDueTxt(t){if(t.st=='done')return ['Done','ok'];const l=tixDue(t)-Date.now();return l<0?['Overdue '+durTxt(l),'over']:['Due in '+durTxt(l),l<3600000*6?'soon':'']}
 function tixPool(){return S.tix.filter(t=>modOn(tMod(t))&&(!t.who||!CUST[t.who]||CUST[t.who].mods.some(modOn)))}
 function tixList(){const pool=tixPool(),open=pool.filter(t=>t.st!='done');let l=S.tq=='all'?open:S.tq=='esc'?open.filter(t=>t.kind=='esc'):S.tq=='sched'?open.filter(t=>t.kind=='sched'):S.tq=='mine'?open.filter(t=>t.owner=='kim'):pool.filter(t=>t.st=='done');if(S.tqt&&S.tqt!='all')l=l.filter(t=>t.type==S.tqt);const now=Date.now(),eod=new Date();eod.setHours(23,59,59,999);if(S.tqd=='over')l=l.filter(t=>tixDue(t)<now);else if(S.tqd=='today')l=l.filter(t=>tixDue(t)>=now&&tixDue(t)<=eod);else if(S.tqd=='week')l=l.filter(t=>tixDue(t)<now+7*864e5);return l.slice().sort(tixSort)}
@@ -2201,6 +2229,7 @@ function tixLog(t,x,k){t.log.push({t:Date.now(),by:'Kim Nguyen',x,k})}
 function addCorr(t,c){const e=c.to||(t.who?'c:'+t.who:'p:'+t.pid),w=c.to?c.to.split(':')[1]:t.who?(CUST[t.who]?.rep||t.who):t.pid;
  S.corr.push({e,t:Date.now(),ch:c.ch,dir:c.dir,w,sub:c.sub,note:c.note,by:'Kim Nguyen',mod:tMod(t)})}
 function staffAct(a,v,el){switch(a){
+ case'fdesk':S.fd=!S.fd;if(S.fd&&S.sheet?.type=='tix'){S.tsel=S.sheet.k}S.sheet=null;window.scrollTo(0,0);return;
  case'tq':S.tq=v;S.tqd=null;S.tqk=v=='all'?'open':v=='mine'?'mine':null;return;
  case'tqk':S.tqk=v;S.tqd=['over','today','week'].includes(v)?v:null;S.tq=v=='week'?'sched':v=='mine'?'mine':'all';S.tqt='all';return;
  case'snav':S.tab=v;if(v=='scust')S.cust=null;if(v=='sprov')S.prov=null;S.sheet=null;window.scrollTo(0,0);return;
@@ -2225,7 +2254,7 @@ function staffAct(a,v,el){switch(a){
 
 setInterval(()=>{const n=document.getElementById('tixnote'),ae=document.activeElement;if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet&&!(n&&n.value)&&!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))R()},60000);
 document.addEventListener('change',e=>{if(e.target.id=='tqtype'){S.tqt=e.target.value;R()}else if(e.target.dataset&&e.target.dataset.mod){S.mods[e.target.dataset.mod]=e.target.checked;R()}});
-{let dw=null;addEventListener('resize',()=>{const d=isDesk();if(S.role=='staff'&&d!==dw){dw=d;if(d&&S.sheet?.type=='tix'){S.tsel=S.sheet.k;S.sheet=null}R()}})}
+{let dw=null;addEventListener('resize',()=>{document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));const d=isDesk();if(S.role=='staff'&&d!==dw){dw=d;if(d&&S.sheet?.type=='tix'){S.tsel=S.sheet.k;S.sheet=null}R()}})}
 
 R();
 </script>
