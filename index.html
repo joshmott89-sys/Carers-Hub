@@ -334,6 +334,95 @@ nav button.on{color:var(--brand)}nav button.on .ic{background:var(--brand-soft)}
 .acts{display:flex;flex-wrap:wrap;gap:8px}
 .rule{display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid var(--line)}
 .rule:first-child{border-top:0;padding-top:0}
+
+/* ---------- ops console (provider staff): restrained, desktop-first ---------- */
+:root.ops{--bg:#F4F3F2;--card:#FFFFFF;--panel:#EBE9E8;--ink:#1E1A1C;--mute:#595356;--line:#E1DDDC;--line2:#CFCACA;--brand:#AE3D5B;--brand-soft:#F8E5EA;--on-brand:#FFFFFF;--sel:#FAEEF1;--hov:#F7F6F5;--shadow:0 1px 2px rgba(30,26,28,.06);--f-display:var(--f-body)}
+@media (prefers-color-scheme:dark){:root.ops:not([data-theme="light"]){--bg:#121011;--card:#1B191A;--panel:#161415;--ink:#EFEBEC;--mute:#ACA5A8;--line:#2D292A;--line2:#3D3739;--brand:#F09AB2;--brand-soft:#3A2129;--on-brand:#3A0E1D;--sel:#2B1D23;--hov:#211E1F;--shadow:none}}
+:root.ops[data-theme="dark"]{--bg:#121011;--card:#1B191A;--panel:#161415;--ink:#EFEBEC;--mute:#ACA5A8;--line:#2D292A;--line2:#3D3739;--brand:#F09AB2;--brand-soft:#3A2129;--on-brand:#3A0E1D;--sel:#2B1D23;--hov:#211E1F;--shadow:none}
+.ops body{font-size:.9375rem}
+.ops h1{font-size:1.375rem;font-weight:700;letter-spacing:-.01em}.ops h2{font-size:1.125rem;font-weight:700}.ops h3{font-size:.8125rem;font-weight:700;color:var(--mute)}
+.ops #chatfab,.ops #bell{display:none!important}
+.ops .btn{border-radius:8px;font-weight:700;border-width:1px}
+.ops .btn.sm{min-height:34px;padding:6px 12px}
+.ops .pill{border-radius:6px;padding:1px 8px}
+.ops ::selection{background:var(--brand-soft);color:var(--ink)}
+.ohead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ohead .who{display:flex;align-items:center;gap:10px;text-align:right}
+.ohead .who b{display:block;font-size:.875rem;line-height:1.2}.ohead .who .m{font-size:.75rem}
+.tenant{display:none;align-items:center;gap:8px;padding-left:14px;margin-left:4px;border-left:1px solid var(--line2);font-weight:700;color:var(--ink);font-size:.9375rem}
+.oside{display:none;flex-direction:column;gap:2px;padding:16px 12px;background:var(--panel);border-right:1px solid var(--line)}
+.onav{display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:8px 12px;border:0;border-radius:8px;background:transparent;color:var(--mute);font:600 .9375rem var(--f-body);cursor:pointer;text-align:left}
+.onav .ic{width:18px;height:18px}.onav:hover{background:var(--hov);color:var(--ink)}
+.onav.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 0 0 1px var(--line),var(--shadow)}
+.onav .cnt{margin-left:auto;font-size:.75rem;font-weight:700;font-variant-numeric:tabular-nums;padding:0 7px;border-radius:6px;background:var(--bad);color:var(--on-bad);line-height:1.6}
+.oside .foot{margin-top:auto;padding:12px;font-size:.75rem;color:var(--mute);line-height:1.45}
+.omain{display:flex;flex-direction:column;gap:20px;min-width:0}
+.qtop{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.kpis{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;background:var(--card);box-shadow:var(--shadow)}
+.kpi{flex:1 1 120px;padding:12px 16px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--line)}
+.kpi:first-child{border-left:0}
+@media (max-width:1023px){.kpi.kx{display:none}.kpi{flex:1 1 0;padding:10px 12px}.kpi strong{font-size:1.25rem}}
+.kpi span{font-size:.75rem;color:var(--mute);font-weight:600}
+.kpi strong{font-size:1.375rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi.hot strong{color:var(--bad)}
+.qwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+.qbar2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+.otabs{display:inline-flex;gap:2px;padding:3px;border-radius:9px;background:var(--panel);border:1px solid var(--line)}
+.otabs button{border:0;background:transparent;color:var(--mute);font:600 .875rem var(--f-body);padding:6px 12px;border-radius:7px;cursor:pointer;min-height:32px;display:inline-flex;gap:6px;align-items:center}
+.otabs button:hover{color:var(--ink)}
+.otabs button.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 0 0 1px var(--line)}
+.otabs .n{font-variant-numeric:tabular-nums;color:var(--mute);font-weight:600}
+.osel{width:auto;font:600 .875rem var(--f-body);color:var(--ink);background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:6px 10px;min-height:34px}
+.qtable{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.qrow{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:4px 12px;align-items:center;width:100%;padding:12px 14px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.qrow:first-child{border-top:0}
+.qrow:hover{background:var(--hov)}
+.qrow.sel{background:var(--sel)}
+.qrow.qh span{font-size:.75rem!important}
+.qrow.qh{display:none;cursor:default;background:var(--bg);font-size:.75rem;font-weight:600;color:var(--mute);padding-block:8px}
+.qrow .sd{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+.qrow .sd.crit{background:var(--bad)}.qrow .sd.warn{background:var(--amber)}
+.qrow .id{display:none;font-size:.8125rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.qrow .is b{display:block;font-weight:700;font-size:.9375rem;line-height:1.35}
+.qrow .is span{font-size:.8125rem;color:var(--mute)}
+.qrow .cl,.qrow .ow,.qrow .stc{display:none;font-size:.875rem;min-width:0}
+.qrow .cl{align-items:center;gap:8px}
+.qrow .cl span,.qrow .ow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qrow .du{font-size:.8125rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;color:var(--mute)}
+.qrow .du.over{color:var(--bad)}.qrow .du.soon{color:var(--warn)}.qrow .du.ok{color:var(--ok)}
+.qempty{padding:28px 16px;text-align:center;color:var(--mute)}
+.qdetail{display:none}
+.dpane{display:flex;flex-direction:column;gap:20px}
+.dpane .dh{display:flex;flex-direction:column;gap:8px}
+.dpane .ref{font-size:.8125rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.dpeople{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dperson{display:flex;gap:10px;align-items:center;min-width:0}
+.dperson b{display:block;font-size:.875rem;line-height:1.25}.dperson span{font-size:.75rem;color:var(--mute)}
+.dsec{display:flex;flex-direction:column;gap:8px}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.tool{display:flex;align-items:center;gap:8px;min-height:38px;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--card);color:var(--ink);font:600 .8125rem var(--f-body);text-decoration:none;cursor:pointer;text-align:left}
+.tool:hover{border-color:var(--brand);background:var(--hov)}
+.tool .ic{width:16px;height:16px;color:var(--mute);flex:none}
+.tool .x2{margin-left:auto;width:14px;height:14px}
+.tool span{min-width:0}
+.ops .tlog div::before{background:var(--card)}
+.ops textarea{border-radius:8px}
+@media (min-width:1024px){
+ .ops main{max-width:none;padding:0}
+ .ops #nav{display:none!important}
+ .ops #app{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto 1fr;gap:0;min-height:calc(100vh - 58px)}
+ .ops .ohead{grid-column:1/-1;height:56px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--line)}
+ .ops .tenant{display:inline-flex}
+ .ops .oside{display:flex}
+ .ops .omain{padding:24px 28px 40px}
+ .qwrap{grid-template-columns:minmax(0,1fr) minmax(360px,400px)}
+ .qrow{grid-template-columns:10px 64px minmax(0,1fr) 92px 132px 96px;padding:10px 14px}
+ .qrow .mst{display:none}
+ .qrow.qh{display:grid}
+ .qrow .id,.qrow .ow,.qrow .stc{display:block}
+ .qdetail{display:block;position:sticky;top:72px;max-height:calc(100vh - 88px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+}
+@media (min-width:1024px) and (max-width:1279px){.qwrap{grid-template-columns:minmax(0,1fr) 340px}.qrow{grid-template-columns:10px minmax(0,1fr) 96px}.qrow .id,.qrow .ow,.qrow .stc{display:none!important}.qrow .mst{display:inline}}
 </style>
 
 <div id="test"></div>
@@ -416,6 +505,8 @@ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><pat
 trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
 gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
 logout:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
+ext:'<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
 lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
 };
 const ico=(n,c='')=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`;
@@ -1378,11 +1469,11 @@ function testBar(){const fam=S.role=='family',stf=S.role=='staff';
 const BT=[['borders','Orders','inbox'],['bteam','Team','users'],['bmenu','Menu','meal'],['bbill','Invoices','file'],['bme','Profile','user']];
 function tabsNow(){return S.role=='family'?FT:S.role=='staff'?ST:S.persona=='fresh'?BT:PT}
 function R(){
- applyTheme();document.documentElement.classList.toggle('big',S.big);
+ applyTheme();document.documentElement.classList.toggle('big',S.big);document.documentElement.classList.toggle('ops',S.role=='staff');
  $('#test').innerHTML=testBar();
  const onb=S.stage=='new'&&S.role!='staff',T=tabsNow(),lo=S.loggedOut;
  if(!onb&&!lo&&!['settings','inbox'].includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
- $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):appHead()+V[S.tab]();
+ $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):(S.role=='staff'?opsShell():appHead()+V[S.tab]());
  const nav=$('#nav');nav.hidden=onb||lo;nav.innerHTML=onb||lo?'':`<div class="in">${T.map(([k,l,ic])=>`<button data-a="tab" data-v="${k}" class="${S.tab==k?'on':''}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span></button>`).join('')}</div>`;
  const un=S.notes.filter(n=>n.role==roleKey()&&!n.read&&(S.set.predict||!n.t.startsWith('Predicted'))),bell=$('#bell');bell.hidden=onb||lo||!un.length;
  if(un.length){const crit=un.some(n=>n.lvl=='crit');bell.className='fab '+(crit?'crit':'amb');bell.innerHTML=`${ico('excl')}<span class="n">${un.length}</span>`;bell.setAttribute('aria-label',`${un.length} unread notification${un.length>1?'s':''}${crit?', including critical':''}`)}
@@ -1779,34 +1870,57 @@ function durTxt(ms){const m=Math.max(1,Math.round(Math.abs(ms)/60000));if(m<60)r
 function tixDuePill(t){if(t.st=='done')return `<span class="pill ok">${ico('check')}Resolved ${durTxt(Date.now()-t.closed)} ago</span>`;const left=tixDue(t)-Date.now();
  return left<0?`<span class="pill bad">${ico('clock')}Overdue ${durTxt(left)}</span>`:`<span class="pill ${left<3600000?'warn':'info'}">${ico('clock')}Due in ${durTxt(left)}</span>`}
 function tixSort(a,b){return (a.st=='done')-(b.st=='done')||(a.st=='done'?b.closed-a.closed:tixDue(a)-tixDue(b))}
-function tixCard(t){const r=TRULES[t.type],over=t.st!='done'&&tixDue(t)<Date.now(),[sl,sc]=TST[t.st];
- return `<button class="tix ${over?'overdue':''}" data-a="tixopen" data-v="${t.id}" aria-label="${esc(t.title)}, ${sl}"><span class="sevdot ${r.sev}"></span><span class="grow"><span class="tix-id">${t.id} · ${esc(r.name)}</span><b>${esc(t.title)}</b><span class="meta">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span><span class="m">${t.owner?(t.owner=='kim'?'You':esc(P[t.owner].name)):'Unassigned'}</span></span></span>${t.who?face(t.who,40):''}</button>`}
+const TTOOLS={
+ nocover:[{l:'Call Priya Nair',href:'tel:0412555101',ic:'phone'},{l:'Text Sarah Chen',href:'sms:0412555018',ic:'chat'},{l:'Open roster',sys:'rostering system',ic:'calendar'}],
+ checkout:[{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'Open visit record',sys:'visit records',ic:'clock'}],
+ invoice:[{l:'NDIS Pricing Arrangements',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file'},{l:'Email Marcus T.',href:'mailto:marcus.t@example.com?subject=Invoice%20CH-1038',ic:'mail'},{l:'Open invoice',sys:'invoice inbox',ic:'wallet'}],
+ claim:[{l:'NDIS Pricing Arrangements',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file'},{l:'Text Sarah Chen',href:'sms:0412555018',ic:'chat'},{l:'Open claim pack',sys:'claims workspace',ic:'folder'}],
+ payment:[{l:'Aged Care Provider Portal',href:'https://www.servicesaustralia.gov.au/aged-care-provider-portal',ic:'shield'},{l:'Email Banksia accounts',href:'mailto:accounts@example.com?subject=Unpaid%20invoice%20CH-1041',ic:'mail'},{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'}],
+ complaint:[{l:'Report to Scamwatch',href:'https://www.scamwatch.gov.au/report-a-scam',ic:'shield'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'NDIS Commission',href:'https://www.ndiscommission.gov.au/',ic:'shield'}]};
+const isDesk=()=>matchMedia('(min-width:1024px)').matches;
+function tixDueTxt(t){if(t.st=='done')return ['Resolved','ok'];const l=tixDue(t)-Date.now();return l<0?['Overdue '+durTxt(l),'over']:['Due in '+durTxt(l),l<3600000?'soon':'']}
+function tixList(){const open=S.tix.filter(t=>t.st!='done');let l=S.tq=='open'?open:S.tq=='mine'?open.filter(t=>t.owner=='kim'):S.tix.filter(t=>t.st=='done');if(S.tqt&&S.tqt!='all')l=l.filter(t=>t.type==S.tqt);return l.slice().sort(tixSort)}
+function tixRow(t){const r=TRULES[t.type],[sl,sc]=TST[t.st],[dt,dc]=tixDueTxt(t),sel=isDesk()&&S.tsel==t.id;
+ return `<button class="qrow ${sel?'sel':''}" data-a="tixopen" data-v="${t.id}" aria-label="${esc(t.title)}. ${dt}. ${sl}" ${sel?'aria-current="true"':''}><span class="sd ${r.sev}"></span><span class="id">${t.id}</span><span class="is"><b>${esc(t.title)}</b><span>${esc(r.name)}${t.who?' · '+esc(P[t.who].name):''}<span class="mst"> · ${sl}</span></span></span><span class="ow">${t.owner?(t.owner=='kim'?'You':esc(P[t.owner].name)):'<span class="m">Unassigned</span>'}</span><span class="stc"><span class="pill ${sc}">${sl}</span></span><span class="du ${dc}">${dt}</span></button>`}
+function tixBody(t){const r=TRULES[t.type],acts=t.st=='done'?[]:TIX_ACTS[t.type].filter(a=>!t.log.some(l=>l.k==a.k)),tools=TTOOLS[t.type]||[];
+ const person=(k,role)=>k?`<div class="dperson">${face(k,36)}<div class="grow"><b>${esc(P[k].name)}</b><span>${role}</span></div></div>`:'';
+ return `<div class="dpeople">${person(t.who,'Client · '+(P[t.who]?.prog=='ndis'?'NDIS':'Support at Home'))}${person(t.pid,'Worker')}</div>
+ <div class="dsec"><p>${esc(t.body)}</p><p class="m">Rule: ${esc(r.trig)} Target ${esc(r.tlab.toLowerCase())}.</p></div>
+ ${tools.length?`<div class="dsec"><h3>Tools</h3><div class="tools">${tools.map(o=>o.href?`<a class="tool" href="${o.href}" ${o.href.startsWith('http')?'target="_blank" rel="noopener"':''}>${ico(o.ic)}<span>${esc(o.l)}</span>${o.href.startsWith('http')?ico('ext','x2'):''}</a>`:`<button class="tool" data-a="tixtool" data-v="${esc(o.sys)}">${ico(o.ic)}<span>${esc(o.l)}</span></button>`).join('')}</div></div>`:''}
+ ${acts.length?`<div class="dsec"><h3>Next steps</h3><p class="m">${esc(r.act)}</p><div class="acts">${acts.map(a=>`<button class="btn sm ${a.st=='done'?'p':'ghost'}" data-a="tixact" data-v="${t.id}|${a.k}">${esc(a.l)}</button>`).join('')}</div></div>`:''}
+ ${t.st=='done'?'':`<div class="dsec"><label for="tixnote"><h3>Note</h3></label><textarea id="tixnote" rows="2" placeholder="What did you do or find out?"></textarea><div class="row" style="gap:8px"><button class="btn sm ghost" data-a="tixnote" data-v="${t.id}">Add note</button><button class="btn sm ghost" data-a="tixdone" data-v="${t.id}">Resolve with note</button></div></div>`}
+ <div class="dsec"><h3>History</h3><div class="tlog">${t.log.slice().reverse().map(l=>`<div class="${l.by=='app'?'sys':''}"><b>${l.by=='app'?'Carer Hub app':esc(l.by)}</b> <span class="m" style="display:inline">${durTxt(Date.now()-l.t)} ago</span><span class="m">${esc(l.x)}</span></div>`).join('')}</div></div>`}
+function tixHead(t){const r=TRULES[t.type],[sl,sc]=TST[t.st];
+ return `<span class="ref">${t.id} · ${esc(r.name)}</span><h2>${esc(t.title)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span><span class="grow"></span>${t.st=='done'?'':t.owner=='kim'?`<button class="btn sm ghost" data-a="tixown" data-v="${t.id}">Unassign me</button>`:`<button class="btn sm p" data-a="tixown" data-v="${t.id}">Assign to me</button>`}</div>`}
+function opsShell(){const open=S.tix.filter(t=>t.st!='done'),over=open.filter(t=>tixDue(t)<Date.now()).length;
+ return `<header class="ohead"><div class="row" style="gap:6px;align-items:center">${brand()}<span class="tenant">Banksia Home Care</span></div><div class="who"><div><b>${esc(P.kim.name)}</b><span class="m">${esc(P.kim.title)}</span></div>${face('kim',36)}</div></header>
+ <aside class="oside" aria-label="Console">${ST.map(([k,l,ic])=>`<button class="onav ${S.tab==k?'on':''}" data-a="tab" data-v="${k}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${k=='squeue'&&over?`<span class="cnt" aria-label="${over} overdue">${over}</span>`:''}</button>`).join('')}<button class="onav" data-a="tab" data-v="settings">${ico('gear')}<span>Settings</span></button><p class="foot">Demo provider. Sample data resets when you reload.</p></aside>
+ <div class="omain">${V[S.tab]()}</div>`}
 V.squeue=()=>{const open=S.tix.filter(t=>t.st!='done'),over=open.filter(t=>tixDue(t)<Date.now()),soon=open.filter(t=>{const l=tixDue(t)-Date.now();return l>=0&&l<3600000}),mine=open.filter(t=>t.owner=='kim'),done=S.tix.filter(t=>t.st=='done');
- const list=(S.tq=='open'?open:S.tq=='mine'?mine:done).slice().sort(tixSort);
- return `<section class="sec"><h1>Escalation queue</h1><p class="m">Jobs the app could not finish on its own. Most urgent first.</p>
- <div class="stats"><div class="stat"><span class="lab">Open</span><strong>${open.length}</strong></div><div class="stat"><span class="lab">Overdue</span><strong style="color:var(--bad)">${over.length}</strong></div><div class="stat"><span class="lab">Due within 1 hour</span><strong>${soon.length}</strong></div><div class="stat"><span class="lab">Resolved</span><strong>${done.length}</strong></div></div></section>
- <section class="sec"><div class="qbar"><div class="seg" role="group" aria-label="Show">${[['open','Open'],['mine','Mine'],['done','Resolved']].map(([k,l])=>`<button data-a="tq" data-v="${k}" class="${S.tq==k?'on':''}" aria-pressed="${S.tq==k}">${l}</button>`).join('')}</div></div>
- <div class="stack" style="margin-top:12px">${list.length?list.map(tixCard).join(''):`<div class="card flat"><p class="m">Nothing here. ${S.tq=='mine'?'Assign yourself a ticket from Open.':'All clear.'}</p></div>`}</div></section>`};
-V.srules=()=>`<section class="sec"><h1>Escalation rules</h1><p class="m">When the app pushes a job to staff, and how fast it should be handled. Set with each provider during implementation.</p>
- <div class="card">${Object.values(TRULES).map(r=>`<div class="rule"><div class="row" style="justify-content:space-between;gap:8px"><b style="font-family:var(--f-display)">${esc(r.name)}</b><span class="pill ${r.sev=='crit'?'bad':'warn'}">${ico('clock')}${esc(r.tlab)}</span></div><span class="m">${esc(r.trig)}</span><span>${esc(r.act)}</span></div>`).join('')}</div>
- <p class="m">Target times are starting points. Tune them once real volumes are known.</p></section>`;
-function tixSheet(id,x){const t=S.tix.find(z=>z.id==id),r=TRULES[t.type],[sl,sc]=TST[t.st],acts=t.st=='done'?[]:TIX_ACTS[t.type].filter(a=>!t.log.some(l=>l.k==a.k));
- return `<div class="sheet-h"><div><span class="tix-id">${t.id} · ${esc(r.name)}</span><h2>${esc(t.title)}</h2></div>${x}</div>
- <div class="row" style="flex-wrap:wrap;gap:6px">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span></div>
- <div class="card flat"><div class="li" style="padding:0">${t.who?face(t.who,44):''}<div class="grow"><b>${t.who?esc(P[t.who].name):''}</b><p class="m">${t.who?esc(P[t.who].sub):''}</p></div>${t.pid?face(t.pid,44):''}</div><p>${esc(t.body)}</p><p class="m">Rule: ${esc(r.trig)} Target: ${esc(r.tlab)}.</p></div>
- <div class="row" style="flex-wrap:wrap;gap:8px">${t.st=='done'?'':t.owner=='kim'?`<button class="btn sm ghost" data-a="tixown" data-v="${t.id}">Unassign me</button>`:`<button class="btn sm p" data-a="tixown" data-v="${t.id}">Assign to me</button>`}</div>
- ${acts.length?`<div><h3 style="margin-bottom:8px">Suggested next steps</h3><p class="m" style="margin-bottom:8px">${esc(r.act)}</p><div class="acts">${acts.map(a=>`<button class="btn sm ${a.st=='done'?'green':'ghost'}" data-a="tixact" data-v="${t.id}|${a.k}">${esc(a.l)}</button>`).join('')}</div></div>`:''}
- ${t.st=='done'?'':`<div><label for="tixnote" style="display:block;font-weight:700;margin-bottom:6px">Add a note</label><textarea id="tixnote" rows="2" placeholder="What did you do or find out?"></textarea><div class="row" style="gap:8px;margin-top:8px"><button class="btn sm ghost" data-a="tixnote" data-v="${t.id}">Add note</button><button class="btn sm green" data-a="tixdone" data-v="${t.id}">Resolve with this note</button></div></div>`}
- <div><h3 style="margin-bottom:10px">History</h3><div class="tlog">${t.log.slice().reverse().map(l=>`<div class="${l.by=='app'?'sys':''}"><b style="font-family:var(--f-display)">${l.by=='app'?'Carer Hub app':esc(l.by)}</b> <span class="m" style="display:inline">${durTxt(Date.now()-l.t)} ago</span><span class="m">${esc(l.x)}</span></div>`).join('')}</div></div>`}
+ const list=tixList();if(isDesk()&&(!S.tsel||!list.some(t=>t.id==S.tsel)))S.tsel=list[0]?.id||null;const cur=S.tix.find(t=>t.id==S.tsel);
+ const types=[['all','All types'],...Object.entries(TRULES).map(([k,r])=>[k,r.name])];
+ return `<div class="qtop"><div><h1>Escalation queue</h1><p class="m">Jobs the app could not finish on its own, most urgent first.</p></div></div>
+ <div class="kpis" role="group" aria-label="Queue summary"><div class="kpi"><span>Open</span><strong>${open.length}</strong></div><div class="kpi ${over.length?'hot':''}"><span>Overdue</span><strong>${over.length}</strong></div><div class="kpi"><span>Due within 1 hour</span><strong>${soon.length}</strong></div><div class="kpi kx"><span>Assigned to you</span><strong>${mine.length}</strong></div><div class="kpi kx"><span>Resolved</span><strong>${done.length}</strong></div></div>
+ <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${[['open','Open',open.length],['mine','Mine',mine.length],['done','Resolved',done.length]].map(([k,l,n])=>`<button data-a="tq" data-v="${k}" class="${S.tq==k?'on':''}" aria-pressed="${S.tq==k}">${l}<span class="n">${n}</span></button>`).join('')}</div>
+ <select id="tqtype" class="osel" aria-label="Filter by type">${types.map(([k,l])=>`<option value="${k}" ${(S.tqt||'all')==k?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
+ <div class="qtable" role="list">${list.length?`<div class="qrow qh" aria-hidden="true"><span></span><span class="id">Ref</span><span>Issue</span><span class="ow">Owner</span><span class="stc">Status</span><span style="text-align:right">Due</span></div>`+list.map(tixRow).join(''):`<p class="qempty">${S.tq=='mine'?'Nothing assigned to you. Pick a ticket from Open and assign it to yourself.':S.tq=='done'?'No resolved tickets yet.':'Queue is clear. New escalations appear here as the app raises them.'}</p>`}</div></div>
+ <aside class="qdetail" aria-label="Ticket detail">${cur?`<div class="dpane"><div class="dh">${tixHead(cur)}</div>${tixBody(cur)}</div>`:'<p class="qempty">Select a ticket to see the details.</p>'}</aside></div>`};
+V.srules=()=>`<div class="qtop"><div><h1>Escalation rules</h1><p class="m">When the app pushes a job to staff, and how fast it should be handled. Set with each provider during implementation.</p></div></div>
+ <div class="qtable">${Object.values(TRULES).map(r=>`<div class="qrow" style="cursor:default;grid-template-columns:10px minmax(0,1fr) auto"><span class="sd ${r.sev}"></span><span class="is"><b>${esc(r.name)}</b><span>${esc(r.trig)} ${esc(r.act)}</span></span><span class="du">${esc(r.tlab)}</span></div>`).join('')}</div>
+ <p class="m">Target times are starting points. Tune them once real volumes are known.</p>`;
+function tixSheet(id,x){const t=S.tix.find(z=>z.id==id);return `<div class="sheet-h"><div class="dh" style="display:flex;flex-direction:column;gap:6px">${tixHead(t)}</div>${x}</div><div class="dpane">${tixBody(t)}</div>`}
 function tixLog(t,x,k){t.log.push({t:Date.now(),by:'Kim Nguyen',x,k})}
 function staffAct(a,v,el){switch(a){
  case'tq':S.tq=v;return;
- case'tixopen':S.sheet={type:'tix',k:v};return;
+ case'tixopen':if(isDesk()){S.tsel=v;S.sheet=null}else S.sheet={type:'tix',k:v};return;
+ case'tixtool':toast('In a live setup this opens the provider\'s '+v+'.');return false;
  case'tixown':{const t=S.tix.find(z=>z.id==v);if(t.owner=='kim'){t.owner=null;tixLog(t,'Unassigned myself.')}else{t.owner='kim';if(t.st=='open')t.st='prog';tixLog(t,'Assigned to me.')}return}
  case'tixact':{const[id,k]=v.split('|'),t=S.tix.find(z=>z.id==id),ac=TIX_ACTS[t.type].find(z=>z.k==k);if(!t.owner)t.owner='kim';tixLog(t,ac.log,k);t.st=ac.st;if(ac.st=='done')t.closed=Date.now();if(ac.fam)addNote('family',ac.fam[0],ac.fam[1],ac.fam[2],{tab:'home'});toast(ac.st=='done'?'Resolved':'Logged');return}
  case'tixnote':case'tixdone':{const t=S.tix.find(z=>z.id==v),n=($('#tixnote')||{}).value?.trim();if(!n){toast(a=='tixdone'?'Add a note saying how it was resolved':'Type a note first');return false}if(!t.owner)t.owner='kim';tixLog(t,n);if(a=='tixdone'){t.st='done';t.closed=Date.now();toast('Resolved')}else{if(t.st=='open')t.st='prog';toast('Note added')}return}
  }return 'na'}
-setInterval(()=>{if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet)R()},60000);
+setInterval(()=>{const n=document.getElementById('tixnote');if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet&&!(n&&(n.value||document.activeElement==n)))R()},60000);
+document.addEventListener('change',e=>{if(e.target.id=='tqtype'){S.tqt=e.target.value;R()}});
+{let dw=null;addEventListener('resize',()=>{const d=isDesk();if(S.role=='staff'&&d!==dw){dw=d;if(d&&S.sheet?.type=='tix'){S.tsel=S.sheet.k;S.sheet=null}R()}})}
 
 R();
 </script>
