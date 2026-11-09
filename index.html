@@ -384,7 +384,7 @@ nav button.on{color:var(--brand)}nav button.on .ic{background:var(--brand-soft)}
 .qrow .sd.crit{background:var(--bad)}.qrow .sd.warn{background:var(--amber)}
 .qrow .id{display:none;font-size:.8125rem;color:var(--mute);font-variant-numeric:tabular-nums}
 .qrow .is b{display:block;font-weight:700;font-size:.9375rem;line-height:1.35}
-.qrow .is span{font-size:.8125rem;color:var(--mute)}
+.qrow .is>span{font-size:.8125rem;color:var(--mute)}
 .qrow .cl,.qrow .ow,.qrow .stc{display:none;font-size:.875rem;min-width:0}
 .qrow .cl{align-items:center;gap:8px}
 .qrow .cl span,.qrow .ow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -423,6 +423,75 @@ nav button.on{color:var(--brand)}nav button.on .ic{background:var(--brand-soft)}
  .qdetail{display:block;position:sticky;top:72px;max-height:calc(100vh - 88px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
 }
 @media (min-width:1024px) and (max-width:1279px){.qwrap{grid-template-columns:minmax(0,1fr) 340px}.qrow{grid-template-columns:10px minmax(0,1fr) 96px}.qrow .id,.qrow .ow,.qrow .stc{display:none!important}.qrow .mst{display:inline}}
+
+/* ---------- base stack: customers, providers, modules ---------- */
+.sd.hol{background:transparent!important;border:2px solid var(--mute);width:10px!important;height:10px!important}
+.clist .sd{background:var(--line2)}.clist .sd.crit{background:var(--bad)}.clist .sd.warn{background:var(--amber)}.clist .sd.okd{background:var(--ok)}
+.sd.okd{background:var(--ok)}
+.mtag{display:inline-flex;align-items:center;font-size:.6875rem;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;line-height:1.6;background:var(--panel);color:var(--mute)}
+:root.ops{--mp-bg:#E1EEEA;--mp-fg:#1D5649;--mc-bg:#F6E3E8;--mc-fg:#872C46;--mn-bg:#E6E7F4;--mn-fg:#363A80}
+@media (prefers-color-scheme:dark){:root.ops:not([data-theme="light"]){--mp-bg:#173029;--mp-fg:#8FD2C0;--mc-bg:#3A2029;--mc-fg:#F2A9BD;--mn-bg:#24264A;--mn-fg:#B7BAF2}}
+:root.ops[data-theme="dark"]{--mp-bg:#173029;--mp-fg:#8FD2C0;--mc-bg:#3A2029;--mc-fg:#F2A9BD;--mn-bg:#24264A;--mn-fg:#B7BAF2}
+.m-platform{background:var(--mp-bg);color:var(--mp-fg)}.m-care{background:var(--mc-bg);color:var(--mc-fg)}.m-plan{background:var(--mn-bg);color:var(--mn-fg)}
+.mods{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.qrow .is .mtag{margin-left:6px;vertical-align:1px}
+.lrow{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:4px 12px;align-items:center;width:100%;padding:12px 14px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.lrow:first-child{border-top:0}.lrow:hover{background:var(--hov)}
+.lrow.lh{display:none;cursor:default;background:var(--bg);font-size:.75rem;font-weight:600;color:var(--mute);padding-block:8px}
+.lrow.lh:hover{background:var(--bg)}
+.lrow .is b{display:block;font-weight:700;font-size:.9375rem}.lrow .is>span{font-size:.8125rem;color:var(--mute)}
+.lrow .mods,.lrow .lc{display:none;font-size:.875rem;min-width:0}
+.lrow .du{font-size:.875rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;color:var(--mute)}
+.lrow .du.over{color:var(--bad)}
+.back{display:inline-flex;align-items:center;gap:4px;border:0;background:none;color:var(--mute);font:600 .875rem var(--f-body);cursor:pointer;padding:4px 0}
+.back:hover{color:var(--ink)}.back .ic{width:16px;height:16px}
+.phead{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+.phead .mods{margin-top:8px}
+.phead .acts .ic{width:16px;height:16px}
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+.pcol{display:flex;flex-direction:column;gap:20px;min-width:0}
+.psec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px;min-width:0}
+.ops .psec h2{font-size:1rem}
+.dl{display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px 16px;margin:0}
+.dl dt{color:var(--mute);font-size:.8125rem;font-weight:600;padding-top:2px}.dl dd{margin:0}
+.clist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.clist li{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.clist li:first-child{border-top:0;padding-top:0}
+.clist b{display:block;font-size:.875rem}.clist .m{font-size:.8125rem}
+.plink{display:flex;gap:10px;align-items:center;width:100%;border:0;background:none;padding:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.plink:hover b{color:var(--brand)}.plink>.ic{width:16px;height:16px;color:var(--mute)}
+.ctable{display:flex;flex-direction:column}
+.crow{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.crow:first-child{border-top:0;padding-top:0}
+.crow b{display:block;font-size:.875rem}.crow .m{display:block;font-size:.75rem}.crow p{font-size:.875rem;margin-top:4px}
+.cic{width:32px;height:32px;border-radius:8px;background:var(--panel);display:grid;place-items:center;flex:none;color:var(--mute)}.cic .ic{width:16px;height:16px}
+.cdt{font-size:.75rem;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cform{display:flex;flex-direction:column;gap:12px}
+.cform label{display:flex;flex-direction:column;gap:4px;font-size:.8125rem;font-weight:600;color:var(--mute)}
+.cf-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cform .osel{width:100%}
+.oin{font:400 .9375rem var(--f-body);color:var(--ink);background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;min-height:38px}
+.drow{display:flex;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.drow:first-child{border-top:0}
+.drow b{display:block;font-size:.9375rem}.drow .m{font-size:.8125rem}
+.ic-w{color:var(--mute);display:grid}.ic-w .ic{width:18px;height:18px}
+.lnk{border:0;background:none;color:var(--brand);font:700 .8125rem var(--f-body);cursor:pointer;padding:0}
+.ptabs{align-self:flex-start;flex-wrap:wrap}
+.omods{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding:14px 12px;border-top:1px solid var(--line)}
+.omods>.m{font-size:.75rem;font-weight:700}
+.mt{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.mt input{margin-top:3px;accent-color:var(--brand);width:16px;height:16px}
+.mt b{display:block;font-size:.8125rem;line-height:1.3}.mt .m{display:block;font-size:.6875rem;line-height:1.35}
+.oside .foot{margin-top:0}
+.dperson.btnp{border:0;background:none;padding:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.dperson.btnp:hover b{color:var(--brand)}
+@media (min-width:1024px){
+ .pgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+ .lrow{grid-template-columns:32px minmax(0,1fr) 260px 130px 110px 84px;padding:10px 14px}
+ .lrow.lh{display:grid}
+ .lrow .mods{display:flex}.lrow .lc{display:block}
+}
+@media (max-width:1023px){.cf-row{grid-template-columns:1fr}.drow{flex-wrap:wrap}.dl{grid-template-columns:1fr;gap:2px 0}.dl dd{margin-bottom:8px}.phead .acts{width:100%}}
 </style>
 
 <div id="test"></div>
@@ -1839,7 +1908,7 @@ document.addEventListener('focusin',e=>{const el=e.target.closest&&e.target.clos
 
 /* ---------- staff console: escalation tickets (demo data, resets on reload) ---------- */
 P.kim={name:'Kim Nguyen',first:'Kim',title:'Care coordinator',skin:'#E8B98F',hair:'bob',hc:'#1A1210',shirt:'#2F8A5B',bg:'#E3F1E7'};
-const ST=[['squeue','Queue','inbox'],['srules','Rules','gear']];
+const ST=[['squeue','Queue','inbox'],['scust','Customers','users'],['sprov','Providers','user'],['srules','Rules','gear']];
 const TRULES={
  nocover:{name:'Cancelled visit, no cover',sev:'crit',trig:'A worker cancels and the app finds no cover 2 hours before the visit.',target:60,tlab:'1 hour',act:'Phone other vetted workers, then tell the family who is coming.'},
  checkout:{name:'Check-out missing',sev:'warn',trig:'No check-out 2 hours after the visit should have ended.',target:240,tlab:'Same day',act:'Call the worker, then the family, and record what happened.'},
@@ -1852,7 +1921,7 @@ const TIX_ACTS={
  checkout:[{k:'call-w',l:'Call Lena: 0412 555 204',log:'Called Lena Petrova. Visit finished at 9:40 am; she forgot to check out.',st:'prog'},{k:'confirm',l:'Visit happened',log:'Visit confirmed and check-out time added: 9:40 am.',st:'done'},{k:'nohap',l:'Visit did not happen',log:'Visit did not happen. Removed from the invoice and Sarah told.',st:'done',fam:['crit','A visit did not happen','Lena could not make Mum\'s visit. It will not be charged.']}],
  invoice:[{k:'sendback',l:'Send back to Marcus',log:'Sent back to Marcus T.: $65.00/hr is over the $60.10/hr NDIS limit for house cleaning.',st:'wait'},{k:'atlimit',l:'Approve at $60.10/hr',log:'Marcus re-issued the invoice at $60.10/hr. Approved.',st:'done'}],
  claim:[{k:'fixpack',l:'Fix the claim pack',log:'Claim pack fixed: support item changed to House or yard maintenance (01_019_0120_1_1).',st:'prog'},{k:'tosarah',l:'Send to Sarah to resubmit',log:'Sent the fixed claim pack to Sarah for the my NDIS app.',st:'wait',fam:['note','Claim ready to resubmit','We fixed the support item on Jamie\'s yard claim. Tap to resubmit.']},{k:'paid',l:'NDIA paid',log:'NDIA paid the resubmitted claim.',st:'done'}],
- payment:[{k:'chase',l:'Chase partner provider',log:'Chased Banksia Home Care: payment run is tomorrow.',st:'wait'},{k:'tell',l:'Tell Lena and Sarah',log:'Told Lena and Sarah the payment lands tomorrow.',st:'prog'},{k:'markpaid',l:'Mark as paid',log:'Lena confirmed she has been paid.',st:'done'}],
+ payment:[{k:'chase',l:'Chase accounts team',log:'Chased our accounts team: Lena is in tomorrow\'s payment run.',st:'wait'},{k:'tell',l:'Tell Lena and Sarah',log:'Told Lena and Sarah the payment lands tomorrow.',st:'prog'},{k:'markpaid',l:'Mark as paid',log:'Lena confirmed she has been paid.',st:'done'}],
  complaint:[{k:'callback',l:'Call Sarah back',log:'Called Sarah. Text asked for bank details and was not from the NDIS. She did not reply to it.',st:'prog'},{k:'scamwatch',l:'Report to Scamwatch',log:'Reported to Scamwatch with Sarah\'s permission.',st:'prog'},{k:'close',l:'Close with outcome',log:'Closed: no money lost. Sarah sent the scam tips page.',st:'done'}]};
 const TST={open:['Open','bad'],prog:['In progress','warn'],wait:['Waiting on others','info'],done:['Resolved','ok']};
 const NOW0=Date.now(),mAgo=m=>NOW0-m*60000;
@@ -1860,66 +1929,247 @@ S.tix=[
  {id:'CH-1047',type:'nocover',who:'margaret',pid:'priya',title:'Margaret: cleaning tomorrow has no worker',body:'Priya Nair cancelled (unwell) for tomorrow, 10:00 am. The app offered it to 3 standby workers; none accepted.',raised:mAgo(35),st:'open',owner:null,log:[{t:mAgo(35),by:'app',x:'Raised automatically: worker cancelled, no cover 2 hours before the visit window.'}]},
  {id:'CH-1046',type:'checkout',who:'margaret',pid:'lena',title:'Margaret: no check-out from this morning',body:'Lena Petrova checked in at 8:02 am for showering and dressing (1.5 hrs). No check-out yet.',raised:mAgo(70),st:'open',owner:null,log:[{t:mAgo(70),by:'app',x:'Raised automatically: no check-out 2 hours after the visit should have ended.'}]},
  {id:'CH-1044',type:'complaint',who:'jamie',pid:null,title:'Sarah reported a suspected scam text',body:'Sarah got a text claiming to be from the NDIS, asking her to confirm bank details by link.',raised:mAgo(190),st:'prog',owner:'kim',log:[{t:mAgo(190),by:'app',x:'Raised from the family app: "Report a scam".'},{t:mAgo(150),by:'Kim Nguyen',x:'Assigned to me.'}]},
- {id:'CH-1041',type:'payment',who:'margaret',pid:'lena',title:'Lena not paid for October visits',body:'Banksia Home Care\'s Support at Home claim was paid 6 business days ago. Lena has not received $432.',raised:mAgo(300),st:'open',owner:null,log:[{t:mAgo(300),by:'app',x:'Raised automatically: provider unpaid 5 business days after the claim was paid.'}]},
- {id:'CH-1038',type:'invoice',who:'jamie',pid:'marcus',title:'Marcus T. invoice over the NDIS limit',body:'House cleaning, 3 hrs at $65.00/hr. The NDIS price limit is $60.10/hr, so it is $14.70 over.',raised:mAgo(1500),st:'open',owner:null,log:[{t:mAgo(1500),by:'app',x:'Raised automatically: invoice check failed (over price limit).'}]},
+ {id:'CH-1041',type:'payment',who:'margaret',pid:'lena',title:'Lena not paid for October visits',body:'Our Support at Home claim for Margaret\'s October services was paid 6 business days ago. Lena has not been paid $432.',raised:mAgo(300),st:'open',owner:null,log:[{t:mAgo(300),by:'app',x:'Raised automatically: provider unpaid 5 business days after the claim was paid.'}]},
+ {id:'CH-1038',type:'invoice',who:'noah',pid:'marcus',title:'Marcus T. invoice over the NDIS limit',body:'House cleaning, 3 hrs at $65.00/hr. The NDIS price limit is $60.10/hr, so it is $14.70 over.',raised:mAgo(1500),st:'open',owner:null,log:[{t:mAgo(1500),by:'app',x:'Raised automatically: invoice check failed (over price limit).'}]},
  {id:'CH-1035',type:'claim',who:'jamie',pid:'dale',title:'Jamie: yard maintenance claim rejected',body:'The NDIA rejected Sarah\'s claim for Dale Roberts: the support item did not match the plan category.',raised:mAgo(3300),st:'wait',owner:'kim',log:[{t:mAgo(3300),by:'app',x:'Raised automatically: NDIA rejected the claim.'},{t:mAgo(3200),by:'Kim Nguyen',x:'Assigned to me. Checking the support item.'}]},
  {id:'CH-1031',type:'nocover',who:'jamie',pid:'omar',title:'Jamie: outing covered after Omar\'s car broke down',body:'Omar Haddad cancelled Saturday\'s outing at short notice.',raised:mAgo(2900),st:'done',owner:'kim',closed:mAgo(2860),log:[{t:mAgo(2900),by:'app',x:'Raised automatically: worker cancelled, no cover found.'},{t:mAgo(2880),by:'Kim Nguyen',x:'Offered the outing to Lena Petrova.'},{t:mAgo(2860),by:'Kim Nguyen',x:'Cover confirmed. Sarah told who is coming.'}]}];
 S.tq='open';
-function tixDue(t){return t.raised+TRULES[t.type].target*60000}
+function tixDue(t){return t.due??(t.raised+RULEOF(t.type).target*60000)}
 function durTxt(ms){const m=Math.max(1,Math.round(Math.abs(ms)/60000));if(m<60)return m+' min';const h=Math.round(m/60);if(h<48)return h+' h';return Math.round(h/24)+' days'}
 function tixDuePill(t){if(t.st=='done')return `<span class="pill ok">${ico('check')}Resolved ${durTxt(Date.now()-t.closed)} ago</span>`;const left=tixDue(t)-Date.now();
  return left<0?`<span class="pill bad">${ico('clock')}Overdue ${durTxt(left)}</span>`:`<span class="pill ${left<3600000?'warn':'info'}">${ico('clock')}Due in ${durTxt(left)}</span>`}
 function tixSort(a,b){return (a.st=='done')-(b.st=='done')||(a.st=='done'?b.closed-a.closed:tixDue(a)-tixDue(b))}
+/* ---------- base stack: modules, scheduled work, customers, providers, correspondence ---------- */
+const MODS={platform:{n:'Platform',d:'Bookings, workers and cover'},care:{n:'Care management',d:'Support at Home care partners'},plan:{n:'Plan management',d:'NDIS invoices, claims and statements'}};
+S.mods={platform:true,care:true,plan:true};S.tq='all';
+const modOn=m=>!m||m=='core'||!!S.mods[m];
+const modTag=m=>m&&m!='core'?`<span class="mtag m-${m}">${MODS[m].n}</span>`:'';
+const EMOD={nocover:'platform',checkout:'platform',invoice:'plan',claim:'platform',payment:'care',complaint:'core'};
+Object.entries(EMOD).forEach(([k,m])=>{TRULES[k].mod=m;TRULES[k].kind='esc'});
+const SRULES={
+ checkin:{name:'Monthly check-in',kind:'sched',mod:'care',sev:'hol',trig:'Every Support at Home client needs direct contact from their care partner at least once a month. Raised 7 days before it falls due.',tlab:'Monthly',act:'Call or visit in the way agreed with the client, then record what you discussed.'},
+ budget:{name:'Quarterly budget review',kind:'sched',mod:'care',sev:'hol',trig:'Raised when a quarter is more than 60% committed, or 3 weeks before the quarter ends.',tlab:'Quarterly',act:'Review spending against the care plan with the client or their representative.'},
+ carerev:{name:'Care plan review',kind:'sched',mod:'care',sev:'hol',trig:'Care plans are reviewed at least yearly, or sooner when needs change.',tlab:'Yearly',act:'Book the review, update goals and services, and get the plan agreed.'},
+ statement:{name:'Monthly statement',kind:'sched',mod:'plan',sev:'hol',trig:'Plan-managed participants get a statement of spending and remaining funds every month.',tlab:'Monthly',act:'Check the month\'s paid invoices, then send the statement.'},
+ planend:{name:'Plan reassessment prep',kind:'sched',mod:'plan',sev:'hol',trig:'Raised 12 weeks before an NDIS plan ends. Due 6 weeks before.',tlab:'6 weeks before end',act:'Prepare a spending summary and evidence for the reassessment.'},
+ screen:{name:'Worker check expiring',kind:'sched',mod:'platform',sev:'hol',trig:'Raised 6 weeks before a worker screening check, insurance or first aid certificate expires.',tlab:'Before expiry',act:'Remind the worker, and pause new bookings if it lapses.'}};
+const RULEOF=k=>TRULES[k]||SRULES[k];
+const tMod=t=>t.mod||RULEOF(t.type).mod;
+P.arthur={name:'Arthur Wells',first:'Arthur',prog:'sah',age:88,skin:'#EFC7A5',hair:'short',hc:'#E4E0DA',shirt:'#4E6A8C',bg:'#E6EDF5',glasses:1,sub:'Support at Home, classification 5 (sample)',suburb:'Karrinyup WA'};
+P.marcus.title=P.marcus.title||'House cleaning';
+P.noah={name:'Noah Patel',first:'Noah',prog:'ndis',age:34,skin:'#C08B62',hair:'short',hc:'#161010',shirt:'#B5654A',bg:'#F8E7DF',sub:'NDIS, plan managed',suburb:'Joondalup WA'};
+const hA=h=>NOW0+h*3600000,dAgo=d=>NOW0-d*864e5;
+S.tix.forEach(t=>t.kind=t.kind||'esc');
+S.tix.push(
+ {id:'CH-2051',kind:'sched',type:'checkin',who:'margaret',pid:null,title:'Margaret: monthly check-in with Sarah',body:'Last direct contact was 29 days ago (phone call with Sarah). Agreed contact: monthly phone call with Sarah, plus a home visit each quarter.',raised:dAgo(7),due:hA(5),st:'open',owner:'kim',log:[{t:dAgo(7),by:'app',x:'Scheduled: monthly care management contact falls due in 7 days.'}]},
+ {id:'CH-2052',kind:'sched',type:'checkin',who:'arthur',pid:null,title:'Arthur: monthly check-in',body:'Last direct contact was 28 days ago (home visit). Agreed contact: home visit every second month, phone call in between. This month is a phone call.',raised:dAgo(5),due:hA(48),st:'open',owner:'kim',log:[{t:dAgo(5),by:'app',x:'Scheduled: monthly care management contact falls due in 7 days.'}]},
+ {id:'CH-2053',kind:'sched',type:'statement',who:'noah',pid:null,title:'Noah: October statement',body:'14 invoices paid in October, $2,318 in total. $9,640 of plan funding left until the plan ends on 21 Jan 2027.',raised:dAgo(2),due:hA(54),st:'open',owner:null,log:[{t:dAgo(2),by:'app',x:'Scheduled: monthly statement for October.'}]},
+ {id:'CH-2054',kind:'sched',type:'budget',who:'margaret',pid:null,title:'Margaret: quarterly budget review',body:'October to December is 62% committed with 7 weeks left. Review the services in the care plan with Sarah.',raised:dAgo(1),due:hA(144),st:'open',owner:'kim',log:[{t:dAgo(1),by:'app',x:'Scheduled: quarter is more than 60% committed.'}]},
+ {id:'CH-2055',kind:'sched',type:'screen',who:null,pid:'omar',title:'Omar Haddad: worker screening check expires',body:'Omar\'s NDIS worker screening check expires on 23 Dec 2026. He can\'t take new bookings after that without a renewed check.',raised:dAgo(3),due:hA(336),st:'open',owner:null,log:[{t:dAgo(3),by:'app',x:'Scheduled: worker check expires within 6 weeks.'}]},
+ {id:'CH-2056',kind:'sched',type:'planend',who:'noah',pid:null,title:'Noah: plan ends 21 Jan 2027',body:'Prepare a spending summary and evidence of progress against goals for the plan reassessment.',raised:dAgo(4),due:hA(744),st:'open',owner:null,log:[{t:dAgo(4),by:'app',x:'Scheduled: plan ends in 12 weeks.'}]},
+ {id:'CH-2057',kind:'sched',type:'carerev',who:'arthur',pid:null,title:'Arthur: yearly care plan review',body:'Last full review was 11 months ago. Arthur has asked about a bathroom grab rail, so include home modifications.',raised:dAgo(6),due:hA(504),st:'open',owner:'kim',log:[{t:dAgo(6),by:'app',x:'Scheduled: yearly care plan review due within 4 weeks.'}]});
+Object.assign(TIX_ACTS,{
+ checkin:[{k:'ok',l:'Call done: no changes',log:'Monthly check-in completed. No changes to care needed.',st:'done',corr:{ch:'call',dir:'out',sub:'Monthly check-in',note:'No changes to care needed.'}},
+  {k:'fu',l:'Call done: follow-up needed',log:'Monthly check-in completed. Follow-up needed; noted on the care plan.',st:'prog',corr:{ch:'call',dir:'out',sub:'Monthly check-in',note:'Follow-up needed. See work item.'}},
+  {k:'na',l:'No answer: try tomorrow',log:'Called, no answer. Left a voicemail; will try again tomorrow.',st:'prog',corr:{ch:'call',dir:'out',sub:'Check-in attempt',note:'No answer. Voicemail left.'}}],
+ statement:[{k:'check',l:'Invoices checked',log:'Checked 14 paid invoices against the plan.',st:'prog'},{k:'send',l:'Send statement',log:'October statement sent by email.',st:'done',corr:{ch:'email',dir:'out',sub:'October statement',note:'Monthly statement of spending and remaining funds.'}}],
+ budget:[{k:'book',l:'Book review call',log:'Review call booked with Sarah for Thursday, 10:30 am.',st:'wait',corr:{ch:'email',dir:'out',sub:'Budget review booked',note:'Call booked for Thursday, 10:30 am.'}},{k:'done',l:'Review complete',log:'Budget reviewed. Cleaning moved from weekly to fortnightly to stay within budget.',st:'done',corr:{ch:'call',dir:'out',sub:'Quarterly budget review',note:'Cleaning moved to fortnightly.'}}],
+ carerev:[{k:'book',l:'Book review visit',log:'Review home visit booked for 24 Nov, 10:00 am.',st:'wait',corr:{ch:'letter',dir:'out',sub:'Care plan review booked',note:'Home visit 24 Nov, 10:00 am.'}},{k:'done',l:'Review complete',log:'Care plan reviewed and agreed. Grab rail added under assistive technology.',st:'done'}],
+ planend:[{k:'summary',l:'Prepare spending summary',log:'Spending summary prepared for the reassessment.',st:'prog'},{k:'send',l:'Send to Noah',log:'Summary sent to Noah ahead of the reassessment.',st:'done',corr:{ch:'email',dir:'out',sub:'Plan reassessment pack',note:'Spending summary and evidence checklist.'}}],
+ screen:[{k:'remind',l:'Send reminder',log:'Reminder sent to Omar with the renewal link.',st:'wait',corr:{ch:'sms',dir:'out',sub:'Worker screening renewal',note:'Renewal reminder with link.'}},{k:'renewed',l:'Renewal received',log:'Renewed clearance recorded.',st:'done'}]});
+TIX_ACTS.nocover[0].corr={to:'p:lena',ch:'sms',dir:'out',sub:'Shift offer',note:'Offered Margaret\'s visit tomorrow, 10:00 am.'};
+TIX_ACTS.nocover[1].corr={to:'p:omar',ch:'sms',dir:'out',sub:'Shift offer',note:'Offered Margaret\'s visit tomorrow, 10:00 am.'};
+TIX_ACTS.nocover[2].corr={ch:'sms',dir:'out',sub:'Visit covered',note:'Told Sarah that Lena will do tomorrow\'s visit.'};
+TIX_ACTS.checkout[0].corr={to:'p:lena',ch:'call',dir:'out',sub:'Missing check-out',note:'Visit finished 9:40 am; check-out forgotten.'};
+TIX_ACTS.invoice[0].corr={to:'p:marcus',ch:'email',dir:'out',sub:'Invoice returned',note:'$65.00/hr is over the $60.10/hr NDIS limit. Please re-issue.'};
+TIX_ACTS.complaint[0].corr={ch:'call',dir:'out',sub:'Scam text follow-up',note:'Text was not from the NDIS. Sarah did not reply or click the link.'};
+TIX_ACTS.payment[1].corr={to:'p:lena',ch:'sms',dir:'out',sub:'Payment update',note:'You\'re in tomorrow\'s payment run.'};
+
+const CH={call:['phone','Call'],email:['mail','Email'],sms:['chat','Text'],app:['tablet','App'],letter:['file','Letter'],visit:['home','Visit']};
+const STL={ok:['ok','Current'],due:['warn','Due soon'],bad:['bad','Action needed']};
+const CUST={
+ margaret:{id:'C-1023',mods:['care','platform'],since:'Mar 2026',addr:'Duncraig WA 6023',rep:'sarah',repRole:'daughter, enduring power of attorney',phone:'0412 555 018',email:'sarah.chen@example.com',fund:'Support at Home, classification 3',fundD:'$5,500 a quarter (sample), 10% care management',partner:'kim',pref:'Phone Sarah after 10 am. Margaret prefers morning visits.',contact:{last:29,mode:'Monthly phone call with Sarah, home visit each quarter'},providers:['lena','priya'],
+  docs:[['Service agreement','core','ok','Signed 12 Mar 2026'],['Care plan','care','ok','Reviewed 14 Oct 2026'],['Quarterly budget, Oct to Dec','care','ok','62% committed'],['Enduring power of attorney','core','ok','On file'],['Consent to share information','core','ok','Signed 12 Mar 2026'],['Home safety check','care','due','Due 30 Nov 2026']]},
+ jamie:{id:'C-1031',mods:['platform'],since:'Sep 2026',addr:'Duncraig WA 6023',rep:'sarah',repRole:'mother, child representative',phone:'0412 555 018',email:'sarah.chen@example.com',fund:'NDIS, self-managed',fundD:'Plan 15 Mar 2026 to 14 Mar 2027',partner:null,pref:'Text Sarah first. Jamie likes outings on Saturdays.',contact:null,providers:['omar','dale'],
+  docs:[['Service agreement','core','ok','Signed 30 Sep 2026'],['NDIS plan','core','ok','Ends 14 Mar 2027'],['Child representative evidence','core','ok','On file'],['Claim pack, October','platform','bad','Needs fixing']]},
+ arthur:{id:'C-1007',mods:['care'],since:'Jul 2025',addr:'Karrinyup WA 6018',rep:null,repRole:'Speaks for himself',phone:'0401 555 377',email:'',fund:'Support at Home, classification 5',fundD:'$9,400 a quarter (sample), 10% care management',partner:'kim',pref:'Phone mornings only. Hard of hearing: speak slowly and confirm by letter.',contact:{last:28,mode:'Home visit every second month, phone call in between'},providers:['grace','lena'],
+  docs:[['Service agreement','core','ok','Signed 1 Jul 2025'],['Care plan','care','due','Review due 30 Nov 2026'],['Consent to share information','core','ok','Signed 1 Jul 2025'],['Grab rail quote','care','due','Waiting on OT']]},
+ noah:{id:'C-1044',mods:['plan'],since:'Feb 2026',addr:'Joondalup WA 6027',rep:null,repRole:'Manages his own plan decisions',phone:'0433 555 612',email:'noah.p@example.com',fund:'NDIS, plan managed',fundD:'Plan ends 21 Jan 2027, $9,640 left',partner:null,pref:'Email preferred. Statements as PDF.',contact:null,providers:['bright','marcus'],
+  docs:[['Service agreement','core','ok','Signed 2 Feb 2026'],['NDIS plan','core','ok','Ends 21 Jan 2027'],['October statement','plan','due','Due 11 Nov 2026'],['September statement','plan','ok','Sent 1 Oct 2026']]}};
+const PD=(scr,extra)=>[['NDIS worker screening check','platform',scr[0],scr[1]],...extra];
+const PROV={
+ lena:{type:'Sole trader',abn:'51 824 753 556',reg:'Unregistered NDIS provider',since:'Feb 2026',phone:'0412 555 204',email:'lena.p@example.com',clients:['margaret','arthur'],
+  docs:PD(['ok','Expires 14 Aug 2029'],[['Certificate III in Individual Support','platform','ok','Verified'],['First aid certificate','platform','ok','Expires Oct 2029'],['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN and GST','core','ok','Active, registered for GST'],['Agreement with Banksia','core','ok','Signed 3 Feb 2026']])},
+ priya:{type:'Sole trader',abn:'23 619 004 871',reg:'Unregistered NDIS provider',since:'Jan 2026',phone:'0412 555 101',email:'priya.n@example.com',clients:['margaret'],
+  docs:PD(['ok','Expires 2 Mar 2030'],[['First aid certificate','platform','ok','Expires Jun 2028'],['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active, not registered for GST'],['Agreement with Banksia','core','ok','Signed 20 Jan 2026']])},
+ omar:{type:'Sole trader',abn:'68 102 559 340',reg:'Unregistered NDIS provider',since:'Apr 2026',phone:'0412 555 330',email:'omar.h@example.com',clients:['jamie'],
+  docs:PD(['due','Expires 23 Dec 2026'],[['Driver licence and car insurance','platform','ok','Expires May 2027'],['First aid certificate','platform','ok','Expires Feb 2028'],['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 9 Apr 2026']])},
+ marcus:{type:'Sole trader',abn:'84 336 210 975',reg:'Unregistered NDIS provider',since:'Oct 2026',phone:'0412 555 412',email:'marcus.t@example.com',clients:['noah'],
+  docs:PD(['ok','Expires 11 Jul 2030'],[['Public liability insurance','platform','bad','Certificate missing'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 2 Oct 2026']])},
+ dale:{type:'Sole trader',abn:'37 905 118 642',reg:'Unregistered NDIS provider',since:'Mar 2026',phone:'0412 555 266',email:'dale.r@example.com',clients:['jamie'],
+  docs:PD(['ok','Expires 5 Sep 2028'],[['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 14 Mar 2026']])},
+ grace:{type:'Sole trader',abn:'12 447 980 315',reg:'Registered nurse (AHPRA)',since:'Aug 2025',phone:'0412 555 588',email:'grace.n@example.com',clients:['arthur'],
+  docs:[['AHPRA registration','care','ok','Renews 31 May 2027'],['Professional indemnity insurance','care','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 4 Aug 2025']]},
+ bright:{type:'Company',abn:'59 618 223 704',reg:'Registered NDIS provider',since:'Feb 2026',phone:'08 9555 0190',email:'accounts@brightsteps.example.com',clients:['noah'],
+  docs:[['NDIS registration','core','ok','Registered until 2028'],['Public liability insurance','plan','ok','Expires 30 Jun 2027'],['ABN and GST','core','ok','Active, registered for GST']]}};
+S.corr=[
+ {e:'c:margaret',t:dAgo(29),ch:'call',dir:'out',w:'sarah',sub:'Monthly check-in',note:'Margaret settled after a short hospital stay. Keep Tuesday showering visits.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:margaret',t:dAgo(20),ch:'email',dir:'out',w:'sarah',sub:'September statement and budget update',note:'Statement sent. Quarter on track.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:margaret',t:dAgo(12),ch:'sms',dir:'in',w:'sarah',sub:'Change of cleaning day',note:'Asked to move Friday cleaning to Thursday. Changed in the app.',by:'Kim Nguyen',mod:'platform'},
+ {e:'c:margaret',t:dAgo(.03),ch:'app',dir:'in',w:'priya',sub:'Visit cancelled',note:'Priya Nair cancelled tomorrow\'s 10:00 am visit (unwell).',by:'Carer Hub app',mod:'platform'},
+ {e:'c:jamie',t:dAgo(40),ch:'email',dir:'out',w:'sarah',sub:'Welcome and service agreement',note:'Signed agreement returned the same day.',by:'Kim Nguyen',mod:'core'},
+ {e:'c:jamie',t:dAgo(2),ch:'call',dir:'in',w:'sarah',sub:'Rejected yard claim',note:'Sarah asked why the NDIA rejected the claim for Dale\'s visit.',by:'Kim Nguyen',mod:'platform'},
+ {e:'c:jamie',t:dAgo(.13),ch:'app',dir:'in',w:'sarah',sub:'Scam text reported',note:'Reported a text asking for bank details.',by:'Carer Hub app',mod:'core'},
+ {e:'c:arthur',t:dAgo(28),ch:'visit',dir:'out',w:'arthur',sub:'Home visit: monthly check-in',note:'Walking well with his frame. Asked about a bathroom grab rail.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:arthur',t:dAgo(9),ch:'letter',dir:'out',w:'arthur',sub:'Care plan review coming up',note:'Letter explaining the yearly review and what to expect.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:noah',t:dAgo(39),ch:'email',dir:'out',w:'noah',sub:'September statement',note:'Monthly statement of spending and remaining funds.',by:'Kim Nguyen',mod:'plan'},
+ {e:'c:noah',t:dAgo(3),ch:'call',dir:'in',w:'noah',sub:'Therapy funding question',note:'Asked how much Capacity Building funding is left: $3,120.',by:'Kim Nguyen',mod:'plan'},
+ {e:'p:lena',t:dAgo(15),ch:'email',dir:'in',w:'lena',sub:'First aid certificate renewed',note:'New certificate uploaded, expires Oct 2029.',by:'Kim Nguyen',mod:'platform'},
+ {e:'p:priya',t:dAgo(.03),ch:'app',dir:'in',w:'priya',sub:'Sick leave',note:'Cancelled tomorrow\'s visit for Margaret.',by:'Carer Hub app',mod:'platform'},
+ {e:'p:marcus',t:dAgo(1.1),ch:'email',dir:'in',w:'marcus',sub:'October invoice',note:'House cleaning for Noah, 3 hrs at $65.00/hr.',by:'Carer Hub app',mod:'plan'},
+ {e:'p:omar',t:dAgo(3),ch:'app',dir:'out',w:'omar',sub:'Check expiry notice',note:'Automatic notice: worker screening check expires 23 Dec 2026.',by:'Carer Hub app',mod:'platform'},
+ {e:'p:dale',t:dAgo(2),ch:'email',dir:'out',w:'dale',sub:'Claim details',note:'Asked Dale to confirm the support item on his invoice.',by:'Kim Nguyen',mod:'platform'},
+ {e:'p:bright',t:dAgo(6),ch:'email',dir:'in',w:'bright',sub:'October invoices',note:'Four physio sessions for Noah.',by:'Carer Hub app',mod:'plan'}];
+const fmtDT=t=>{const d=new Date(t);return d.toLocaleDateString('en-AU',{day:'numeric',month:'short'})+', '+d.toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit'})};
+const tel=p=>'tel:'+String(p).replace(/\s/g,'');
 const TTOOLS={
  nocover:[{l:'Call Priya Nair',href:'tel:0412555101',ic:'phone'},{l:'Text Sarah Chen',href:'sms:0412555018',ic:'chat'},{l:'Open roster',sys:'rostering system',ic:'calendar'}],
  checkout:[{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'Open visit record',sys:'visit records',ic:'clock'}],
  invoice:[{l:'NDIS Pricing Arrangements',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file'},{l:'Email Marcus T.',href:'mailto:marcus.t@example.com?subject=Invoice%20CH-1038',ic:'mail'},{l:'Open invoice',sys:'invoice inbox',ic:'wallet'}],
  claim:[{l:'NDIS Pricing Arrangements',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file'},{l:'Text Sarah Chen',href:'sms:0412555018',ic:'chat'},{l:'Open claim pack',sys:'claims workspace',ic:'folder'}],
- payment:[{l:'Aged Care Provider Portal',href:'https://www.servicesaustralia.gov.au/aged-care-provider-portal',ic:'shield'},{l:'Email Banksia accounts',href:'mailto:accounts@example.com?subject=Unpaid%20invoice%20CH-1041',ic:'mail'},{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'}],
- complaint:[{l:'Report to Scamwatch',href:'https://www.scamwatch.gov.au/report-a-scam',ic:'shield'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'NDIS Commission',href:'https://www.ndiscommission.gov.au/',ic:'shield'}]};
+ payment:[{l:'Aged Care Provider Portal',href:'https://www.servicesaustralia.gov.au/aged-care-provider-portal',ic:'shield'},{l:'Email accounts team',href:'mailto:accounts@example.com?subject=Unpaid%20invoice%20CH-1041',ic:'mail'},{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'}],
+ complaint:[{l:'Report to Scamwatch',href:'https://www.scamwatch.gov.au/report-a-scam',ic:'shield'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'NDIS Commission',href:'https://www.ndiscommission.gov.au/',ic:'shield'}],
+ checkin:t=>{const c=CUST[t.who],w=c.rep||t.who;return [{l:'Call '+P[w].name,href:tel(c.phone),ic:'phone'},{l:'Open care plan',sys:'care plan',ic:'file'},{l:'Support at Home manual',href:'https://www.health.gov.au/resources/publications/support-at-home-program-manual-a-guide-for-registered-providers',ic:'file'}]},
+ budget:[{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'Open quarterly budget',sys:'budget view',ic:'wallet'}],
+ carerev:[{l:'Call Arthur Wells',href:'tel:0401555377',ic:'phone'},{l:'Open care plan',sys:'care plan',ic:'file'}],
+ statement:[{l:'Statement builder',sys:'statement builder',ic:'file'},{l:'Email Noah Patel',href:'mailto:noah.p@example.com?subject=October%20statement',ic:'mail'},{l:'Plan manager guidance',href:'https://www.ndis.gov.au/providers/working-participants/plan-managers/how-support-participants-plan-manager',ic:'file'}],
+ planend:[{l:'Spending report',sys:'reporting',ic:'trend'},{l:'Email Noah Patel',href:'mailto:noah.p@example.com?subject=Plan%20reassessment',ic:'mail'}],
+ screen:[{l:'Text Omar Haddad',href:'sms:0412555330',ic:'chat'},{l:'Open worker record',sys:'worker records',ic:'user'}]};
 const isDesk=()=>matchMedia('(min-width:1024px)').matches;
-function tixDueTxt(t){if(t.st=='done')return ['Resolved','ok'];const l=tixDue(t)-Date.now();return l<0?['Overdue '+durTxt(l),'over']:['Due in '+durTxt(l),l<3600000?'soon':'']}
-function tixList(){const open=S.tix.filter(t=>t.st!='done');let l=S.tq=='open'?open:S.tq=='mine'?open.filter(t=>t.owner=='kim'):S.tix.filter(t=>t.st=='done');if(S.tqt&&S.tqt!='all')l=l.filter(t=>t.type==S.tqt);return l.slice().sort(tixSort)}
-function tixRow(t){const r=TRULES[t.type],[sl,sc]=TST[t.st],[dt,dc]=tixDueTxt(t),sel=isDesk()&&S.tsel==t.id;
- return `<button class="qrow ${sel?'sel':''}" data-a="tixopen" data-v="${t.id}" aria-label="${esc(t.title)}. ${dt}. ${sl}" ${sel?'aria-current="true"':''}><span class="sd ${r.sev}"></span><span class="id">${t.id}</span><span class="is"><b>${esc(t.title)}</b><span>${esc(r.name)}${t.who?' · '+esc(P[t.who].name):''}<span class="mst"> · ${sl}</span></span></span><span class="ow">${t.owner?(t.owner=='kim'?'You':esc(P[t.owner].name)):'<span class="m">Unassigned</span>'}</span><span class="stc"><span class="pill ${sc}">${sl}</span></span><span class="du ${dc}">${dt}</span></button>`}
-function tixBody(t){const r=TRULES[t.type],acts=t.st=='done'?[]:TIX_ACTS[t.type].filter(a=>!t.log.some(l=>l.k==a.k)),tools=TTOOLS[t.type]||[];
- const person=(k,role)=>k?`<div class="dperson">${face(k,36)}<div class="grow"><b>${esc(P[k].name)}</b><span>${role}</span></div></div>`:'';
- return `<div class="dpeople">${person(t.who,'Client · '+(P[t.who]?.prog=='ndis'?'NDIS':'Support at Home'))}${person(t.pid,'Worker')}</div>
- <div class="dsec"><p>${esc(t.body)}</p><p class="m">Rule: ${esc(r.trig)} Target ${esc(r.tlab.toLowerCase())}.</p></div>
+function tixDueTxt(t){if(t.st=='done')return ['Done','ok'];const l=tixDue(t)-Date.now();return l<0?['Overdue '+durTxt(l),'over']:['Due in '+durTxt(l),l<3600000*6?'soon':'']}
+function tixPool(){return S.tix.filter(t=>modOn(tMod(t))&&(!t.who||!CUST[t.who]||CUST[t.who].mods.some(modOn)))}
+function tixList(){const pool=tixPool(),open=pool.filter(t=>t.st!='done');let l=S.tq=='all'?open:S.tq=='esc'?open.filter(t=>t.kind=='esc'):S.tq=='sched'?open.filter(t=>t.kind=='sched'):S.tq=='mine'?open.filter(t=>t.owner=='kim'):pool.filter(t=>t.st=='done');if(S.tqt&&S.tqt!='all')l=l.filter(t=>t.type==S.tqt);return l.slice().sort(tixSort)}
+function subjName(t){return t.who?P[t.who].name:t.pid?P[t.pid].name:''}
+function tixRow(t){const r=RULEOF(t.type),[sl,sc]=TST[t.st],[dt,dc]=tixDueTxt(t),sel=isDesk()&&S.tab=='squeue'&&S.tsel==t.id;
+ return `<button class="qrow ${sel?'sel':''}" data-a="tixopen" data-v="${t.id}" aria-label="${esc(t.title)}. ${dt}. ${sl}" ${sel?'aria-current="true"':''}><span class="sd ${r.sev}" title="${r.kind=='sched'?'Scheduled':'Escalation'}"></span><span class="id">${t.id}</span><span class="is"><b>${esc(t.title)}</b><span>${esc(r.name)}${subjName(t)?' · '+esc(subjName(t)):''}<span class="mst"> · ${sl}</span>${modTag(tMod(t))}</span></span><span class="ow">${t.owner?(t.owner=='kim'?'You':esc(P[t.owner].name)):'<span class="m">Unassigned</span>'}</span><span class="stc"><span class="pill ${sc}">${sl}</span></span><span class="du ${dc}">${dt}</span></button>`}
+function tixBody(t){const r=RULEOF(t.type),acts=t.st=='done'?[]:TIX_ACTS[t.type].filter(a=>!t.log.some(l=>l.k==a.k)),tt=TTOOLS[t.type],tools=(typeof tt=='function'?tt(t):tt)||[];
+ const person=(k,role,e)=>k?`<button class="dperson btnp" data-a="sopen" data-v="${e}" aria-label="Open ${esc(P[k].name)}">${face(k,36)}<span class="grow"><b>${esc(P[k].name)}</b><span>${role}</span></span></button>`:'';
+ const crole=t.who&&CUST[t.who]?'Customer · '+CUST[t.who].id:'';
+ return `<div class="dpeople">${person(t.who,crole,'c:'+t.who)}${person(t.pid,'Worker or provider','p:'+t.pid)}</div>
+ <div class="dsec"><p>${esc(t.body)}</p><p class="m">${r.kind=='sched'?'Schedule':'Rule'}: ${esc(r.trig)}</p></div>
  ${tools.length?`<div class="dsec"><h3>Tools</h3><div class="tools">${tools.map(o=>o.href?`<a class="tool" href="${o.href}" ${o.href.startsWith('http')?'target="_blank" rel="noopener"':''}>${ico(o.ic)}<span>${esc(o.l)}</span>${o.href.startsWith('http')?ico('ext','x2'):''}</a>`:`<button class="tool" data-a="tixtool" data-v="${esc(o.sys)}">${ico(o.ic)}<span>${esc(o.l)}</span></button>`).join('')}</div></div>`:''}
- ${acts.length?`<div class="dsec"><h3>Next steps</h3><p class="m">${esc(r.act)}</p><div class="acts">${acts.map(a=>`<button class="btn sm ${a.st=='done'?'p':'ghost'}" data-a="tixact" data-v="${t.id}|${a.k}">${esc(a.l)}</button>`).join('')}</div></div>`:''}
- ${t.st=='done'?'':`<div class="dsec"><label for="tixnote"><h3>Note</h3></label><textarea id="tixnote" rows="2" placeholder="What did you do or find out?"></textarea><div class="row" style="gap:8px"><button class="btn sm ghost" data-a="tixnote" data-v="${t.id}">Add note</button><button class="btn sm ghost" data-a="tixdone" data-v="${t.id}">Resolve with note</button></div></div>`}
+ ${acts.length?`<div class="dsec"><h3>Next steps</h3><p class="m">${esc(r.act)}</p><div class="acts">${acts.map(a=>`<button class="btn sm ${a.st=='done'?'p':'ghost'}" data-a="tixact" data-v="${t.id}|${a.k}">${esc(a.l)}</button>`).join('')}</div>${acts.some(a=>a.corr)?'<p class="m">Calls, texts and emails are saved to the customer or provider record.</p>':''}</div>`:''}
+ ${t.st=='done'?'':`<div class="dsec"><label for="tixnote"><h3>Note</h3></label><textarea id="tixnote" rows="2" placeholder="What did you do or find out?"></textarea><div class="row" style="gap:8px"><button class="btn sm ghost" data-a="tixnote" data-v="${t.id}">Add note</button><button class="btn sm ghost" data-a="tixdone" data-v="${t.id}">Close with note</button></div></div>`}
  <div class="dsec"><h3>History</h3><div class="tlog">${t.log.slice().reverse().map(l=>`<div class="${l.by=='app'?'sys':''}"><b>${l.by=='app'?'Carer Hub app':esc(l.by)}</b> <span class="m" style="display:inline">${durTxt(Date.now()-l.t)} ago</span><span class="m">${esc(l.x)}</span></div>`).join('')}</div></div>`}
-function tixHead(t){const r=TRULES[t.type],[sl,sc]=TST[t.st];
- return `<span class="ref">${t.id} · ${esc(r.name)}</span><h2>${esc(t.title)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span><span class="grow"></span>${t.st=='done'?'':t.owner=='kim'?`<button class="btn sm ghost" data-a="tixown" data-v="${t.id}">Unassign me</button>`:`<button class="btn sm p" data-a="tixown" data-v="${t.id}">Assign to me</button>`}</div>`}
-function opsShell(){const open=S.tix.filter(t=>t.st!='done'),over=open.filter(t=>tixDue(t)<Date.now()).length;
+function tixHead(t){const r=RULEOF(t.type),[sl,sc]=TST[t.st];
+ return `<span class="ref">${t.id} · ${r.kind=='sched'?'Scheduled':'Escalation'} · ${esc(r.name)}</span><h2>${esc(t.title)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span>${modTag(tMod(t))}<span class="grow"></span>${t.st=='done'?'':t.owner=='kim'?`<button class="btn sm ghost" data-a="tixown" data-v="${t.id}">Unassign me</button>`:`<button class="btn sm p" data-a="tixown" data-v="${t.id}">Assign to me</button>`}</div>`}
+function opsShell(){const over=tixPool().filter(t=>t.st!='done'&&tixDue(t)<Date.now()).length,provOn=S.mods.platform||S.mods.plan;
+ const nav=[['squeue','Work queue','inbox'],['scust','Customers','users'],...(provOn?[['sprov','Workers and providers','user']]:[]),['srules','Rules','gear']];
  return `<header class="ohead"><div class="row" style="gap:6px;align-items:center">${brand()}<span class="tenant">Banksia Home Care</span></div><div class="who"><div><b>${esc(P.kim.name)}</b><span class="m">${esc(P.kim.title)}</span></div>${face('kim',36)}</div></header>
- <aside class="oside" aria-label="Console">${ST.map(([k,l,ic])=>`<button class="onav ${S.tab==k?'on':''}" data-a="tab" data-v="${k}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${k=='squeue'&&over?`<span class="cnt" aria-label="${over} overdue">${over}</span>`:''}</button>`).join('')}<button class="onav" data-a="tab" data-v="settings">${ico('gear')}<span>Settings</span></button><p class="foot">Demo provider. Sample data resets when you reload.</p></aside>
+ <aside class="oside" aria-label="Console">${nav.map(([k,l,ic])=>`<button class="onav ${S.tab==k?'on':''}" data-a="snav" data-v="${k}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${k=='squeue'&&over?`<span class="cnt" aria-label="${over} overdue">${over}</span>`:''}</button>`).join('')}<button class="onav" data-a="tab" data-v="settings">${ico('gear')}<span>Settings</span></button>
+ <div class="omods"><span class="m">Modules on this account (demo)</span>${Object.entries(MODS).map(([k,m])=>`<label class="mt"><input type="checkbox" data-mod="${k}" ${S.mods[k]?'checked':''}><span><b>${m.n}</b><span class="m">${m.d}</span></span></label>`).join('')}</div>
+ <p class="foot">Demo provider. Sample data resets when you reload.</p></aside>
  <div class="omain">${V[S.tab]()}</div>`}
-V.squeue=()=>{const open=S.tix.filter(t=>t.st!='done'),over=open.filter(t=>tixDue(t)<Date.now()),soon=open.filter(t=>{const l=tixDue(t)-Date.now();return l>=0&&l<3600000}),mine=open.filter(t=>t.owner=='kim'),done=S.tix.filter(t=>t.st=='done');
+V.squeue=()=>{const pool=tixPool(),open=pool.filter(t=>t.st!='done'),now=Date.now(),eod=new Date();eod.setHours(23,59,59,999);
+ const over=open.filter(t=>tixDue(t)<now),today=open.filter(t=>tixDue(t)>=now&&tixDue(t)<=eod),sched7=open.filter(t=>t.kind=='sched'&&tixDue(t)<now+7*864e5),mine=open.filter(t=>t.owner=='kim'),done=pool.filter(t=>t.st=='done');
  const list=tixList();if(isDesk()&&(!S.tsel||!list.some(t=>t.id==S.tsel)))S.tsel=list[0]?.id||null;const cur=S.tix.find(t=>t.id==S.tsel);
- const types=[['all','All types'],...Object.entries(TRULES).map(([k,r])=>[k,r.name])];
- return `<div class="qtop"><div><h1>Escalation queue</h1><p class="m">Jobs the app could not finish on its own, most urgent first.</p></div></div>
- <div class="kpis" role="group" aria-label="Queue summary"><div class="kpi"><span>Open</span><strong>${open.length}</strong></div><div class="kpi ${over.length?'hot':''}"><span>Overdue</span><strong>${over.length}</strong></div><div class="kpi"><span>Due within 1 hour</span><strong>${soon.length}</strong></div><div class="kpi kx"><span>Assigned to you</span><strong>${mine.length}</strong></div><div class="kpi kx"><span>Resolved</span><strong>${done.length}</strong></div></div>
- <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${[['open','Open',open.length],['mine','Mine',mine.length],['done','Resolved',done.length]].map(([k,l,n])=>`<button data-a="tq" data-v="${k}" class="${S.tq==k?'on':''}" aria-pressed="${S.tq==k}">${l}<span class="n">${n}</span></button>`).join('')}</div>
+ const types=[['all','All types'],...Object.entries({...TRULES,...SRULES}).filter(([k,r])=>modOn(r.mod)).map(([k,r])=>[k,r.name])];
+ const tabs=[['all','All open',open.length],['esc','Escalations',open.filter(t=>t.kind=='esc').length],['sched','Scheduled',open.filter(t=>t.kind=='sched').length],['mine','Mine',mine.length],['done','Done',done.length]];
+ return `<div class="qtop"><div><h1>Work queue</h1><p class="m">Scheduled work and escalations for every customer, most urgent first.</p></div></div>
+ <div class="kpis" role="group" aria-label="Queue summary"><div class="kpi"><span>Open</span><strong>${open.length}</strong></div><div class="kpi ${over.length?'hot':''}"><span>Overdue</span><strong>${over.length}</strong></div><div class="kpi"><span>Due today</span><strong>${today.length}</strong></div><div class="kpi kx"><span>Scheduled in 7 days</span><strong>${sched7.length}</strong></div><div class="kpi kx"><span>Assigned to you</span><strong>${mine.length}</strong></div></div>
+ <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${tabs.map(([k,l,n])=>`<button data-a="tq" data-v="${k}" class="${S.tq==k?'on':''}" aria-pressed="${S.tq==k}">${l}<span class="n">${n}</span></button>`).join('')}</div>
  <select id="tqtype" class="osel" aria-label="Filter by type">${types.map(([k,l])=>`<option value="${k}" ${(S.tqt||'all')==k?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
- <div class="qtable" role="list">${list.length?`<div class="qrow qh" aria-hidden="true"><span></span><span class="id">Ref</span><span>Issue</span><span class="ow">Owner</span><span class="stc">Status</span><span style="text-align:right">Due</span></div>`+list.map(tixRow).join(''):`<p class="qempty">${S.tq=='mine'?'Nothing assigned to you. Pick a ticket from Open and assign it to yourself.':S.tq=='done'?'No resolved tickets yet.':'Queue is clear. New escalations appear here as the app raises them.'}</p>`}</div></div>
- <aside class="qdetail" aria-label="Ticket detail">${cur?`<div class="dpane"><div class="dh">${tixHead(cur)}</div>${tixBody(cur)}</div>`:'<p class="qempty">Select a ticket to see the details.</p>'}</aside></div>`};
-V.srules=()=>`<div class="qtop"><div><h1>Escalation rules</h1><p class="m">When the app pushes a job to staff, and how fast it should be handled. Set with each provider during implementation.</p></div></div>
- <div class="qtable">${Object.values(TRULES).map(r=>`<div class="qrow" style="cursor:default;grid-template-columns:10px minmax(0,1fr) auto"><span class="sd ${r.sev}"></span><span class="is"><b>${esc(r.name)}</b><span>${esc(r.trig)} ${esc(r.act)}</span></span><span class="du">${esc(r.tlab)}</span></div>`).join('')}</div>
- <p class="m">Target times are starting points. Tune them once real volumes are known.</p>`;
+ <div class="qtable">${list.length?`<div class="qrow qh" aria-hidden="true"><span></span><span class="id">Ref</span><span>Item</span><span class="ow">Owner</span><span class="stc">Status</span><span style="text-align:right">Due</span></div>`+list.map(tixRow).join(''):`<p class="qempty">${S.tq=='mine'?'Nothing assigned to you. Pick an item from All open and assign it to yourself.':S.tq=='done'?'Nothing closed yet.':'All clear. New work appears here as it falls due or the app raises it.'}</p>`}</div>
+ <p class="m" style="margin-top:10px">Filled dot: escalation the app raised. Hollow dot: scheduled work.</p></div>
+ <aside class="qdetail" aria-label="Item detail">${cur?`<div class="dpane"><div class="dh">${tixHead(cur)}</div>${tixBody(cur)}</div>`:'<p class="qempty">Select an item to see the details.</p>'}</aside></div>`};
+const ruleRows=o=>Object.values(o).filter(r=>modOn(r.mod)).map(r=>`<div class="qrow" style="cursor:default;grid-template-columns:10px minmax(0,1fr) auto"><span class="sd ${r.sev}"></span><span class="is"><b>${esc(r.name)}</b><span>${esc(r.trig)} ${esc(r.act)}${modTag(r.mod)}</span></span><span class="du">${esc(r.tlab)}</span></div>`).join('');
+V.srules=()=>`<div class="qtop"><div><h1>Rules</h1><p class="m">What creates work in the queue, and how fast it should be done. Set with each provider during implementation.</p></div></div>
+ <div class="psec" style="padding:0;gap:0"><div style="padding:16px 20px 8px"><h2>Scheduled work</h2><p class="m">Recurring obligations, raised before they fall due.</p></div><div class="qtable" style="border:0;box-shadow:none;border-top:1px solid var(--line);border-radius:0 0 10px 10px">${ruleRows(SRULES)}</div></div>
+ <div class="psec" style="padding:0;gap:0"><div style="padding:16px 20px 8px"><h2>Escalations</h2><p class="m">Raised when the app can't finish a job on its own.</p></div><div class="qtable" style="border:0;box-shadow:none;border-top:1px solid var(--line);border-radius:0 0 10px 10px">${ruleRows(TRULES)}</div></div>
+ <p class="m">Rules for modules this account doesn't use are hidden. Target times are starting points; tune them once real volumes are known.</p>`;
 function tixSheet(id,x){const t=S.tix.find(z=>z.id==id);return `<div class="sheet-h"><div class="dh" style="display:flex;flex-direction:column;gap:6px">${tixHead(t)}</div>${x}</div><div class="dpane">${tixBody(t)}</div>`}
+
+/* ---------- records: correspondence and documents (shared by customers and providers) ---------- */
+function corrList(e,n){const l=S.corr.filter(c=>c.e==e&&modOn(c.mod)).sort((a,b)=>b.t-a.t).slice(0,n||999);
+ return l.length?`<div class="ctable">${l.map(c=>`<div class="crow"><span class="cic">${ico(CH[c.ch][0])}</span><div class="grow"><b>${esc(c.sub)}</b><span class="m">${CH[c.ch][1]} ${c.dir=='in'?'from':'to'} ${esc(P[c.w]?.name||'')} · logged by ${esc(c.by)}</span><p>${esc(c.note)}</p></div><span class="cdt">${fmtDT(c.t)}</span></div>`).join('')}</div>`:'<p class="m">No correspondence yet.</p>'}
+function corrForm(e){const[k,id]=e.split(':'),opts=k=='c'?[CUST[id].rep,id].filter(Boolean):[id];
+ return `<div class="cform"><div class="cf-row"><label>Channel<select id="cf-ch" class="osel">${Object.entries(CH).filter(([c])=>c!='app').map(([c,[,l]])=>`<option value="${c}">${l}</option>`).join('')}</select></label><label>Direction<select id="cf-dir" class="osel"><option value="out">Outgoing</option><option value="in">Incoming</option></select></label><label>With<select id="cf-w" class="osel">${[...new Set(opts)].map(o=>`<option value="${o}">${esc(P[o].name)}</option>`).join('')}</select></label></div>
+ <label>Subject<input id="cf-sub" class="oin" placeholder="For example, Monthly check-in"></label><label>Summary<textarea id="cf-note" rows="3" placeholder="What was discussed or agreed"></textarea></label><div><button class="btn sm p" data-a="corradd" data-v="${e}">Save to record</button></div></div>`}
+function docsTable(docs){const l=docs.filter(d=>modOn(d[1]));
+ return `<div class="qtable">${l.map(([n,m,st,d])=>`<div class="drow"><span class="ic-w">${ico('file')}</span><div class="grow"><b>${esc(n)}</b><span class="m">${esc(d)}</span></div>${modTag(m)}<span class="pill ${STL[st][0]}">${STL[st][1]}</span><button class="btn sm ghost" data-a="docview">View</button></div>`).join('')}</div><div><button class="btn sm ghost" data-a="docup">${ico('upload')}Upload document</button></div>`}
+const openOf=(fn)=>tixPool().filter(fn);
+const compRows=l=>l.length?`<ul class="clist">${l.map(([n,d,st,m])=>`<li><span class="sd ${st=='bad'?'crit':st=='due'?'warn':'okd'}" style="width:8px;height:8px;border-radius:50%;flex:none"></span><div class="grow"><b>${esc(n)}</b><span class="m">${esc(d)}</span></div>${modTag(m)}</li>`).join('')}</ul>`:'<p class="m">Everything is up to date.</p>';
+function profTabs(cur,tabs,act){return `<div class="otabs ptabs" role="tablist">${tabs.map(([v,l,n])=>`<button role="tab" data-a="${act}" data-v="${v}" class="${cur==v?'on':''}" aria-selected="${cur==v}">${l}${n?`<span class="n">${n}</span>`:''}</button>`).join('')}</div>`}
+
+V.scust=()=>{if(S.cust&&CUST[S.cust]&&CUST[S.cust].mods.some(modOn))return custProfile(S.cust);S.cust=null;
+ const ks=Object.keys(CUST).filter(k=>CUST[k].mods.some(modOn));
+ return `<div class="qtop"><div><h1>Customers</h1><p class="m">Everyone this account supports, with their services, contacts and open work.</p></div></div>
+ <div class="qtable"><div class="lrow lh" aria-hidden="true"><span></span><span>Customer</span><span>Services</span><span>Main contact</span><span>Last contact</span><span style="text-align:right">Open items</span></div>
+ ${ks.map(k=>{const c=CUST[k],p=P[k],open=openOf(t=>t.who==k&&t.st!='done'),last=S.corr.filter(x=>x.e=='c:'+k&&x.ch!='app').sort((a,b)=>b.t-a.t)[0];
+  return `<button class="lrow" data-a="sopen" data-v="c:${k}">${face(k,32)}<span class="is"><b>${esc(p.name)}</b><span>${c.id} · ${esc(c.fund)}</span></span><span class="mods">${c.mods.filter(modOn).map(modTag).join('')}</span><span class="lc">${esc(P[c.rep||k].name)}</span><span class="lc">${last?durTxt(Date.now()-last.t)+' ago':'None'}</span><span class="du ${open.some(t=>tixDue(t)<Date.now())?'over':''}">${open.length}</span></button>`}).join('')}</div>`};
+function custProfile(k){const c=CUST[k],p=P[k],e='c:'+k,rep=c.rep?P[c.rep]:null,tab=S.ctab||'over',items=openOf(t=>t.who==k),nOpen=items.filter(t=>t.st!='done').length;
+ return `<div><button class="back" data-a="sback" data-v="scust">${ico('chevl')}All customers</button></div>
+ <div class="phead">${face(k,56)}<div class="grow"><h1>${esc(p.name)}</h1><p class="m">${c.id} · ${esc(c.fund)} · ${esc(c.addr)}</p><div class="mods">${c.mods.filter(modOn).map(modTag).join('')}</div></div>
+ <div class="acts"><a class="btn sm ghost" href="${tel(c.phone)}">${ico('phone')}Call ${esc((rep||p).name.split(' ')[0])}</a>${c.email?`<a class="btn sm ghost" href="mailto:${c.email}">${ico('mail')}Email</a>`:''}<button class="btn sm p" data-a="ctab" data-v="corr">${ico('plus')}Log correspondence</button></div></div>
+ ${profTabs(tab,[['over','Overview'],['corr','Correspondence'],['docs','Documents'],['work','Work items',nOpen]],'ctab')}
+ ${tab=='over'?custOver(k):tab=='corr'?`<div class="pgrid"><div class="psec"><h2>Log correspondence</h2>${corrForm(e)}</div><div class="psec"><h2>History</h2>${corrList(e)}</div></div>`:tab=='docs'?`<div class="psec"><h2>Documents</h2>${docsTable(c.docs)}</div>`:`<div class="qtable">${items.length?items.sort(tixSort).map(tixRow).join(''):'<p class="qempty">No work items for this customer.</p>'}</div>`}`}
+function custOver(k){const c=CUST[k],rep=c.rep?P[c.rep]:null,comp=[];
+ if(modOn('care')&&c.contact&&c.mods.includes('care')){const left=30-c.contact.last;comp.push(['Monthly care contact',`Last contact ${c.contact.last?c.contact.last+' days ago':'today'}. ${left<0?'Overdue':left<=1?'Due today':'Due in '+left+' days'}.`,left<=2?'due':'ok','care'])}
+ c.docs.filter(d=>d[2]!='ok'&&modOn(d[1])).forEach(d=>comp.push([d[0],d[3],d[2],d[1]]));
+ openOf(t=>t.who==k&&t.st!='done'&&t.kind=='esc').forEach(t=>comp.push([t.title,tixDueTxt(t)[0],'bad',tMod(t)]));
+ const dl=[['Client ID',c.id],['Funding',c.fund+'\n'+c.fundD],['Address',c.addr],['Main contact',rep?`${rep.name}, ${c.repRole}`:c.repRole],['Phone',c.phone],['Email',c.email||'None. Use phone or letter.'],['Care partner',c.partner?P[c.partner].name:'Not applicable'],['Agreed contact',c.contact?c.contact.mode:'As needed'],['Preferences',c.pref],['Customer since',c.since]];
+ return `<div class="pgrid"><div class="pcol"><div class="psec"><h2>Details</h2><dl class="dl">${dl.map(([a,b])=>`<dt>${a}</dt><dd>${esc(b).replace('\n','<br><span class="m">')+(b.includes('\n')?'</span>':'')}</dd>`).join('')}</dl></div>
+ <div class="psec"><h2>Workers and providers</h2><ul class="clist">${c.providers.filter(x=>PROV[x]).map(x=>`<li><button class="plink" data-a="sopen" data-v="p:${x}">${face(x,32)}<span class="grow"><b>${esc(P[x].name)}</b><span class="m">${esc(P[x].title||'')}</span></span>${ico('chev')}</button></li>`).join('')}</ul></div></div>
+ <div class="pcol"><div class="psec"><h2>Needs attention</h2>${compRows(comp)}</div>
+ <div class="psec"><div class="row" style="justify-content:space-between;align-items:center"><h2>Recent correspondence</h2><button class="lnk" data-a="ctab" data-v="corr">See all</button></div>${corrList('c:'+k,3)}</div></div></div>`}
+
+V.sprov=()=>{if(S.prov&&PROV[S.prov])return provProfile(S.prov);S.prov=null;
+ const ks=Object.keys(PROV);
+ return `<div class="qtop"><div><h1>Workers and providers</h1><p class="m">Everyone who delivers services to your customers, with their checks and paperwork.</p></div></div>
+ <div class="qtable"><div class="lrow lh" aria-hidden="true"><span></span><span>Name</span><span>Registration</span><span>Customers</span><span>Checks</span><span style="text-align:right">Open items</span></div>
+ ${ks.map(k=>{const v=PROV[k],p=P[k],bad=v.docs.filter(d=>d[2]=='bad').length,due=v.docs.filter(d=>d[2]=='due').length,open=openOf(t=>t.pid==k&&t.st!='done');
+  return `<button class="lrow" data-a="sopen" data-v="p:${k}">${face(k,32)}<span class="is"><b>${esc(p.name)}</b><span>${esc(p.title||v.type)}</span></span><span class="lc">${esc(v.reg)}</span><span class="lc">${v.clients.map(x=>esc(P[x].first||P[x].name)).join(', ')}</span><span class="lc">${bad?'<span class="pill bad">Action needed</span>':due?'<span class="pill warn">Due soon</span>':'<span class="pill ok">All current</span>'}</span><span class="du ${open.some(t=>tixDue(t)<Date.now())?'over':''}">${open.length}</span></button>`}).join('')}</div>`};
+function provProfile(k){const v=PROV[k],p=P[k],e='p:'+k,tab=S.ptab||'over',items=openOf(t=>t.pid==k),nOpen=items.filter(t=>t.st!='done').length,nChk=v.docs.filter(d=>d[2]!='ok').length;
+ return `<div><button class="back" data-a="sback" data-v="sprov">${ico('chevl')}All workers and providers</button></div>
+ <div class="phead">${face(k,56)}<div class="grow"><h1>${esc(p.name)}</h1><p class="m">${esc(p.title||'')} · ${esc(v.type)} · ABN ${esc(v.abn)}</p><div class="mods"><span class="mtag">${esc(v.reg)}</span></div></div>
+ <div class="acts"><a class="btn sm ghost" href="${tel(v.phone)}">${ico('phone')}Call</a><a class="btn sm ghost" href="mailto:${v.email}">${ico('mail')}Email</a><button class="btn sm p" data-a="ctab" data-v="corr">${ico('plus')}Log correspondence</button></div></div>
+ ${profTabs(tab,[['over','Overview'],['docs','Checks and documents',nChk],['corr','Correspondence'],['work','Work items',nOpen]],'ctab')}
+ ${tab=='over'?provOver(k):tab=='corr'?`<div class="pgrid"><div class="psec"><h2>Log correspondence</h2>${corrForm(e)}</div><div class="psec"><h2>History</h2>${corrList(e)}</div></div>`:tab=='docs'?`<div class="psec"><h2>Checks and documents</h2>${docsTable(v.docs)}</div>`:`<div class="qtable">${items.length?items.sort(tixSort).map(tixRow).join(''):'<p class="qempty">No work items for this provider.</p>'}</div>`}`}
+const PINV={lena:[['Showering and dressing','margaret',1.5,72]],priya:[['House cleaning','margaret',3,62]],marcus:[['House cleaning','noah',3,65]],dale:[['Yard maintenance','jamie',2,57]],omar:[['Community outing','jamie',4,60]],grace:[['Nursing visit','arthur',1,110]],bright:[['Physiotherapy session','noah',1,180],['Physiotherapy session','noah',1,180]]};
+function provOver(k){const v=PROV[k],p=P[k],invs=(PINV[k]||[]).map(([item,who,hrs,rate])=>({item,who,hrs,rate})).filter(i=>CUST[i.who].mods.some(modOn));
+ const dl=[['Business type',v.type],['ABN',v.abn],['Registration',v.reg],['Services',p.title||''],['Usual rate',p.rate?money(p.rate)+' an hour':'Varies by service'],['Languages',(p.langs||['English']).join(', ')],['Phone',v.phone],['Email',v.email],['Working with us since',v.since]];
+ return `<div class="pgrid"><div class="pcol"><div class="psec"><h2>Details</h2><dl class="dl">${dl.map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join('')}</dl></div>
+ <div class="psec"><h2>Customers</h2><ul class="clist">${v.clients.map(x=>`<li><button class="plink" data-a="sopen" data-v="c:${x}">${face(x,32)}<span class="grow"><b>${esc(P[x].name)}</b><span class="m">${esc(CUST[x]?.fund||'')}</span></span>${ico('chev')}</button></li>`).join('')}</ul></div></div>
+ <div class="pcol"><div class="psec"><h2>Checks needing attention</h2>${compRows(v.docs.filter(d=>d[2]!='ok').map(d=>[d[0],d[3],d[2],d[1]]))}</div>
+ ${invs.length&&(S.mods.plan||S.mods.platform)?`<div class="psec"><h2>Recent invoices</h2><ul class="clist">${invs.map(i=>`<li><span class="ic-w">${ico('wallet')}</span><div class="grow"><b>${esc(i.item)} for ${esc(P[i.who].first)}</b><span class="m">${i.hrs} hrs at ${money(i.rate)}/hr</span></div><span class="num" style="font-weight:700">${money(i.hrs*i.rate)}</span></li>`).join('')}</ul></div>`:''}
+ <div class="psec"><div class="row" style="justify-content:space-between;align-items:center"><h2>Recent correspondence</h2><button class="lnk" data-a="ctab" data-v="corr">See all</button></div>${corrList('p:'+k,3)}</div></div></div>`}
 function tixLog(t,x,k){t.log.push({t:Date.now(),by:'Kim Nguyen',x,k})}
+function addCorr(t,c){const e=c.to||(t.who?'c:'+t.who:'p:'+t.pid),w=c.to?c.to.split(':')[1]:t.who?(CUST[t.who]?.rep||t.who):t.pid;
+ S.corr.push({e,t:Date.now(),ch:c.ch,dir:c.dir,w,sub:c.sub,note:c.note,by:'Kim Nguyen',mod:tMod(t)})}
 function staffAct(a,v,el){switch(a){
  case'tq':S.tq=v;return;
- case'tixopen':if(isDesk()){S.tsel=v;S.sheet=null}else S.sheet={type:'tix',k:v};return;
+ case'snav':S.tab=v;if(v=='scust')S.cust=null;if(v=='sprov')S.prov=null;S.sheet=null;window.scrollTo(0,0);return;
+ case'tixopen':{const t=S.tix.find(z=>z.id==v);if(isDesk()){if(S.tab!='squeue'){S.tab='squeue';S.tq=t.st=='done'?'done':'all';S.tqt='all';window.scrollTo(0,0)}S.tsel=v;S.sheet=null}else S.sheet={type:'tix',k:v};return}
  case'tixtool':toast('In a live setup this opens the provider\'s '+v+'.');return false;
  case'tixown':{const t=S.tix.find(z=>z.id==v);if(t.owner=='kim'){t.owner=null;tixLog(t,'Unassigned myself.')}else{t.owner='kim';if(t.st=='open')t.st='prog';tixLog(t,'Assigned to me.')}return}
- case'tixact':{const[id,k]=v.split('|'),t=S.tix.find(z=>z.id==id),ac=TIX_ACTS[t.type].find(z=>z.k==k);if(!t.owner)t.owner='kim';tixLog(t,ac.log,k);t.st=ac.st;if(ac.st=='done')t.closed=Date.now();if(ac.fam)addNote('family',ac.fam[0],ac.fam[1],ac.fam[2],{tab:'home'});toast(ac.st=='done'?'Resolved':'Logged');return}
- case'tixnote':case'tixdone':{const t=S.tix.find(z=>z.id==v),n=($('#tixnote')||{}).value?.trim();if(!n){toast(a=='tixdone'?'Add a note saying how it was resolved':'Type a note first');return false}if(!t.owner)t.owner='kim';tixLog(t,n);if(a=='tixdone'){t.st='done';t.closed=Date.now();toast('Resolved')}else{if(t.st=='open')t.st='prog';toast('Note added')}return}
+ case'tixact':{const[id,k]=v.split('|'),t=S.tix.find(z=>z.id==id),ac=TIX_ACTS[t.type].find(z=>z.k==k);if(!t.owner)t.owner='kim';tixLog(t,ac.log,k);t.st=ac.st;if(ac.st=='done')t.closed=Date.now();
+  if(ac.corr)addCorr(t,ac.corr);
+  if(t.type=='checkin'&&(k=='ok'||k=='fu')&&CUST[t.who]?.contact)CUST[t.who].contact.last=0;
+  if(t.type=='checkin'&&k=='na'){t.due=Date.now()+864e5;t.log=t.log.filter(l=>l.k!='na');t.log.push({t:Date.now(),by:'app',x:'Moved to tomorrow after no answer.'})}
+  if(ac.fam)addNote('family',ac.fam[0],ac.fam[1],ac.fam[2],{tab:'home'});toast(ac.st=='done'?'Done':ac.corr?'Logged and saved to record':'Logged');return}
+ case'tixnote':case'tixdone':{const t=S.tix.find(z=>z.id==v),n=($('#tixnote')||{}).value?.trim();if(!n){toast(a=='tixdone'?'Add a note saying how it was closed':'Type a note first');return false}if(!t.owner)t.owner='kim';tixLog(t,n);if(a=='tixdone'){t.st='done';t.closed=Date.now();toast('Done')}else{if(t.st=='open')t.st='prog';toast('Note added')}return}
+ case'sopen':{const[k,id]=v.split(':');if(!id||id=='null'||id=='undefined')return false;if(k=='c'){if(!CUST[id])return false;S.tab='scust';S.cust=id;S.ctab='over'}else{if(!PROV[id])return false;S.tab='sprov';S.prov=id;S.ptab='over'}S.sheet=null;window.scrollTo(0,0);return}
+ case'sback':if(v=='scust')S.cust=null;else S.prov=null;window.scrollTo(0,0);return;
+ case'ctab':if(S.tab=='sprov')S.ptab=v;else S.ctab=v;return;
+ case'corradd':{const g=id=>($('#'+id)||{}).value?.trim()||'',sub=g('cf-sub'),note=g('cf-note');if(!sub&&!note){toast('Add a subject or summary first');return false}
+  const ch=g('cf-ch'),dir=g('cf-dir'),[k,id]=v.split(':');S.corr.push({e:v,t:Date.now(),ch,dir,w:g('cf-w'),sub:sub||'Note',note,by:'Kim Nguyen',mod:'core'});
+  if(k=='c'&&dir=='out'&&(ch=='call'||ch=='visit')&&CUST[id]?.contact)CUST[id].contact.last=0;toast('Saved to record');return}
+ case'docview':toast('In a live setup this opens the file from the provider\'s document store.');return false;
+ case'docup':toast('In a live setup this uploads the file to the record and asks for an expiry date.');return false;
  }return 'na'}
-setInterval(()=>{const n=document.getElementById('tixnote');if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet&&!(n&&(n.value||document.activeElement==n)))R()},60000);
-document.addEventListener('change',e=>{if(e.target.id=='tqtype'){S.tqt=e.target.value;R()}});
+
+setInterval(()=>{const n=document.getElementById('tixnote'),ae=document.activeElement;if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet&&!(n&&n.value)&&!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))R()},60000);
+document.addEventListener('change',e=>{if(e.target.id=='tqtype'){S.tqt=e.target.value;R()}else if(e.target.dataset&&e.target.dataset.mod){S.mods[e.target.dataset.mod]=e.target.checked;R()}});
 {let dw=null;addEventListener('resize',()=>{const d=isDesk();if(S.role=='staff'&&d!==dw){dw=d;if(d&&S.sheet?.type=='tix'){S.tsel=S.sheet.k;S.sheet=null}R()}})}
 
 R();
