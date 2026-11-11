@@ -129,7 +129,8 @@ input[type=checkbox],input[type=radio]{width:22px;height:22px;min-height:0;accen
 /* home */
 .phero{display:flex;gap:16px;align-items:center;background:var(--brand-soft);border-radius:24px;padding:20px;position:relative;overflow:hidden}
 .phero .sub{color:var(--mute);font-size:.875rem}
-.phero .deco{position:absolute;right:-14px;bottom:-18px;width:130px;height:130px;opacity:.5}
+.phero .deco{position:absolute;right:-18px;bottom:-22px;width:104px;height:104px;opacity:.35;z-index:0}
+.phero>:not(.deco){position:relative;z-index:1}.phero .grow{padding-right:56px}
 .phero .av{box-shadow:0 0 0 4px var(--card)}
 .qa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 @media (max-width:560px){.qa{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -713,6 +714,7 @@ const P={
    bio:'Licensed builders for grab rails, ramps and accessible bathrooms.',tags:['Tidy','Clear quotes']}
 };
 const PIDS=['priya','dale','lena','sam','omar','grace','bright','fresh','safehome'];
+Object.entries({priya:98,dale:95,lena:97,sam:93,omar:96,grace:99}).forEach(([k,o])=>{P[k].ontime=o}); /* sample on-time rates, shown instead of star ratings */
 const TIERN=['Support helper','Cert III worker','Clinician'];
 let fid=0;
 function face(k,s=44){
@@ -850,7 +852,7 @@ const S={
  short:new Set(['lena']),
  sheet:null,
  notes:[
-  N('family','crit','Invoice over the price limit','Marcus T. billed $65.00/hr for cleaning. The limit is $60.10/hr.',{tab:'budget',who:'jamie',to:'inv'}),
+  N('family','note','Invoice above the NDIS price limit','Marcus T. billed $65.00/hr for cleaning. The NDIS limit is $60.10/hr. Jamie is self-managed, so you can pay it or ask for a correction.',{tab:'budget',who:'jamie',to:'inv'}),
   N('family','crit','A December visit needs cover','Priya Nair is on leave 21 to 23 Dec. Margaret\'s cleaning on Tue 22 Dec has no worker.',{tab:'home',who:'margaret',to:'gaps'}),
   N('family','note','Predicted: Core runs out early','At this pace Jamie\'s Core budget runs out about 5 weeks before the plan ends.',{tab:'budget',who:'jamie',to:'pace'}),
   N('family','note','Predicted: unspent funds','Margaret is on track to have more left this quarter than she can carry over.',{tab:'budget',who:'margaret',to:'pace'}),
@@ -875,7 +877,7 @@ const S={
  fam:[{k:'tom',rel:'Brother',perm:'Can book visits'}],
  refer:{code:'SARAH-4821',joined:['tom']},
  set:{sms:true,inv:true,weekly:false,predict:true,twofa:true},
- ob:{step:0,rel:'Parent',name:'Robert',prog:'sah',from:'fresh',prev:'Bethanie',photo:null,suburb:'',lang:'English',needs:'',auth:'',authDoc:false,invites:[],done:{}},
+ ob:{step:0,rel:'Parent',name:'George',prog:'sah',from:'fresh',prev:'Bethanie',photo:null,suburb:'',lang:'English',needs:'',auth:'',authDoc:false,invites:[],done:{}},
  pob:{step:0,abn:'',abnOk:null,id:false,wsc:false,ins:false,tier:0,cat:'dom',rate:'',bio:'',langs:'English',days:[1,2,3,4,5],photo:null},
  pv:{client:'margaret',mode:'week',w:0,m:0,day:null,bill:{who:'margaret',cat:'dom',hrs:3,rate:58}},
  pp:{bio:P.priya.bio,rate:58,area:'Within 15 km of Duncraig',langs:'English, Hindi',ins:false},
@@ -910,7 +912,7 @@ function check(v){
  }
  r.push(v.km<=.5?{ok:1,t:'Visit was at the home address',d:`Check-in logged ${v.km} km from home.`}:{ok:0,t:`Visit logged ${v.km} km from the home address`,d:'Check-ins should be within 0.5 km of home. Ask the provider why before you pay.'});
  const bad=r.filter(x=>!x.ok);
- return{r,bad,st:!bad.length?'clear':(isN&&S.ndia&&bad.some(x=>x.cap))?'blocked':'review'};
+ return{r,bad,st:!bad.length?'clear':(isN&&S.pay&&S.pay.jamie=='pm'&&bad.some(x=>x.cap))?'blocked':'review'};
 }
 const invOpen=()=>S.invs.filter(v=>!S.invSt[v.id]&&check(v).st!='clear');
 
@@ -999,10 +1001,11 @@ function personHero(){
 }
 V.home=()=>{
  const p=P[S.who],h=new Date().getHours(),g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
- const up=S.jobs.filter(j=>j.who==S.who&&j.d>=iso(D0)&&j.st!='done').sort(byDate).slice(0,4);
- const gaps=gapJobs(),done=S.jobs.find(j=>j.who==S.who&&j.st=='done'&&!j.rated),nInv=invOpen().length;
+ const up=S.jobs.filter(j=>j.who==S.who&&j.d>=iso(D0)&&j.st!='done').sort(byDate).slice(0,3);
+ const gaps=gapJobs(),nInv=invOpen().length,preds=p.pending?[]:predictions(S.who);
  return `<section class="sec"><p class="m">${D0.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'})}</p><h1>${g}, Sarah</h1>${whoSeg()}</section>
  ${personHero()}
+ ${p.pending?pendingCard():''}
  <div class="qa">
   <button data-a="tab" data-v="book">${ib('calendar')}Book a visit</button>
   <button data-a="urgent">${ib('bolt','coral')}Urgent cover</button>
@@ -1011,11 +1014,10 @@ V.home=()=>{
  </div>
  ${homeToday()}
  ${gaps.length?`<section class="sec rule" id="gaps"><div class="alert bad">${ico('excl')}<div class="grow"><b>${gaps.length} visit${gaps.length>1?'s need':' needs'} cover</b>${gaps.map(j=>`<p>${fmt(j.d)}, ${j.t}: ${esc(P[j.prov].name)} is on leave (${esc(P[j.who].first)}).</p>`).join('')}<div class="row" style="margin-top:8px"><button class="btn sm coral" data-a="urgent" data-v="gap">Find cover</button></div></div></div></section>`:''}
- ${p.pending?'':`<section class="sec rule">${H2('spark','Predicted for '+esc(p.first),'green',qbtn('predict'))}${insightsHTML(S.who,4)}</section>`}
- ${p.pending?pendingCard():`<section class="sec rule">${H2('calendar','Coming up','',`<button class="btn sm ghost" data-a="tab" data-v="book">${ico('calendar')}Calendar</button>`)}
+ ${p.pending?'':`<section class="sec rule">${H2('calendar','Coming up','',`<button class="btn sm ghost" data-a="tab" data-v="book">${ico('calendar')}Calendar</button>`)}
  <div class="card">${up.length?up.map(j=>`<div class="li">${face(j.prov,44)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(P[j.prov].name)}: ${esc(j.items.join(', '))}${j.rep?`. Repeats ${esc(j.rep)}`:''}</p></div>${jobPill(j)}</div>`).join(''):`<p class="m">Nothing booked yet. Book a visit to get started.</p>`}</div></section>`}
  ${homeRate()}
- ${p.pending?'':budgetSnap()}`;
+ ${preds.length&&S.set.predict?`<section class="sec rule">${H2('spark','Worth planning for','green',qbtn('predict'))}${insightsHTML(S.who,1)}${preds.length>1?`<button class="btn sm ghost" style="align-self:flex-start" data-a="go" data-v="support|predicted">${preds.length-1} more in Support${ico('chev')}</button>`:''}</section>`:''}`;
 };
 function budgetSnap(){
  if(prog(S.who)=='ndis'){const pc=ndisPace(),c=NDIS.cats[0],u=Math.round(pc.cum/c.a*100);
@@ -1026,8 +1028,13 @@ function budgetSnap(){
  <div class="brow"><div class="top"><b>Oct to Dec 2026</b><span class="num m">${money(c.sp)} of ${money(c.pool)}</span></div><div class="hbar"><i style="width:${u}%"></i></div></div>
  <p class="m">Co-payments this quarter: <b class="num">${money(qCopay(c.q))}</b></p></div></section>`;
 }
-function pendingCard(){const p=P[S.who],ch=obChecklist(p.ob);
- return `<section class="sec rule">${H2('check',esc(p.first)+'\'s setup checklist','green')}<div class="card"><ul class="todo">${ch.map((t,i)=>`<li><button class="dot ${p.ob.done[i]?'done':''}" data-a="pdone" data-v="${i}" aria-label="Mark step ${i+1} ${p.ob.done[i]?'not done':'done'}">${p.ob.done[i]?ico('check'):i+1}</button><div class="grow">${t}</div></li>`).join('')}</ul><p class="m">Rules change. Check details with the NDIA or My Aged Care before you act.</p></div></section>`}
+function pendingCard(){const p=P[S.who],o=p.ob,ch=obChecklist(o),dn=ch.filter((_,i)=>o.done[i]).length,nx=ch.findIndex((_,i)=>!o.done[i]);
+ const title=o.from=='switch'?`Moving ${esc(p.first)} from ${esc(o.prev||'their provider')}`:o.from=='self'?`Bringing ${esc(p.first)} across`:`Getting ${esc(p.first)} started`;
+ const eta=o.prog=='none'?'':o.from=='self'?'About 1 week':o.from=='switch'?'About 4 to 6 weeks':'About 2 to 3 months';
+ return `<section class="sec" id="journey">${H2('check',title,'green')}<div class="card">
+ <div class="brow"><div class="top"><b>${dn==ch.length?'All steps done':`${dn} of ${ch.length} steps done`}</b></div><div class="hbar"><i style="width:${Math.round(dn/ch.length*100)}%"></i></div></div>${eta?`<p class="m">${ico('clock')} ${eta} from start to finish, based on typical waits.</p>`:''}
+ <ul class="todo">${ch.map((t,i)=>{const h=stepHelp(t),d=o.done[i];return `<li><button class="dot ${d?'done':''}" data-a="pdone" data-v="${i}" aria-label="Mark step ${i+1} ${d?'not done':'done'}">${d?ico('check'):i+1}</button><div class="grow stack" style="gap:8px"><span${d?' class="m"':''}>${t}${i==nx?' <span class="pill info">Next</span>':''}</span>${h&&!d?`<button class="btn sm ${i==nx?'green':'ghost'}" style="align-self:flex-start" data-a="letter" data-v="${h[0]}|${i}">${ico(h[2])}${h[1]}</button>`:''}</div></li>`}).join('')}</ul>
+ <p class="m">Rules change. Check details with the NDIA or My Aged Care before you act.</p></div></section>`}
 
 /* ---------- FAMILY: book ---------- */
 const selItems=()=>Object.keys(S.bk.items).filter(k=>S.bk.items[k]);
@@ -1099,8 +1106,8 @@ function findResults(){const f=S.f,q=f.q.trim().toLowerCase();
  if(!list.length)return `<div class="card"><p><b>No matches</b></p><p class="m">Widen the distance or clear a filter.</p><button class="btn sm" style="align-self:flex-start" data-a="fclear">Clear filters</button></div>`;
  const best=list.find(k=>P[k].team)||list[0];
  return `<p class="m">${list.length} result${list.length>1?'s':''}</p>`+list.map(k=>{const p=P[k],n=nextFree(k);return `<article class="card"><div class="pcard">${face(k,66)}<div class="grow stack" style="gap:4px;padding-right:36px">
-  <h3>${esc(p.name)}</h3><p class="m">${esc(p.title)}</p>${k==best&&list.length>1?`<span>${predPill} <span class="m">Best match for ${esc(P[S.who].first||'you')}</span></span>`:''}
-  <div class="meta"><span>${stars(p.rating,p.reviews)}</span><span>${ico('pin')}${p.km} km</span><span>${p.rate?money(p.rate)+'/hr':esc(p.unit)}</span><span>${ico('lang')}${esc(p.langs.join(', '))}</span></div>
+  <h3>${esc(p.name)}</h3><p class="m">${esc(p.title)}</p>${k==best&&list.length>1?`<span>${predPill} <span class="m">Best match for ${esc(P[S.who].first||'you')}: ${[p.team?'already on the team':'',p.km+' km away',p.ontime?p.ontime+'% on time':''].filter(Boolean).join(', ')}</span></span>`:''}
+  <div class="meta"><span>${stars(p.rating,p.reviews)}</span>${p.ontime?`<span>${ico('clock')}${p.ontime}% on time</span>`:''}<span>${ico('pin')}${p.km} km</span><span>${p.rate?money(p.rate)+'/hr':esc(p.unit)}</span><span>${ico('lang')}${esc(p.langs.join(', '))}</span></div>
   <div class="badges"><span class="pill ok">${ico('check')}ABN</span>${p.biz?'<span class="pill ok">Licensed</span>':'<span class="pill ok">Screening check</span>'}<span class="pill ok">Insured</span>${p.tier?`<span class="pill info">${TIERN[p.tier]}</span>`:''}</div>
   ${n?`<p class="m">Next free: ${fmt(n[0])}, ${n[1]}</p>`:''}
   <div class="row" style="margin-top:6px"><button class="btn sm p" data-a="prof-sheet" data-v="${k}">View profile</button><button class="btn sm" data-a="bookwith" data-v="${k}">Book</button></div></div>
@@ -1114,11 +1121,11 @@ V.budget=()=>{const p=P[S.who];
  return h+(p.prog=='ndis'?ndisBudget():sahBudget())+invoiceSec();
 };
 function invoiceSec(){const list=S.invs.filter(v=>v.who==S.who),isN=prog(S.who)=='ndis';
- return `<section class="sec" id="inv">${H2('shield','Invoices to check','green',isN?`<div class="row" role="group" aria-label="Funding type, demo only"><span class="m">Demo:</span><button class="chip ${!S.ndia?'on':''}" data-a="ndia" data-v="0">Self-managed</button><button class="chip ${S.ndia?'on':''}" data-a="ndia" data-v="1">NDIA-managed</button></div>`:'')}
- <p class="m">${isN?(S.ndia?'NDIA-managed claims above a price limit are blocked.':'Self-managed plans can pay above a price limit, so we flag it for you to decide.'):'We check each invoice against the price in your service agreement.'}</p>
+ return `<section class="sec" id="inv">${H2('shield','Invoices to check','green',isN?`<div class="row" role="group" aria-label="How the plan is managed"><button class="chip ${S.pay.jamie=='sm'?'on':''}" data-a="jamiepm" data-v="sm" aria-pressed="${S.pay.jamie=='sm'}">Self-managed</button><button class="chip ${S.pay.jamie=='pm'?'on':''}" data-a="jamiepm" data-v="pm" aria-pressed="${S.pay.jamie=='pm'}">Plan-managed</button></div>`:'')}
+ <p class="m">${isN?(S.pay.jamie=='pm'?'Plan-managed funds cannot pay above an NDIS price limit, so those invoices are blocked.':'Self-managed plans can agree to pay above an NDIS price limit, so we flag it and you decide.'):'We check each invoice against the price in your service agreement.'}</p>
  ${list.map(v=>{const c=check(v),st=S.invSt[v.id],pr=P[v.pid];
   return `<article class="card"><div class="li" style="padding:0">${face(v.pid,46)}<div class="grow"><b>${esc(pr.name)}</b><p class="m num">${esc(v.item)}, ${v.hrs} hrs at ${money(v.rate)}/hr = ${money(v.rate*v.hrs)}</p></div>${st?`<span class="pill ${st=='paid'?'ok':'info'}">${st=='paid'?'Paid':'Correction requested'}</span>`:c.st=='clear'?'<span class="pill ok">Ready to pay</span>':c.st=='blocked'?'<span class="pill bad">Blocked</span>':'<span class="pill warn">Check this</span>'}</div>
-  ${st?'':`${c.st!='clear'?`<div class="alert ${c.st=='blocked'?'bad':'warn'}">${ico('excl')}<div><b>${esc(c.bad.map(x=>x.t).join('. '))}</b>${c.st=='blocked'?'This claim cannot be paid from NDIA-managed funds.':'Review this before you pay.'}</div></div>`:''}
+  ${st?'':`${c.st!='clear'?`<div class="alert ${c.st=='blocked'?'bad':'warn'}">${ico('excl')}<div><b>${esc(c.bad.map(x=>x.t).join('. '))}</b>${c.st=='blocked'?'Plan-managed funds cannot pay above the price limit.':'Review this before you pay.'}</div></div>`:''}
   <div class="stack">${c.r.map(x=>`<div class="row" style="align-items:flex-start;flex-wrap:nowrap"><span class="ib ${x.ok?'ok':'warn'}" style="width:28px;height:28px;border-radius:50%">${ico(x.ok?'check':'excl')}</span><div class="grow"><b>${esc(x.t)}</b><p class="m">${esc(x.d)}</p></div></div>`).join('')}</div>
   <div class="row">${c.st=='clear'?`<button class="btn p sm" data-a="inv" data-v="${v.id}|paid">Approve and pay</button>`:`<button class="btn sm" data-a="inv" data-v="${v.id}|queried">Ask provider to correct</button>${c.st=='review'?`<button class="btn sm ghost" data-a="inv" data-v="${v.id}|paid">Pay anyway</button>`:''}`}</div>`}</article>`}).join('')}</section>`;
 }
@@ -1146,6 +1153,7 @@ V.support=()=>{const p=P[S.who],n=p.prog=='ndis';
  const other=[['meals','meal','Delivered meals'],['transport','car','Transport'],['respite','moon','Respite'],['allied','stetho','Allied health'],['nursing','cross','Nursing']];
  return `<section class="sec"><h1>Support</h1><p class="m">Advice for where ${esc(p.first)} is right now.</p>${whoSeg()}</section>
  <section class="sec">${H2('spark','Ask the AI assistant','green')}<div class="card" style="background:var(--green-soft);border-color:transparent"><div class="row" style="flex-wrap:nowrap">${aiFace(48)}<div class="grow"><b style="font-family:var(--f-display)">Questions about funding, equipment or scams?</b><p class="m">The assistant knows ${esc(p.first)}'s budget and bookings. It stays open while you move around the app.</p></div></div><button class="btn green" style="align-self:flex-start" data-a="chatopen">${ico('chat')}Open chat</button></div></section>
+ ${p.pending||!S.set.predict?'':`<section class="sec" id="predicted">${H2('spark','Predicted for '+esc(p.first),'green',qbtn('predict'))}${insightsHTML(S.who,6)}</section>`}
  <section class="sec" id="advice">${H2('heart','Advice for '+esc(p.first))}<div class="stack">${adv.map(([t,b,l])=>`<div class="card"><h3>${t}</h3><p>${b}</p>${l?`<p>${l}</p>`:''}</div>`).join('')}</div></section>
  ${p.pending?pendingCard():`<section class="sec" id="equip">${H2('tool','Equipment that could help','green')}<p class="m">${n?'Paid from the NDIS plan, depending on cost and risk.':'Paid from the separate AT-HM funding, not the quarterly budget.'}</p>
  <div class="tiles">${eq.map(([ic,t,f,d])=>`<div class="tile"><span class="art">${ico(ic)}</span><b style="font-family:var(--f-display)">${t}</b><span class="pill info" style="align-self:flex-start;white-space:normal">${f}</span><p class="m">${d}</p><button class="btn sm" style="margin-top:auto" data-a="askot" data-v="${esc(t)}">Ask about this</button></div>`).join('')}</div></section>
@@ -1160,7 +1168,7 @@ V.support=()=>{const p=P[S.who],n=p.prog=='ndis';
 /* ---------- FAMILY: profile ---------- */
 V.profile=()=>{const p=P[S.who],rq=S.creq.filter(r=>r.who==S.who);
  return `<section class="sec"><div class="sec-h"><h1>Profile</h1><button class="btn sm ghost" data-a="tab" data-v="settings">${ico('gear')}Settings</button></div>
- <div class="card"><div class="li" style="padding:0">${face('sarah',66)}<div class="grow"><h2>${esc(P.sarah.name)}</h2><p class="m">${esc(P.sarah.email)}</p><p class="m">Family plan: one flat monthly fee, no commission on care (sample).</p></div></div></div></section>
+ <div class="card"><div class="li" style="padding:0">${face('sarah',66)}<div class="grow"><h2>${esc(P.sarah.name)}</h2><p class="m">${esc(P.sarah.email)}</p><p class="m">${fee().famShort}</p></div></div></div></section>
  <section class="sec">${H2('user','People you care for')}${whoSeg()}
   <div class="card"><div class="li" style="padding:0">${face(S.who,58)}<div class="grow"><h3>${esc(p.name)}</h3><p class="m">${esc(p.pending?'Setup in progress':p.sub)}${p.age?`, ${p.age}`:''}</p><p class="m">${esc(p.suburb||'')}</p></div></div>
   <span class="pill ${p.auth?'ok':'warn'}" style="align-self:flex-start">${ico(p.auth?'check':'excl')}${esc(p.auth||'Authority document needed')}</span>
@@ -1179,9 +1187,9 @@ V.profile=()=>{const p=P[S.who],rq=S.creq.filter(r=>r.who==S.who);
   ${rq.length?`<h3>Requests</h3>${rq.map(r=>`<div class="li">${face(r.from,42)}<div class="grow"><b>${esc(P[r.from].name)}</b><p class="m">Asked for: ${esc(r.docs.join(', '))}</p></div>${r.st=='new'?`<div class="row"><button class="btn sm p" data-a="creq" data-v="${r.id}|ok">Share</button><button class="btn sm ghost" data-a="creq" data-v="${r.id}|no">Decline</button></div>`:`<span class="pill ${r.st=='ok'?'ok':'bad'}">${r.st=='ok'?'Shared':'Declined'}</span>`}</div>`).join('')}`:''}
   ${S.links.filter(l=>l.who==S.who).map(l=>`<div class="card flat"><p><b>${esc(l.url)}</b></p><p class="m">${l.n} document${l.n>1?'s':''}, ${l.dl?'download allowed':'view only'}, ${l.revoked?'revoked':'expires '+l.exp}</p><p class="m">${l.log.map(esc).join('<br>')}</p>${l.revoked?'':`<div class="row"><button class="btn sm ghost" data-a="lopen" data-v="${l.id}">Simulate a visit</button><button class="btn sm ghost" data-a="lrevoke" data-v="${l.id}">Revoke link</button></div>`}</div>`).join('')}</div></section>
  <section class="sec" id="refer">${H2('gift','Refer a friend','coral')}<div class="card">
-  <p>Know another family juggling care? Give them their first month free. You get a month free when they finish setting up (sample offer).</p>
+  <p>${fee().famRef}</p>
   <div class="row" style="flex-wrap:nowrap"><input id="rcode" type="text" readonly value="carerhub.example/r/${S.refer.code}" aria-label="Your referral link"><button class="btn" data-a="copy" data-v="rcode">${ico('copy')}Copy</button></div>
-  <div class="row">${S.refer.joined.map(k=>`<span class="chip who">${face(k,28)}${esc(P[k].name.split(' ')[0])} joined</span>`).join('')}<span class="m">${S.refer.joined.length} free month${S.refer.joined.length>1?'s':''} earned</span></div></div></section>`;
+  <div class="row">${S.refer.joined.map(k=>`<span class="chip who">${face(k,28)}${esc(P[k].name.split(' ')[0])} joined</span>`).join('')}<span class="m">${S.refer.joined.length} reward${S.refer.joined.length>1?'s':''} earned</span></div></div></section>`;
 };
 function shareForm(){const s=S.sh,docs=S.docs.filter(d=>!d.w||d.w==S.who);
  return `<div class="card flat"><b>Choose documents</b>${docs.map((d,i)=>`<label class="chk"><input type="checkbox" id="sd-${i}" data-a="sd" data-v="${esc(d.n)}" ${s.sel[d.n]?'checked':''}><span>${esc(d.n)}</span></label>`).join('')}
@@ -1208,7 +1216,7 @@ V.settings=()=>{const fam=S.role=='family',me=fam?P.sarah:P[S.persona],tog=(k,t,
   <label class="setrow" for="melang"><span class="grow"><b>Language</b><span class="m" style="display:block">More languages coming soon.</span></span><select id="melang" style="width:auto"><option>English (Australia)</option></select></label></div></section>
  ${paySettings()}
  <section class="sec">${H2('lock','Account settings')}<div class="card">
-  <div class="setrow"><span class="grow"><b>Plan and billing</b><span class="m" style="display:block">${fam?'Family plan, flat monthly fee (sample)':'Provider plan: no commission on your rate (sample)'}</span></span><button class="btn sm ghost" data-a="soon" data-v="Billing">Manage</button></div>
+  <div class="setrow"><span class="grow"><b>Plan and billing</b><span class="m" style="display:block">${fam?fee().famShort:fee().provShort}</span></span><button class="btn sm ghost" data-a="soon" data-v="Billing">Manage</button></div>
   ${tog('twofa','Two-step sign-in','A code by text when you sign in on a new device.',S.set.twofa)}
   <div class="setrow"><span class="grow"><b>Password and passkeys</b></span><button class="btn sm ghost" data-a="soon" data-v="Password settings">Change</button></div>
   <div class="setrow"><span class="grow"><b>Your data</b><span class="m" style="display:block">Get a copy of everything Carer Hub holds about you.</span></span><button class="btn sm ghost" data-a="soon" data-v="Data request">Request a copy</button></div>
@@ -1257,14 +1265,14 @@ function fOnb(){const o=S.ob,T=8,nm=esc(o.name||'them');
   <div class="card"><div class="grid2"><label class="fld" for="obin">Name<input id="obin" type="text"></label><label class="fld" for="obim">Mobile<input id="obim" type="tel"></label></div><button class="btn" style="align-self:flex-start" data-a="obinv">${ico('plus')}Add</button>
   ${o.invites.map(x=>`<div class="li">${ib('user','green')}<div class="grow"><b>${esc(x)}</b><p class="m">Invite ready to send</p></div></div>`).join('')}</div>${nav(true,o.invites.length?'Continue':'Skip for now')}`;
  if(o.step==7)b=`<div class="welcome"><div class="faces">${face('sarah',76)}${pic(76)}</div><h1>${nm} is set up</h1><p class="m">Their checklist is on your Home screen.${o.invites.length?` ${o.invites.length} invite${o.invites.length>1?'s':''} sent.`:''}</p></div>
-  <div class="card"><div class="row" style="flex-wrap:nowrap"><span class="ib coral">${ico('gift')}</span><div class="grow"><b>Know someone else caring for family?</b><p class="m">Share your link and you both get a free month.</p></div></div><div class="row" style="flex-wrap:nowrap"><input id="obref" type="text" readonly value="carerhub.example/r/${S.refer.code}" aria-label="Referral link"><button class="btn sm" data-a="copy" data-v="obref">${ico('copy')}Copy</button></div></div>
+  <div class="card"><div class="row" style="flex-wrap:nowrap"><span class="ib coral">${ico('gift')}</span><div class="grow"><b>Know someone else caring for family?</b><p class="m">${fee().famRefShort}</p></div></div><div class="row" style="flex-wrap:nowrap"><input id="obref" type="text" readonly value="carerhub.example/r/${S.refer.code}" aria-label="Referral link"><button class="btn sm" data-a="copy" data-v="obref">${ico('copy')}Copy</button></div></div>
   <button class="btn p full" data-a="obfinish">Go to my dashboard</button>`;
  return `<div class="apphead">${brand()}<span class="m">Step ${Math.min(o.step+1,T)} of ${T}</span></div><div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${T}" aria-valuenow="${o.step+1}"><i style="width:${(o.step+1)/T*100}%"></i></div>${b}`;
 }
 
 /* ---------- PROVIDER views ---------- */
 const PT=[['pjobs','Jobs','inbox'],['pcal','Calendar','calendar'],['pclients','Clients','users'],['pbill','Invoices','file'],['pme','Profile','user']];
-const FT=[['home','Home','home'],['find','Find','search'],['book','Calendar','calendar'],['budget','Budget','wallet'],['support','Support','heart'],['profile','Profile','user']];
+const FT=[['home','Home','home'],['find','Find','search'],['book','Calendar','calendar'],['budget','Budget','wallet'],['support','Support','heart']];
 function provForecast(){const mine=S.jobs.filter(j=>j.prov=='priya'&&j.st!='no'),mEnd=new Date(D0.getFullYear(),D0.getMonth()+1,0,12);
  const conf=mine.filter(j=>j.d>=iso(D0)&&j.d<=iso(mEnd)&&j.st=='ok').length,pend=mine.filter(j=>j.st=='new').length;
  return{conf,pend,earn:Math.round((conf+pend*.8)*S.pp.rate*2+4*S.pp.rate*2)}}
@@ -1301,16 +1309,19 @@ V.pclients=()=>{const k=S.pv.client,pr=P.priya,el=S.docs.filter(d=>d.min<=pr.tie
  <div class="row" style="flex-wrap:nowrap"><input id="pm" type="text" placeholder="Message Sarah" aria-label="Message"><button class="btn p" data-a="pmsg" aria-label="Send">${ico('send')}</button></div></div></section>
  <section class="sec">${H2('folder','Care Passport','green')}<div class="card"><p>As a ${TIERN[pr.tier].toLowerCase()}, you can request: <b>${esc(el.map(d=>d.n).join(', '))}</b>.</p><p class="m">Clinical and school documents are only shared with qualified clinicians.</p>
  ${req?`<span class="pill ${req.st=='ok'?'ok':req.st=='no'?'bad':'warn'}" style="align-self:flex-start">${req.st=='ok'?'Shared with you, view only':req.st=='no'?'Declined':'Request sent'}</span>`:`<button class="btn p" style="align-self:flex-start" data-a="preq">Request documents</button>`}</div></section>`};
-V.pbill=()=>{const b=S.pv.bill,cats=P.priya.cats,mine=S.invs.filter(v=>v.pid=='priya');
- return `<section class="sec"><h1>Invoices</h1><p class="m">Rates are checked before the family sees the invoice.</p>
- <div class="card"><h2>New invoice</h2>
+V.pbill=()=>{const b=S.pv.bill,cats=P.priya.cats,mine=S.invs.filter(v=>v.pid=='priya'),auto=S.visits.filter(v=>{const j=jOf(v.jid);return j&&j.prov=='priya'&&v.st!='live'}).map(v=>({v,j:jOf(v.jid)})).sort((a,b)=>a.j.d<b.j.d?1:-1);
+ const vst={review:['warn','To approve'],approved:['ok','Paid'],disputed:['bad','In mediation'],resolved:['ok','Resolved']};
+ return `<section class="sec"><h1>Invoices</h1><p class="m">Nothing to type. Checking out of a visit makes the invoice and sends it for you.</p>
+ <div class="card">${auto.length?auto.map(({v,j})=>`<div class="li">${face(j.who,38)}<div class="grow"><b>${esc(P[j.who].first)}: ${esc(j.items[0])}</b><p class="m num">${fmt(j.d)}. ${v.hrs} hrs = ${money(v.amt)}${feePct()?`, you get ${money(net(v.amt))}`:''}</p></div><span class="pill ${vst[v.st][0]}">${vst[v.st][1]}</span></div>`).join(''):'<p class="m">Your next invoice appears here when you check out.</p>'}</div></section>
+ <section class="sec">${H2('file','Other invoices','green')}
+ ${S.pv.manual?`<div class="card"><h3>Invoice for something else</h3>
   <label class="fld" for="bwho">Client<select id="bwho">${['margaret','jamie'].map(x=>`<option value="${x}" ${b.who==x?'selected':''}>${esc(P[x].name)}</option>`).join('')}</select></label>
   <label class="fld" for="bcat">Service<select id="bcat">${cats.map(c=>`<option value="${c}" ${b.cat==c?'selected':''}>${CAT(c).name}</option>`).join('')}</select></label>
   <div class="grid2"><label class="fld" for="bh">Hours<input id="bh" type="number" min="0.5" step="0.5" value="${b.hrs}"></label><label class="fld" for="br">Hourly rate ($)<input id="br" type="number" step="0.5" value="${b.rate}"></label></div>
-  <div id="bmsg">${bmsg()}</div><button class="btn p" style="align-self:flex-start" data-a="psend">${ico('send')}Send to family</button></div></section>
- <section class="sec">${H2('file','Sent','green')}<div class="card">${mine.map(v=>{const st=S.invSt[v.id],c=check(v);return `<div class="li">${face(v.who,38)}<div class="grow"><b>${esc(P[v.who].first)}: ${esc(v.item)}</b><p class="m num">${v.hrs} hrs at ${money(v.rate)}/hr = ${money(v.rate*v.hrs)}</p></div><span class="pill ${st=='paid'?'ok':st?'info':c.st=='clear'?'ok':'warn'}">${st=='paid'?'Paid':st?'Correction requested':c.st=='clear'?'Waiting for approval':'Flagged'}</span></div>`}).join('')}</div></section>`};
+  <div id="bmsg">${bmsg()}</div><div class="row"><button class="btn p" data-a="psend">${ico('send')}Send to family</button><button class="btn ghost" data-a="pmanual">Cancel</button></div></div>`:`<button class="btn" style="align-self:flex-start" data-a="pmanual">${ico('plus')}Invoice for something else</button><p class="m">For work that was not booked in the app, such as an extra job the family asked for on the day.</p>`}
+ <div class="card">${mine.map(v=>{const st=S.invSt[v.id],c=check(v);return `<div class="li">${face(v.who,38)}<div class="grow"><b>${esc(P[v.who].first)}: ${esc(v.item)}</b><p class="m num">${v.hrs} hrs at ${money(v.rate)}/hr = ${money(v.rate*v.hrs)}</p></div><span class="pill ${st=='paid'?'ok':st?'info':c.st=='clear'?'ok':'warn'}">${st=='paid'?'Paid':st?'Correction requested':c.st=='clear'?'To approve':'Flagged'}</span></div>`}).join('')}</div></section>`};
 function bmsg(){const b=S.pv.bill,c=CAPS[b.cat],r=+b.rate,tot=money(r*b.hrs);if(!r)return '<p class="m">Enter your rate.</p>';
- if(prog(b.who)=='ndis'&&c)return r<=c.cap?`<div class="alert ok">${ico('check')}<div>Within the ${money(c.cap)}/hr price limit. Total ${tot}.</div></div>`:`<div class="alert bad">${ico('excl')}<div><b>Over the price limit by ${money(r-c.cap)}/hr</b>The limit for ${c.name.toLowerCase()} is ${money(c.cap)}/hr. The family will see this flagged.</div></div>`;
+ if(prog(b.who)=='ndis'&&c)return r<=c.cap?`<div class="alert ok">${ico('check')}<div>Within the ${money(c.cap)}/hr price limit. Total ${tot}.</div></div>`:`<div class="alert warn">${ico('excl')}<div><b>${money(r-c.cap)}/hr above the NDIS price limit</b>The limit for ${c.name.toLowerCase()} is ${money(c.cap)}/hr. A self-managed family can choose to pay this. A plan-managed family cannot.</div></div>`;
  if(prog(b.who)=='sah'){const ag=58;return r<=ag?`<div class="alert ok">${ico('check')}<div>Matches your agreed price of ${money(ag)}/hr. Total ${tot}.</div></div>`:`<div class="alert warn">${ico('excl')}<div><b>${money(r-ag)}/hr above the agreed price</b>Your agreement with Margaret says ${money(ag)}/hr.</div></div>`}
  return `<p class="m">Total ${tot}.</p>`}
 V.pme=()=>{const q=S.pp,cap=CAPS.dom.cap;
@@ -1324,33 +1335,33 @@ V.pme=()=>{const q=S.pp,cap=CAPS.dom.cap;
  <section class="sec">${H2('user','Edit profile')}<div class="card">
   <label class="fld" for="pb">About you<textarea id="pb" rows="3">${esc(q.bio)}</textarea></label>
   <div class="grid2"><label class="fld" for="pa">Service area<input id="pa" type="text" value="${esc(q.area)}"></label><label class="fld" for="pl">Languages<input id="pl" type="text" value="${esc(q.langs)}"></label></div>
-  <label class="fld" for="pr">Cleaning rate ($/hr)<input id="pr" type="number" step="0.5" value="${q.rate}"></label><p class="m">NDIS price limit for cleaning: ${money(cap)}/hr.</p>
+  <label class="fld" for="pr">Cleaning rate ($/hr)<input id="pr" type="number" step="0.5" value="${q.rate}"></label><p class="m">NDIS price limit for cleaning: ${money(cap)}/hr. Plan-managed families cannot pay above it. Self-managed families can agree to more.</p>
   <p><b>Days you work</b></p><div class="row">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>`<button class="chip ${P.priya.days.includes(i)?'on':''}" data-a="pday" data-v="${i}" aria-pressed="${P.priya.days.includes(i)}">${d}</button>`).join('')}</div>
   <button class="btn p" style="align-self:flex-start" data-a="psave">Save profile</button></div></section>
  <section class="sec">${H2('hand','Grow your skills','warn')}<div class="card"><p>You are a support helper. Personal care tasks need a Certificate III or the personal care micro-credential.</p><p class="m">${predPill} Personal care requests near you are up this year. Qualified workers get about twice as many requests.</p><button class="btn" style="align-self:flex-start" data-a="micro">Start the micro-credential</button></div></section>
- <section class="sec">${H2('gift','Refer another worker','coral')}<div class="card"><p>Know a reliable worker? When they finish setting up, you both get your first month of fees waived (sample offer).</p><div class="row" style="flex-wrap:nowrap"><input id="pref" type="text" readonly value="carerhub.example/w/PRIYA-77" aria-label="Your worker referral link"><button class="btn" data-a="copy" data-v="pref">${ico('copy')}Copy</button></div></div></section>`};
+ <section class="sec">${H2('gift','Refer another worker','coral')}<div class="card"><p>${fee().provRef}</p><div class="row" style="flex-wrap:nowrap"><input id="pref" type="text" readonly value="carerhub.example/w/PRIYA-77" aria-label="Your worker referral link"><button class="btn" data-a="copy" data-v="pref">${ico('copy')}Copy</button></div></div></section>`};
 function pOnb(){const o=S.pob,T=7,c=CAPS[o.cat];
  const nav=(ok=true,label='Continue')=>`<div class="ob-nav">${o.step?`<button class="btn ghost" data-a="pob" data-v="-1">Back</button>`:'<span></span>'}<button class="btn p" data-a="pob" data-v="1" ${ok?'':'disabled'}>${label}</button></div>`;
  let b='';
- if(o.step==0)b=`<div class="welcome"><div class="faces">${face('sarah',76)}${face('margaret',76)}</div><h1>Sarah Chen invited you to Carer Hub</h1><p class="m">She'd like you to help her mum, Margaret. Set up your account in about 5 minutes. You keep 100% of your rate.</p></div>${nav(true,'Create my account')}`;
+ if(o.step==0)b=`<div class="welcome"><div class="faces">${face('sarah',76)}${face('margaret',76)}</div><h1>Sarah Chen invited you to Carer Hub</h1><p class="m">She'd like you to help her mum, Margaret. Set up your account in about 5 minutes. ${fee().onb}</p></div>${nav(true,'Create my account')}`;
  if(o.step==1)b=`<h1>Your business</h1><div class="card"><b>How do you work?</b><div class="row">${[['sole','Sole trader'],['biz','Business with staff']].map(([k,l])=>`<button class="chip ${(o.btype||'sole')==k?'on':''}" data-a="pbtype" data-v="${k}">${l}</button>`).join('')}</div>${o.btype=='biz'?`<p class="m">For example a meal service, cleaning company or clinic. You'll add staff and a menu or price list after setup. Each staff member who visits clients needs their own checks.</p><label class="fld" for="pbname">Business name<input id="pbname" type="text" placeholder="e.g. Fresh Plate Meals"></label>`:''}<label class="fld" for="pabn">ABN<input id="pabn" type="text" inputmode="numeric" value="${esc(o.abn)}" placeholder="11 digits"></label><p class="m">Try 51 824 753 556</p><button class="btn" style="align-self:flex-start" data-a="pabn">Check ABN</button>
   ${o.abnOk===true?`<div class="alert ok">${ico('check')}<div>ABN is active (simulated ABR check).</div></div>`:o.abnOk===false?`<div class="alert bad">${ico('excl')}<div>That isn't a valid ABN. Check the 11 digits.</div></div>`:''}</div>${nav(o.abnOk===true)}`;
- if(o.step==2)b=`<h1>Checks</h1><p class="m">Families only see verified workers.</p><div class="stack">
-  ${[['id','Photo ID','Driver licence or passport, matched to a selfie'],['wsc','NDIS Worker Screening Check','We confirm it with the NDIS Commission'],['ins','Public liability insurance','Upload your certificate']].map(([k,t,d])=>`<div class="card"><div class="row" style="flex-wrap:nowrap"><span class="ib ${o[k]?'ok':''}">${ico(o[k]?'check':'upload')}</span><div class="grow"><b>${t}</b><p class="m">${d}</p></div>${o[k]?'<span class="pill ok">Done</span>':`<label class="btn sm" for="pf-${k}">Upload<input id="pf-${k}" type="file" data-file="pob-${k}" hidden></label>`}</div></div>`).join('')}</div>${nav(o.id&&o.wsc&&o.ins)}`;
+ if(o.step==2)b=`<h1>Checks</h1><p class="m">Start with photo ID. The other two can wait until you have accepted a job, but both must be in before your first visit.</p><div class="stack">
+  ${[['id','Photo ID','Driver licence or passport, matched to a selfie. Needed now.'],['wsc','NDIS Worker Screening Check','Needed before your first visit. We confirm it with the NDIS Commission.'],['ins','Public liability insurance','Needed before your first visit. Upload your certificate.']].map(([k,t,d])=>`<div class="card"><div class="row" style="flex-wrap:nowrap"><span class="ib ${o[k]?'ok':''}">${ico(o[k]?'check':'upload')}</span><div class="grow"><b>${t}</b><p class="m">${d}</p></div>${o[k]?'<span class="pill ok">Done</span>':`<label class="btn sm" for="pf-${k}">Upload<input id="pf-${k}" type="file" data-file="pob-${k}" hidden></label>`}</div></div>`).join('')}</div>${nav(o.id,o.wsc&&o.ins?'Continue':'Continue, finish these later')}`;
  if(o.step==3)b=`<h1>Services and rate</h1><div class="card"><label class="fld" for="ptier">Your qualification<select id="ptier">${TIERN.map((t,i)=>`<option value="${i}" ${o.tier==i?'selected':''}>${t}${i==1?' (Certificate III)':i==2?' (nurse or allied health)':''}</option>`).join('')}</select></label>
   ${o.tier?`<label class="btn sm" style="align-self:flex-start" for="pqual">${ico('upload')}Upload certificate<input id="pqual" type="file" hidden></label>`:''}
   <label class="fld" for="pcat">Main service<select id="pcat">${CATS.filter(x=>x.tier<=o.tier&&x.id!='equip').map(x=>`<option value="${x.id}" ${o.cat==x.id?'selected':''}>${x.name}</option>`).join('')}</select></label>
-  <label class="fld" for="prate">Hourly rate ($)<input id="prate" type="number" step="0.5" value="${o.rate}"></label><div id="pratemsg">${prmsg()}</div></div>${nav(+o.rate>0&&(!c||+o.rate<=c.cap))}`;
+  <label class="fld" for="prate">Hourly rate ($)<input id="prate" type="number" step="0.5" value="${o.rate}"></label><div id="pratemsg">${prmsg()}</div></div>${nav(+o.rate>0)}`;
  if(o.step==4)b=`<h1>Your profile</h1><div class="card"><div class="row">${o.photo?`<img class="av" src="${o.photo}" style="width:76px;height:76px" alt="">`:face('priya',76)}<label class="btn sm" for="pphoto">${ico('upload')}Add a photo<input id="pphoto" type="file" accept="image/*" data-file="pob" hidden></label></div>
   <label class="fld" for="pbio">About you<textarea id="pbio" rows="3" placeholder="Your experience and what families can expect">${esc(o.bio)}</textarea></label>
   <label class="fld" for="plang">Languages<input id="plang" type="text" value="${esc(o.langs)}"></label></div>${nav()}`;
  if(o.step==5)b=`<h1>When can you work?</h1><div class="card"><div class="row">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>`<button class="chip ${o.days.includes(i)?'on':''}" data-a="pobday" data-v="${i}" aria-pressed="${o.days.includes(i)}">${d}</button>`).join('')}</div><p class="m">${predPill} Weekend workers near Duncraig get the most urgent requests.</p><p class="m">You can block leave days later in your calendar.</p></div>${nav(o.days.length>0)}`;
- if(o.step==6)b=`<div class="welcome">${o.photo?`<img class="av" src="${o.photo}" style="width:96px;height:96px" alt="">`:face('priya',96)}<span class="pill ok">${ico('shield')}Verified provider</span><h1>You're all set</h1><p class="m">ABN, ID, screening check and insurance are on file. Your rate is within the limit.</p></div>
+ if(o.step==6)b=`<div class="welcome">${o.photo?`<img class="av" src="${o.photo}" style="width:96px;height:96px" alt="">`:face('priya',96)}${o.wsc&&o.ins?`<span class="pill ok">${ico('shield')}Verified provider</span>`:`<span class="pill warn">${ico('clock')}Checks to finish</span>`}<h1>${o.wsc&&o.ins?'You\'re all set':'You can see your jobs now'}</h1><p class="m">${o.wsc&&o.ins?'ABN, ID, screening check and insurance are on file.':`ABN and ID are on file. Before your first visit, add your ${[o.wsc?'':'screening check',o.ins?'':'insurance certificate'].filter(Boolean).join(' and ')} in Profile. We will text you a reminder.`}</p></div>
   <button class="btn p full" data-a="pobfinish">Go to my jobs</button>`;
  return `<div class="apphead">${brand()}<span class="m">Step ${o.step+1} of ${T}</span></div><div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${T}" aria-valuenow="${o.step+1}"><i style="width:${(o.step+1)/T*100}%"></i></div>${b}`;
 }
 function prmsg(){const o=S.pob,c=CAPS[o.cat],r=+o.rate;if(!c)return '<p class="m">No price limit check for this service in the demo.</p>';if(!r)return `<p class="m">NDIS price limit: ${money(c.cap)}/hr.</p>`;
- return r<=c.cap?`<div class="alert ok">${ico('check')}<div>Within the ${money(c.cap)}/hr limit.</div></div>`:`<div class="alert bad">${ico('excl')}<div><b>Over the limit by ${money(r-c.cap)}/hr</b>The limit is ${money(c.cap)}/hr. Lower your rate to continue.</div></div>`}
+ return r<=c.cap?`<div class="alert ok">${ico('check')}<div>Within the ${money(c.cap)}/hr NDIS price limit, so every family can book you.</div></div>`:`<div class="alert warn">${ico('excl')}<div><b>${money(r-c.cap)}/hr above the NDIS price limit</b>Self-managed families can agree to this. Plan-managed and NDIA-managed funds cannot pay above ${money(c.cap)}/hr, so those families will not see you for this service.</div></div>`}
 
 /* ---------- sheets ---------- */
 function sheetHTML(){const s=S.sheet,x=`<button class="x" data-a="close" aria-label="Close">${ico('x')}</button>`;
@@ -1576,8 +1587,8 @@ Object.assign(P,{ana:{name:'Ana Ruiz',skin:'#D9A47A',hair:'bun',hc:'#3A2414',shi
 P.fresh.menu=[{n:'Main meal',p:12},{n:'Soft-texture meal',p:12.5},{n:'Dessert',p:5}];
 P.fresh.staff=[{k:'ana',role:'Head chef',checks:['Food safety supervisor'],ok:1},{k:'ben',role:'Delivery driver',checks:['NDIS Worker Screening Check','Driver licence'],ok:1},{k:'chloe',role:'Delivery driver',checks:['Driver licence'],ok:0,pend:'Screening check pending'}];
 P.fresh.email='orders@freshplate.example';
-S.persona='priya';S.model='gov';
-S.pay={card:'Visa ending 4821',autoCo:true,auto:true,win:48,jamie:'pm'};
+S.persona='priya';S.model='pct';
+S.pay={card:'Visa ending 4821',autoCo:true,auto:true,win:48,jamie:'sm'};
 S.ppay={sched:'weekly',gst:false};
 S.sync={google:false,outlook:false,apple:false,feed:false};S.busy=[];
 S.visits=[];S.disputes=[];S.ibx='msgs';S.thrOpen=null;S.govOpen=null;S.assign={};S.deliv={};S.rateTmp={n:0,tags:{}};
@@ -1603,7 +1614,7 @@ function genSched(){const t0=iso(D0);S.jobs=S.jobs.filter(j=>!(j.sid&&j.d>=t0&&j
   let prov=s.prov;const x={sid:s.id,rep:s.freq,qty:s.qty};if(onLeave(s.prov,k)&&s.autoCover){const c=coverFor(s,d);if(c){prov=c;x.cover=s.prov}}
   S.jobs.push(J(prov,s.who,k,s.t,s.items,s.pending?'new':'ok',x))}})}
 function nextOf(s){return S.jobs.filter(j=>j.sid==s.id&&j.d>=iso(D0)).sort(byDate)[0]}
-function free(p,date){const k=iso(date),pr=P[p];if(!pr.days||!pr.days.includes(date.getDay())||onLeave(p,k))return[];return SL.filter(t=>!S.jobs.some(j=>j.prov==p&&j.d==k&&j.t==t&&j.st!='no')&&!S.busy.some(b=>b.p==p&&b.d==k&&b.t==t))}
+function free(p,date){const k=iso(date),pr=P[p];if(!pr.days||!pr.days.includes(date.getDay())||onLeave(p,k))return[];return SL.filter(t=>!S.jobs.some(j=>j.prov==p&&j.d==k&&j.t==t&&j.st!='no')&&!S.busy.some(b=>b.p==p&&b.d==k&&b.t==t)&&!otherWork(p,k,t))}
 
 /* ---- seeds: a visit today, one to approve, history ---- */
 genSched();
@@ -1635,7 +1646,7 @@ function testBar(){const fam=S.role=='family',stf=S.role=='staff';
  <div class="tb-seg" role="group" aria-label="View as">${[['family','Family carer'],['provider','Provider'],['staff','Provider staff']].map(([v,l])=>`<button data-a="role" data-v="${v}" class="${S.role==v?'on':''}" aria-pressed="${S.role==v}">${l}</button>`).join('')}</div>
  ${fam||stf?'':`<div class="tb-seg" role="group" aria-label="Provider type">${[['priya','Sole trader'],['fresh','Business']].map(([v,l])=>`<button data-a="persona" data-v="${v}" class="${S.persona==v?'on':''}" aria-pressed="${S.persona==v}">${l}</button>`).join('')}</div>`}
  ${stf?'':`<div class="tb-seg" role="group" aria-label="Account stage">${[['new',fam?'New customer':'New provider'],['setup',fam?'Set-up customer':'Set-up provider']].map(([v,l])=>`<button data-a="stage" data-v="${v}" class="${S.stage==v?'on':''}" aria-pressed="${S.stage==v}">${l}</button>`).join('')}</div>`}
- <label style="display:inline-flex;gap:6px;align-items:center">Pricing model <select id="tbmodel" aria-label="Pricing model">${[['gov','Paid from funding'],['sub','Subscription'],['pct','% per service']].map(([v,l])=>`<option value="${v}" ${S.model==v?'selected':''}>${l}</option>`).join('')}</select></label>
+ <label style="display:inline-flex;gap:6px;align-items:center">Pricing model <select id="tbmodel" aria-label="Pricing model">${[['sub','Subscription'],['pct','% of each service'],['hyb','Hybrid: worker plan + %']].map(([v,l])=>`<option value="${v}" ${S.model==v?'selected':''}>${l}</option>`).join('')}</select></label>
  ${S.role=='staff'?`<button class="tb-btn fdbtn" data-a="fdesk" aria-pressed="${!!S.fd}">${S.fd?'Phone view':'Desktop view'}</button>`:''}<button class="tb-btn" data-a="reset">Reset demo</button></div>`}
 const BT=[['borders','Orders','inbox'],['bteam','Team','users'],['bmenu','Menu','meal'],['bbill','Invoices','file'],['bme','Profile','user']];
 function tabsNow(){return S.role=='family'?FT:S.role=='staff'?ST:S.persona=='fresh'?BT:PT}
@@ -1643,7 +1654,7 @@ function R(){
  applyTheme();document.documentElement.classList.toggle('big',S.big);document.documentElement.classList.toggle('ops',S.role=='staff');document.documentElement.classList.toggle('fd',S.role=='staff'&&!!S.fd);document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));
  $('#test').innerHTML=testBar();
  const onb=S.stage=='new'&&S.role!='staff',T=tabsNow(),lo=S.loggedOut;
- if(!onb&&!lo&&!['settings','inbox'].includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
+ if(!onb&&!lo&&!['settings','inbox'].concat(S.role=='family'?['profile']:[]).includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
  $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):(S.role=='staff'?opsShell():appHead()+V[S.tab]());
  const nav=$('#nav');nav.hidden=onb||lo;nav.innerHTML=onb||lo?'':`<div class="in">${T.map(([k,l,ic])=>`<button data-a="tab" data-v="${k}" class="${S.tab==k?'on':''}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span></button>`).join('')}</div>`;
  const un=S.notes.filter(n=>n.role==roleKey()&&!n.read&&(S.set.predict||!n.t.startsWith('Predicted'))),bell=$('#bell');bell.hidden=onb||lo||!un.length;
@@ -1657,13 +1668,13 @@ function visitCard(j,v){const p=P[j.prov];
  return `<div class="card"><div class="li" style="padding:0">${face(j.prov,48)}<div class="grow"><b>${esc(p.name)}, ${fmt(j.d)}</b><p class="m">Checked in ${v.inAt}, out ${v.outAt}. ${v.hrs} hrs on site, ${v.km} km from home.</p></div></div>
  <div>${j.items.map((it,i)=>`<div class="tick"><span class="ib ${v.tasks[i]?'ok':'warn'}">${ico(v.tasks[i]?'check':'excl')}</span><span>${esc(it)}${v.tasks[i]?'':' (not ticked off)'}</span></div>`).join('')}</div>
  ${v.notes?`<div class="alert info">${ico('chat')}<div><b>${esc(p.name.split(' ')[0])}'s notes</b>${esc(v.notes)}</div></div>`:''}
- <div class="alert ok">${ico('lock')}<div><b>${money(v.amt)} held by Carer Hub</b>${S.pay.auto?`Paid to ${esc(p.name.split(' ')[0])} automatically in ${v.auto||S.pay.win} hours unless you report a problem.`:'Paid when you approve.'}</div></div>
+ <div class="alert ok">${ico('lock')}<div><b>${money(v.amt)} set aside for this visit</b>${heldLine(j.who)} ${S.pay.auto?`Paid to ${esc(p.name.split(' ')[0])} automatically in ${v.auto||S.pay.win} hours unless you report a problem.`:'Paid when you approve.'}</div></div>
  <div class="row"><button class="btn p" data-a="vapprove" data-v="${j.id}">${ico('check')}Approve and pay</button><button class="btn danger" data-a="vreport" data-v="${j.id}">Report a problem</button></div></div>`}
 function disputeCard(d,side){const j=jOf(d.jid),p=P[d.prov];
  return `<div class="card"><div class="sec-h"><b style="font-family:var(--f-display)">Case ${d.id}: ${esc(p.name)}, ${fmt(j.d)}</b><span class="pill ${d.st=='resolved'?'ok':d.st=='escalated'?'bad':'warn'}">${{provider:'Waiting for '+esc(p.name.split(' ')[0]),mediator:'With a mediator',proposal:'Proposal ready',resolved:'Resolved',escalated:'Escalated'}[d.st]}</span></div>
  <p class="m">Reason: ${esc(d.reason)}. Asked for: ${esc(d.want)}.</p>
- <ul class="tl">${d.tl.map(e=>`<li class="done">${esc(e.x)}<small>${esc(e.t)}</small></li>`).join('')}${d.st!='resolved'&&d.st!='escalated'?`<li>${d.st=='provider'?esc(p.name.split(' ')[0])+' responds (within 48 hours)':d.st=='mediator'?'A Carer Hub mediator reviews the check-in record, notes and both sides':'Both sides accept, or the case is escalated'}</li>`:''}</ul>
- ${d.st=='proposal'&&side=='family'?`<div class="alert info">${ico('scale')}<div><b>Mediator's proposal</b>${esc(d.prop)}</div></div><div class="row"><button class="btn p" data-a="dacc" data-v="${d.id}">Accept</button><button class="btn ghost" data-a="ddec" data-v="${d.id}">Decline and escalate</button></div>`:''}
+ <ul class="tl">${d.tl.map(e=>`<li class="done">${esc(e.x)}<small>${esc(e.t)}</small></li>`).join('')}${d.st!='resolved'&&d.st!='escalated'?`<li>${d.st=='provider'?esc(p.name.split(' ')[0])+' responds (within 48 hours)':d.st=='mediator'?'A mediator reviews the check-in record, notes and both sides':'Both sides accept, or the case is escalated'}</li>`:''}</ul>
+ ${d.st=='proposal'&&side=='family'?`<div class="alert info">${ico('scale')}<div><b>Mediator's proposal</b>${esc(d.prop)}${d.why?`<p style="margin-top:6px">${esc(d.why)}</p>`:''}</div></div><div class="row"><button class="btn p" data-a="dacc" data-v="${d.id}">Accept</button><button class="btn ghost" data-a="ddec" data-v="${d.id}">Decline and escalate</button></div>`:''}
  ${d.st=='provider'&&side=='provider'?`<div class="alert warn">${ico('chat')}<div><b>Sarah's report</b>${esc(d.detail||'No details given.')}</div></div><label class="fld" for="dexp">Your side<textarea id="dexp" rows="2" placeholder="What happened on the visit?"></textarea></label><div class="row"><button class="btn p" data-a="dresp" data-v="${d.id}|accept">Accept: ${esc(d.want.toLowerCase())}</button><button class="btn" data-a="dresp" data-v="${d.id}|explain">Send my side to a mediator</button></div>`:''}
  <p class="m">${ico('lock')} ${money(d.amt)} stays held until the case is resolved.</p></div>`}
 function homeToday(){const w=S.who,out=[];
@@ -1678,8 +1689,9 @@ function homeToday(){const w=S.who,out=[];
  if(!out.length)return'';
  return `<section class="sec rule" id="review">${H2('clock','Today and to approve','green')}${out.join('')}</section>`}
 function homeRate(){const j=S.jobs.filter(j=>j.who==S.who&&j.st=='done'&&vOf(j.id)&&['approved','resolved'].includes(vOf(j.id).st)).sort(byDate).pop();if(!j)return'';const p=P[j.prov];
+ if(j.rated)return'';
  return `<section class="sec">${H2('star',j.rated?`You rated ${esc(p.name.split(' ')[0])}'s visit`:`How was ${esc(p.name.split(' ')[0])}'s visit?`,'warn')}<div class="card"><div class="li" style="padding:0">${face(j.prov,46)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(j.items.join(', '))}</p></div></div>
- ${j.rated?`<p>${'★'.repeat(j.rated)}${'☆'.repeat(5-j.rated)} <span class="m">Thanks. Ratings go to Carer Hub only and aren't shown on profiles.</span></p>`:`<div class="stars" role="group" aria-label="Rate this visit">${[1,2,3,4,5].map(n=>`<button data-a="ratego" data-v="${j.id}|${n}" aria-label="${n} star${n>1?'s':''}">${ico('star')}</button>`).join('')}</div><p class="m">Only Carer Hub sees ratings. They're used to keep quality high, not shown on profiles.</p>`}
+ ${j.rated?`<p>${'★'.repeat(j.rated)}${'☆'.repeat(5-j.rated)} <span class="m">Thanks. Ratings go to Carer Hub only and aren't shown on profiles.</span></p>`:`<div class="stars" role="group" aria-label="Rate this visit">${[1,2,3,4,5].map(n=>`<button data-a="ratego" data-v="${j.id}|${n}" aria-label="${n} star${n>1?'s':''}">${ico('star')}</button>`).join('')}</div><p class="m">Stars stay private so feedback is honest. Profiles show facts instead: visits done and on-time rate.</p>`}
  <button class="btn sm" style="align-self:flex-start" data-a="again" data-v="${j.id}">${ico('repeat')}Book again</button></div></section>`}
 
 /* ---- regular visits section on the calendar page ---- */
@@ -1689,7 +1701,7 @@ function regularSec(){const list=S.sched.filter(s=>s.who==S.who);
  <div class="card">${list.length?list.map(s=>{const n=nextOf(s),p=P[s.prov],lv=S.jobs.filter(j=>j.sid==s.id&&j.d>=iso(D0)&&(j.cover||(onLeave(j.prov,j.d)))).length;
   return `<div class="sched"><div class="li" style="padding:0">${face(s.prov,46)}<div class="grow"><b>${s.kind=='order'?`${s.qty} ${esc((s.meal||'meals').toLowerCase())}s`:esc(s.items.join(', '))}</b><p class="m">${esc(p.name)}. ${s.freq=='weekly'?'Every':s.freq=='fortnightly'?'Every second':'First'} ${DOW[s.dow]}${s.freq=='monthly'?' of the month':''}, ${s.t}</p>
    <p class="m">${!s.on?'Paused':s.pending?'Waiting for '+esc(p.name.split(' ')[0])+' to accept':n?`Next: ${fmt(n.d)}${n.cover?` (covered by ${esc(P[n.prov].name.split(' ')[0])})`:''}`:'No upcoming dates'}</p></div>${s.on?(s.pending?'<span class="pill warn">Requested</span>':'<span class="pill ok">On</span>'):'<span class="pill info">Paused</span>'}</div>
-   ${lv?`<div class="alert ${s.autoCover?'ok':'warn'}">${ico(s.autoCover?'check':'excl')}<div>${s.autoCover?`${lv} date${lv>1?'s':''} fall in ${esc(p.name.split(' ')[0])}'s leave. Cover is booked automatically.`:`${lv} date${lv>1?'s':''} fall in ${esc(p.name.split(' ')[0])}'s leave and need cover.`}</div></div>`:''}
+   ${lv?`<div class="alert ${s.autoCover?'ok':'warn'}">${ico(s.autoCover?'check':'excl')}<div>${s.autoCover?`${lv} date${lv>1?'s fall':' falls'} in ${esc(p.name.split(' ')[0])}'s leave. Cover is booked automatically.`:`${lv} date${lv>1?'s fall':' falls'} in ${esc(p.name.split(' ')[0])}'s leave and need${lv>1?'':'s'} cover.`}</div></div>`:''}
    ${s.kind=='order'?'':`<label class="chk" style="border:0;padding:0"><input type="checkbox" id="ac-${s.id}" data-a="sauto" data-v="${s.id}|autoCover" ${s.autoCover?'checked':''}><span>Find cover automatically when ${esc(p.name.split(' ')[0])} is on leave</span></label>`}
    <label class="chk" style="border:0;padding:0"><input type="checkbox" id="ap-${s.id}" data-a="sauto" data-v="${s.id}|autoPay" ${s.autoPay?'checked':''}><span>Pay automatically after each approved visit</span></label>
    <div class="row">${n&&s.on?`<button class="btn sm ghost" data-a="sskip" data-v="${s.id}|${n.d}">Skip ${fmtS(n.d)}</button>`:''}<button class="btn sm ghost" data-a="spause" data-v="${s.id}">${s.on?'Pause':'Resume'}</button><button class="btn sm ghost" data-a="sstop" data-v="${s.id}">Stop</button></div></div>`}).join(''):'<p class="m">No regular visits yet.</p>'}
@@ -1780,7 +1792,7 @@ function ledgerRows(w){return S.visits.filter(v=>{const j=jOf(v.jid);return j&&j
  return h+`<section class="sec" id="escrow">${H2('lock','Payments held and released','green')}<div class="card">
  <div class="stats"><div class="stat"><span class="lab">Held now</span><strong>${money(held)}</strong><span class="m">Waiting for approval or mediation</span></div><div class="stat"><span class="lab">Released</span><strong>${money(rows.filter(r=>['approved','resolved'].includes(r.v.st)).reduce((a,r)=>a+r.v.amt-(r.v.refund||0),0))}</strong><span class="m">Paid to workers</span></div></div>
  ${rows.map(({j,v})=>`<div class="li">${face(j.prov,40)}<div class="grow"><b>${esc(P[j.prov].name)}</b><p class="m">${fmt(j.d)}. ${esc(j.items[0])}</p></div><div style="text-align:right"><b class="num">${money(v.amt)}</b><br><span class="pill ${v.st=='review'?'warn':v.st=='disputed'?'bad':'ok'}">${{review:'Held, to approve',approved:'Released',disputed:'In mediation',resolved:v.refund?`Refunded ${money(v.refund)}`:'Released'}[v.st]}</span></div></div>`).join('')}
- <p class="m">Carer Hub holds each payment until the visit is approved. Problems pause the payment while a mediator helps both sides.</p></div></section>`}}
+ <p class="m">${heldLine(S.who)} Problems pause the payment while a mediator helps both sides.</p></div></section>`}}
 
 /* ---- inbox: messages, government, Carer Hub ---- */
 V.inbox=()=>{const tab=S.ibx,thr=Object.entries(S.thread).filter(([k])=>k.includes('|')),un=k=>S.thread[k].some(m=>!m.me&&!m.seen);
@@ -1793,25 +1805,23 @@ V.inbox=()=>{const tab=S.ibx,thr=Object.entries(S.thread).filter(([k])=>k.includ
   return h+`<section class="sec"><div class="card">${thr.length?thr.map(([k,th])=>{const[pk,w]=k.split('|'),last=th[th.length-1];return `<button class="thread" data-a="thr" data-v="${k}">${face(pk,46)}<span class="grow"><b style="font-family:var(--f-display)">${esc(P[pk].name)}</b> <span class="m">about ${esc(P[w].first)}</span><span class="m" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${last.me?'You: ':''}${esc(last.t)}</span></span>${un(k)?'<span class="pill bad">New</span>':''}</button>`}).join(''):'<p class="m">No conversations yet.</p>'}</div>
   <p class="m">Start a conversation from a worker's profile in Find.</p></section>`}
  if(tab=='gov'){const list=S.gov.slice().sort((a,b)=>a.dir=='draft'?-1:b.dir=='draft'?1:a.d<b.d?1:-1);
-  return h+`<section class="sec"><div class="alert info">${ico('shield')}<div><b>Carer Hub acts for you</b>As the registered provider and plan manager, we receive letters and lodge claims and requests for ${esc(S.people.filter(k=>!P[k].pending).map(k=>P[k].first).join(' and '))}. Nothing new is sent without your OK. We never ask for your myGov password.</div></div>
+  return h+`<section class="sec"><div class="alert info">${ico('shield')}<div><b>${ORGN} acts for you</b>As your registered provider, it receives letters and lodges claims and requests through Carer Hub for ${esc(S.people.filter(k=>!P[k].pending).map(k=>P[k].first).join(' and '))}. Nothing new is sent without your OK. We never ask for your myGov password.</div></div>
   ${list.map(g=>{const o=ORG[g.org]||['?',''],op=S.govOpen==g.id;return `<div class="card"><button class="thread" style="padding:0" data-a="gopen" data-v="${g.id}"><span class="from ${o[1]}">${o[0]}</span><span class="grow"><b style="font-family:var(--f-display)">${esc(g.t)}</b><span class="m" style="display:block">${esc(g.org)}, ${fmtS(g.d)}. ${g.dir=='in'?'Received':g.dir=='out'?'Sent by Carer Hub for you':'Draft'} about ${esc(P[g.who].first)}</span></span>${!g.read?'<span class="pill bad">New</span>':g.st?`<span class="pill ${g.dir=='draft'?'warn':'ok'}">${esc(g.st)}</span>`:''}</button>
    ${op?`<p>${esc(g.b)}</p>${g.doc?`<span class="pill info" style="align-self:flex-start">${ico('folder')}Saved to Care Passport: ${esc(g.doc)}</span>`:''}${g.dir=='draft'?`<div class="row"><button class="btn p" data-a="gsend" data-v="${g.id}">${ico('send')}Approve and lodge</button><button class="btn ghost" data-a="soon" data-v="Editing drafts">Edit first</button></div>`:''}`:''}</div>`}).join('')}</section>`}
  const cases=S.disputes;
  return h+`<section class="sec">${cases.length?cases.map(d=>disputeCard(d,'family')).join(''):''}
- <div class="card"><div class="li" style="padding:0"><span class="from">CH</span><div class="grow"><b>Your October statement is ready</b><p class="m">Carer Hub, 1 Nov. ${S.model=='sub'?'Subscription $19 charged to '+esc(S.pay.card)+' (sample).':S.model=='pct'?'Service fees are taken from worker payouts. Nothing extra for you.':'Our fees were paid from existing funding. Nothing extra for you.'}</p></div></div></div>
+ <div class="card"><div class="li" style="padding:0"><span class="from">CH</span><div class="grow"><b>Your October statement is ready</b><p class="m">Carer Hub, 1 Nov. ${fee().stmt()}</p></div></div></div>
  <div class="card"><div class="li" style="padding:0"><span class="from">CH</span><div class="grow"><b>Holiday season tip</b><p class="m">Carer Hub, 28 Oct. Turn on "Find cover automatically" for regular visits before December leave starts.</p></div></div><button class="btn sm" style="align-self:flex-start" data-a="go" data-v="book|regular">Check regular visits</button></div></section>`;
 };
 
 /* ---- payments settings (family and provider) ---- */
 function paySettings(){const fam=S.role=='family',tog=(k,t,d,v,obj='pay')=>`<label class="setrow" for="pay-${k}"><span class="grow"><b>${t}</b>${d?`<span class="m" style="display:block">${d}</span>`:''}</span><input type="checkbox" id="pay-${k}" data-a="payset" data-v="${obj}|${k}" ${v?'checked':''}></label>`;
- const model={gov:fam?'Carer Hub is paid from funding you already have: the NDIS plan management fee and the Support at Home care management share. No subscription.':'Free for workers. Carer Hub is paid from the family\'s existing funding.',
-  sub:fam?'Family plan: $19 a month (sample). Workers keep 100% of their rate.':'Free for workers. Families pay a monthly subscription.',
-  pct:fam?'No subscription. Carer Hub takes 5% of each payment from the worker\'s side (sample).':'5% of each payment (sample). Families pay nothing extra.'}[S.model];
+ const model=fam?fee().fam:fee().prov;
  if(fam)return `<section class="sec">${H2('card','Payments','green')}<div class="card">
   <div class="alert info">${ico('q')}<div><b>How Carer Hub is paid</b>${model}</div></div>
-  <div class="setrow"><span class="grow"><b>How money moves</b><span class="m" style="display:block">1. Visit booked. 2. Worker checks in and out. 3. You approve, or it approves itself after ${S.pay.win} hours. 4. Carer Hub releases the payment. Problems pause the payment until resolved.</span></span></div>
-  <div class="setrow"><span class="grow"><b>Margaret: Support at Home</b><span class="m" style="display:block">Carer Hub, as registered provider, holds the quarterly budget and claims from Services Australia.</span></span><span class="pill ok">Connected</span></div>
-  <div class="setrow"><span class="grow"><b>Jamie: NDIS</b><span class="m" style="display:block">${S.pay.jamie=='pm'?'Plan-managed by Carer Hub. We pay workers and claim from the NDIA. Price limits apply.':'Self-managed. Claims are paid into your plan account, then Carer Hub pays workers.'}</span></span><div class="seg" role="group" aria-label="Jamie's plan management">${[['pm','Plan-managed'],['sm','Self-managed']].map(([v,l])=>`<button class="${S.pay.jamie==v?'on':''}" data-a="jamiepm" data-v="${v}">${l}</button>`).join('')}</div></div>
+  <div class="setrow"><span class="grow"><b>How money moves</b><span class="m" style="display:block">1. Visit booked. 2. Worker checks in and out. 3. You approve, or it approves itself after ${S.pay.win} hours. 4. The payment is released to the worker. Problems pause the payment until resolved.</span></span></div>
+  <div class="setrow"><span class="grow"><b>Margaret: Support at Home</b><span class="m" style="display:block">${ORGN} is the registered provider. It holds the quarterly budget and claims from Services Australia. Carer Hub is the app it runs on.</span></span><span class="pill ok">Connected</span></div>
+  <div class="setrow"><span class="grow"><b>Jamie: NDIS</b><span class="m" style="display:block">${S.pay.jamie=='pm'?`Plan-managed by ${ORGN}. It pays workers and claims from the NDIA. NDIS price limits apply.`:'Self-managed. You claim from the NDIA into your plan account, then pay workers from it through Carer Hub. You can agree prices above the NDIS limit.'}</span></span><div class="seg" role="group" aria-label="Jamie's plan management">${[['pm','Plan-managed'],['sm','Self-managed']].map(([v,l])=>`<button class="${S.pay.jamie==v?'on':''}" data-a="jamiepm" data-v="${v}">${l}</button>`).join('')}</div></div>
   <div class="setrow"><span class="grow"><b>Co-payments</b><span class="m" style="display:block">Margaret's share of each service. ${esc(S.pay.card)}.</span></span><button class="btn sm ghost" data-a="soon" data-v="Changing card">Change card</button></div>
   ${tog('autoCo','Pay co-payments automatically','Charged once a month with a statement.',S.pay.autoCo)}
   ${tog('auto','Approve visits automatically','If you do nothing, visits approve themselves and the worker is paid.',S.pay.auto)}
@@ -1831,7 +1841,7 @@ function pToday(){const j=S.jobs.find(x=>x.prov=='priya'&&x.today);if(!j)return'
   <b>Tasks</b>${j.items.map((it,i)=>`<label class="chk"><input type="checkbox" id="vt-${i}" data-a="vtask" data-v="${j.id}|${i}" ${v.tasks[i]?'checked':''}><span>${esc(it)}</span></label>`).join('')}
   <label class="fld" for="vnotes">Notes for the family<textarea id="vnotes" rows="3" placeholder="How did it go? Anything they should know?">${esc(v.notes||'')}</textarea></label>
   <button class="btn green" data-a="vout" data-v="${j.id}">${ico('check')}Check out and finish</button>`;
- else b=`<div class="li" style="padding:0">${face(j.who,48)}<div class="grow"><b>Visit finished</b><p class="m">${v.inAt} to ${v.outAt}, ${v.hrs} hrs. Invoice ${money(v.amt)} created automatically.</p></div><span class="pill ${v.st=='review'?'warn':v.st=='disputed'?'bad':'ok'}">${{review:'Waiting for approval',approved:'Approved',disputed:'In mediation',resolved:'Resolved'}[v.st]}</span></div>${v.st=='approved'?`<p class="m">${money(v.amt)} will be in your account ${S.ppay.sched=='weekly'?'on Friday':'within 1 business day'}.</p>`:''}`;
+ else b=`<div class="li" style="padding:0">${face(j.who,48)}<div class="grow"><b>Visit finished</b><p class="m">${v.inAt} to ${v.outAt}, ${v.hrs} hrs. Invoice ${money(v.amt)} created automatically.${feeLine(v.amt)}</p></div><span class="pill ${v.st=='review'?'warn':v.st=='disputed'?'bad':'ok'}">${{review:'Waiting for approval',approved:'Approved',disputed:'In mediation',resolved:'Resolved'}[v.st]}</span></div>${v.st=='approved'?`<p class="m">${money(net(v.amt))} will be in your account ${S.ppay.sched=='weekly'?'on Friday':'within 1 business day'}.</p>`:''}`;
  return `<section class="sec">${H2('pin2','Today\'s visit','green')}<div class="card">${b}</div></section>`}
 {const ob=V.pjobs;V.pjobs=()=>{const h=ob(),i=h.indexOf('</section>')+10,ds=S.disputes.filter(d=>d.prov=='priya'&&d.st!='resolved');
  return h.slice(0,i)+pToday()+(ds.length?`<section class="sec">${H2('scale','Problems reported','coral')}${ds.map(d=>disputeCard(d,'provider')).join('')}</section>`:'')+h.slice(i)}}
@@ -1946,7 +1956,7 @@ function act2(a,v,el){switch(a){
  case'snew':S.bk.rep='weekly';goto('book','newbk');return false;
  /* payments */
  case'payset':{const[o,k]=v.split('|');S[o][k]=el.checked;return}
- case'jamiepm':S.pay.jamie=v;toast(v=='pm'?'Plan-managed by Carer Hub':'Self-managed');return;
+ case'jamiepm':S.pay.jamie=v;P.jamie.sub=v=='pm'?'NDIS, plan-managed':'NDIS, self-managed';toast(v=='pm'?'Plan-managed by '+ORGN:'Self-managed');R();return;
  /* calendar sync */
  case'sync':{const L={google:'Google Calendar',outlook:'Outlook or Microsoft 365',apple:'Apple iCloud Calendar'}[v];S.sync[v]=!S.sync[v];
   if(S.sync[v]){const add=v=='google'?[[2,'2:00 pm'],[3,'8:00 am'],[8,'12:00 pm']]:v=='outlook'?[[4,'10:00 am'],[9,'2:00 pm']]:[[5,'8:00 am']];add.forEach(([o,t])=>{const d=addD(o);if(P.priya.days.includes(d.getDay()))S.busy.push({p:'priya',d:iso(d),t,src:L})});toast(`${L} connected`)}
@@ -1970,11 +1980,92 @@ document.addEventListener('change',e=>{const t=e.target;
  else if(t.id=='paywin'){S.pay.win=+t.value}
  else if(t.id=='paysched'){S.ppay.sched=t.value}});
 document.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.id=='im'){e.preventDefault();act('imsg',S.thrOpen)}});
-function mediate(d){if(d.st!='mediator')return;d.st='proposal';d.prop=`Refund ${money(d.amt*.5)} (half) to ${P[d.who].first}'s budget, and ${P[d.prov].name.split(' ')[0]} comes back to finish the missed tasks at no charge.`;d.tl.push({t:'Just now',x:'A Carer Hub mediator reviewed the check-in record, notes and messages.'});addNote('family','crit','Mediator\'s proposal ready',`Case ${d.id}: review the proposal.`,{tab:'home',who:d.who,to:'review'});R()}
+function mediate(d){if(d.st!='mediator')return;d.st='proposal';d.prop=`Refund ${money(d.amt*.5)} (half) to ${P[d.who].first}'s budget, and ${P[d.prov].name.split(' ')[0]} comes back to finish the missed tasks at no charge.`;d.why=`Why half: the check-in record confirms ${P[d.prov].name.split(' ')[0]} was there for the booked time, but not every task was ticked off. Reviewed by a person at ${ORGN}, not by software.`;d.tl.push({t:'Just now',x:'A mediator reviewed the check-in record, notes and messages.'});addNote('family','crit','Mediator\'s proposal ready',`Case ${d.id}: review the proposal.`,{tab:'home',who:d.who,to:'review'});R()}
 function resolve(d,refund,msg){d.st='resolved';d.tl.push({t:'Just now',x:msg+(refund?` ${money(refund)} refunded to the budget, the rest released.`:' Payment released.')});const v=vOf(d.jid);v.st='resolved';v.refund=refund;toast('Case resolved')}
 document.addEventListener('input',e=>{if(e.target.id=='vnotes'){const j=S.jobs.find(x=>x.prov=='priya'&&x.today),v=j&&vOf(j.id);if(v)v.notes=e.target.value}});
 
 /* ---------- events ---------- */
+
+/* ========== v10: fee models, who holds the money, transition journey, staged checks ========== */
+const ORGN='Banksia Home Care'; /* the registered provider running Carer Hub in this demo */
+/* One place for every fee statement. The test bar switches between the three models. Figures are samples. */
+const FEES={
+ sub:{pct:0,
+  fam:'Family plan: $19 a month (sample). No fee on services, and workers keep 100% of their rate.',
+  prov:'Free for workers. Families pay a monthly subscription, so you keep 100% of your rate.',
+  famShort:'Family plan: $19 a month, no fee on services (sample)',
+  provShort:'Free for workers: you keep 100% of your rate (sample)',
+  onb:'You keep 100% of your rate.',
+  stmt:()=>'Subscription $19 charged to '+esc(S.pay.card)+' (sample).',
+  famRef:'Know another family juggling care? Give them their first month free. You get a month free when they finish setting up (sample offer).',
+  famRefShort:'Share your link and you both get a free month.',
+  provRef:'Know a reliable worker? Send them your link. Carer Hub is free for workers.'},
+ pct:{pct:.08,
+  fam:'No subscription. Each service price includes an 8% Carer Hub fee (sample), the way traditional providers charge. It is shown on every invoice.',
+  prov:'No subscription. Carer Hub keeps 8% of each service you deliver (sample). Every invoice shows the fee and what you are paid.',
+  famShort:'No subscription: 8% of each service, shown on every invoice (sample)',
+  provShort:'No subscription: 8% of each service you deliver (sample)',
+  onb:'No sign-up fee. Carer Hub keeps 8% of each service you deliver (sample).',
+  stmt:()=>'An 8% service fee was included in each service price (sample). Nothing extra to pay.',
+  famRef:'Know another family juggling care? Share your link. Their first month of services is fee-free, and so is your next one (sample offer).',
+  famRefShort:'Share your link and you both get a fee-free month.',
+  provRef:'Know a reliable worker? When they finish setting up, you both get a month with no service fee (sample offer).'},
+ hyb:{pct:.04,
+  fam:'Free for families. Workers pay a small monthly plan to be listed, and each service price includes a 4% Carer Hub fee (sample).',
+  prov:'Worker plan: $15 a month plus 4% of each service you deliver (sample). Your first 3 months are fee-free.',
+  famShort:'Free for families: workers pay a plan, plus 4% of each service (sample)',
+  provShort:'Worker plan: $15 a month plus 4% of each service, first 3 months free (sample)',
+  onb:'Your first 3 months are free. After that it is $15 a month plus 4% of each service (sample).',
+  stmt:()=>'A 4% service fee was included in each service price (sample). Nothing extra to pay.',
+  famRef:'Know another family juggling care? Share your link. Their first month of services is fee-free, and so is your next one (sample offer).',
+  famRefShort:'Share your link and you both get a fee-free month.',
+  provRef:'Know a reliable worker? When they finish setting up, you both get an extra fee-free month (sample offer).'}
+};
+const fee=()=>FEES[S.model]||FEES.pct;
+const feePct=()=>fee().pct;
+const net=a=>Math.round(a*(1-feePct())*100)/100;
+const feeLine=a=>feePct()?` Carer Hub fee ${pct(feePct())}: ${money(a-net(a))}. You are paid ${money(net(a))}.`:' You keep the full amount.';
+/* Say plainly who holds the money for each person. */
+function heldLine(w){const p=P[w]||{},f=esc(p.first||'their');
+ if(p.prog=='sah')return `Held in ${f}'s Support at Home budget by ${ORGN}, the registered provider, until the visit is approved.`;
+ if(S.pay.jamie=='pm')return `Held by ${ORGN}, ${f}'s plan manager, until the visit is approved.`;
+ return `It stays in ${f}'s plan account until the visit is approved. Carer Hub never holds self-managed funds.`}
+/* Sample diaries for workers outside the family's team, so availability differs from worker to worker. */
+function otherWork(p,k,t){const pr=P[p];if(pr.team||pr.biz||p=='priya')return false;let h=0;for(const c of p+k+t)h=(h*31+c.charCodeAt(0))%997;return h%5<2}
+
+/* A pending person, so the move to self-managed is visible in the demo without running sign-up first. */
+P.robert={...newFace,name:'Robert Chen',first:'Robert',rel:'Dad',prog:'sah',pending:1,sub:'',suburb:'Duncraig WA',auth:'',
+ ob:{...S.ob,name:'Robert',prog:'sah',from:'switch',prev:'Bethanie',done:{0:true}}};
+S.people.push('robert');
+
+/* Help for a checklist step: a drafted letter or a call script. */
+function stepHelp(t){
+ if(/notice|final statement|final invoices/.test(t))return['notice','Draft the letter','file'];
+ if(/change the plan to self-managed/.test(t))return['selfmanage','Draft the request','file'];
+ if(/Call My Aged Care/.test(t))return['macall','What to say on the call','chat'];
+ if(/access request/.test(t))return['access','What to say on the call','chat'];
+ if(/Choose a (new )?registered/.test(t))return['choose','Questions to ask a provider','q'];
+ return null}
+function letterText(kind,p){const o=p.ob,n=p.name,f=p.first,pv=o.prev||'[current provider]',td=D0.toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+ return {
+ notice:`${td}\n\nTo: ${pv}\nRe: ${n}, notice to end services\n\nI am writing on behalf of ${n} as [your authority, for example enduring power of attorney].\n\nPlease take this as notice that ${f} will move to another provider. We would like services to end on [date], in line with the notice period in the service agreement.\n\nPlease send:\n1. A final statement showing all services and fees up to the end date.\n2. The amount of unspent funds and when they will transfer to the new provider.\n3. A copy of the current care plan and any assessments you hold.\n\nPlease confirm the end date in writing.\n\nKind regards,\n${P.sarah.name}\n${P.sarah.mobile}`,
+ selfmanage:`${td}\n\nTo: National Disability Insurance Agency\nRe: ${n}, request to self-manage plan funding\n\nI am ${f}'s [plan nominee or child representative]. We would like to change how ${f}'s plan is managed to self-managed for [all supports, or name the budgets].\n\nWe can keep records of every payment, hold a separate bank account for plan funds, and have service agreements in place with each worker.\n\nPlease let us know the next step, or raise this at ${f}'s next check-in.\n\nKind regards,\n${P.sarah.name}\n${P.sarah.mobile}`,
+ macall:`Call My Aged Care on 1800 200 422 (weekdays 8 am to 8 pm, Saturdays 10 am to 2 pm).\n\nHave ready:\n- ${f}'s Medicare card\n- Your authority to speak for ${f}, or have ${f} with you to give consent on the call\n\nSay:\n"I am calling for my ${String(p.rel||'family member').toLowerCase()}, ${n}. ${f} needs help at home and I would like to request an aged care assessment."\n\nBe ready to describe:\n- What ${f} can no longer do safely alone\n- Any falls, hospital stays or changes in the last 6 months\n- Who helps now, and how often\n\nBefore you hang up, ask for the referral code and how long the assessment wait is in your area.`,
+ access:`Call the NDIA on 1800 800 110.\n\nSay:\n"I would like to make an access request for ${n}."\n\nHave ready:\n- Proof of age and residency\n- Reports from doctors or therapists that describe the disability and how it affects daily life\n- Your authority to act for ${f}\n\nAsk for the access request to be sent by email, and write down the reference number.`,
+ choose:`Questions to ask a registered provider before you choose one:\n\n1. Can ${f} keep the workers we already use, or choose our own?\n2. What is your care management fee, and what does it cover?\n3. What do you charge for each service, and are there any other fees?\n4. How quickly are workers paid after a visit?\n5. How do we see the budget and every transaction?\n6. What notice do you need if we want to leave?`
+ }[kind]||''}
+const LTITLE={notice:'Letter to end services',selfmanage:'Request to self-manage',macall:'Call script: My Aged Care',access:'Call script: NDIA',choose:'Questions for providers'};
+{const _sh=sheetHTML;sheetHTML=function(){const s=S.sheet;if(s.type!='letter')return _sh();const p=P[S.who],x=`<button class="x" data-a="close" aria-label="Close">${ico('x')}</button>`;
+ return `<div class="sheet-h"><h2>${LTITLE[s.kind]}</h2>${x}</div><p class="m">${ico('spark')} Drafted from what you told us about ${esc(p.first)}. Fill in the square brackets and check the details before you use it.</p>
+ <label class="fld" for="ltxt">Draft<textarea id="ltxt" rows="14">${esc(letterText(s.kind,p))}</textarea></label>
+ <div class="row"><button class="btn p" data-a="lcopy">${ico('copy')}Copy</button><button class="btn" data-a="ldone" data-v="${s.i}">${ico('check')}Mark step done</button></div>`}}
+{const _act=act;act=function(a,v,el){switch(a){
+ case'letter':{const[k,i]=v.split('|');S.sheet={type:'letter',kind:k,i:+i};R();return}
+ case'lcopy':{const t=$('#ltxt');try{navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>{t.select();toast('Long-press to copy')})}catch(e){t.select();toast('Long-press to copy')}return}
+ case'ldone':{const p=P[S.who];if(p&&p.ob)p.ob.done[v]=true;S.sheet=null;toast('Step marked done');R();return}
+ case'pmanual':S.pv.manual=!S.pv.manual;R();return;
+ }return _act(a,v,el)}}
+
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.tagName=='INPUT')return;if(t.tagName=='A')e.preventDefault();act(t.dataset.a,t.dataset.v,t)});
 $('#bell').dataset.a='bell';$('#chatfab').dataset.a='chatopen';
 document.addEventListener('change',e=>{const t=e.target;
