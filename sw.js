@@ -1,6 +1,6 @@
 /* Carer Hub service worker: works offline after the first visit.
    Bump VERSION whenever you publish a new index.html so phones pick it up. */
-const VERSION = 'carer-hub-v2';
+const VERSION = 'carer-hub-v3';
 const CORE = [
   './',
   './index.html',
