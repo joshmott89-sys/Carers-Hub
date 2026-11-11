@@ -316,6 +316,283 @@ nav button.on{color:var(--brand)}nav button.on .ic{background:var(--brand-soft)}
 .tb select option{color:#1A1A1A}
 .stars button{font-size:28px;line-height:1}
 #bell.amb{background:var(--amber);color:var(--on-amber)}
+
+/* ---------- staff console (provider ops) ---------- */
+.tix{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);color:var(--ink);font:inherit;cursor:pointer}
+.tix.overdue{border-color:var(--bad)}
+.tix .sevdot{width:10px;height:10px;border-radius:50%;flex:none;margin-top:7px;background:var(--mute)}
+.tix .sevdot.crit{background:var(--bad)}.tix .sevdot.warn{background:var(--amber)}
+.tix b{font-family:var(--f-display);display:block}
+.tix .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.tix-id{font-size:.75rem;color:var(--mute);font-weight:700;letter-spacing:.02em}
+.qbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.tlog{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.tlog div{position:relative;padding:0 0 12px 16px}
+.tlog div::before{content:'';position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--card);border:2px solid var(--line)}
+.tlog div.sys::before{border-color:var(--brand)}
+.tlog .m{display:block;font-size:.8125rem}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.rule{display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid var(--line)}
+.rule:first-child{border-top:0;padding-top:0}
+
+/* ---------- ops console (provider staff): restrained, desktop-first ---------- */
+:root.ops{--bg:#F4F3F2;--card:#FFFFFF;--panel:#EBE9E8;--ink:#1E1A1C;--mute:#595356;--line:#E1DDDC;--line2:#CFCACA;--brand:#AE3D5B;--brand-soft:#F8E5EA;--on-brand:#FFFFFF;--sel:#FAEEF1;--hov:#F7F6F5;--shadow:0 1px 2px rgba(30,26,28,.06);--f-display:var(--f-body)}
+@media (prefers-color-scheme:dark){:root.ops:not([data-theme="light"]){--bg:#121011;--card:#1B191A;--panel:#161415;--ink:#EFEBEC;--mute:#ACA5A8;--line:#2D292A;--line2:#3D3739;--brand:#F09AB2;--brand-soft:#3A2129;--on-brand:#3A0E1D;--sel:#2B1D23;--hov:#211E1F;--shadow:none}}
+:root.ops[data-theme="dark"]{--bg:#121011;--card:#1B191A;--panel:#161415;--ink:#EFEBEC;--mute:#ACA5A8;--line:#2D292A;--line2:#3D3739;--brand:#F09AB2;--brand-soft:#3A2129;--on-brand:#3A0E1D;--sel:#2B1D23;--hov:#211E1F;--shadow:none}
+.ops body{font-size:.9375rem}
+.ops h1{font-size:1.375rem;font-weight:700;letter-spacing:-.01em}.ops h2{font-size:1.125rem;font-weight:700}.ops h3{font-size:.8125rem;font-weight:700;color:var(--mute)}
+.ops #chatfab,.ops #bell{display:none!important}
+.ops .btn{border-radius:8px;font-weight:700;border-width:1px}
+.ops .btn.sm{min-height:34px;padding:6px 12px}
+.ops .pill{border-radius:6px;padding:1px 8px}
+.ops ::selection{background:var(--brand-soft);color:var(--ink)}
+.ohead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ohead .who{display:flex;align-items:center;gap:10px;text-align:right}
+.ohead .who b{display:block;font-size:.875rem;line-height:1.2}.ohead .who .m{font-size:.75rem}
+.tenant{display:none;align-items:center;gap:8px;padding-left:14px;margin-left:4px;border-left:1px solid var(--line2);font-weight:700;color:var(--ink);font-size:.9375rem}
+.oside{display:none;flex-direction:column;gap:2px;padding:16px 12px;background:var(--panel);border-right:1px solid var(--line)}
+.onav{display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:8px 12px;border:0;border-radius:8px;background:transparent;color:var(--mute);font:600 .9375rem var(--f-body);cursor:pointer;text-align:left}
+.onav .ic{width:18px;height:18px}.onav:hover{background:var(--hov);color:var(--ink)}
+.onav.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 0 0 1px var(--line),var(--shadow)}
+.onav .cnt{margin-left:auto;font-size:.75rem;font-weight:700;font-variant-numeric:tabular-nums;padding:0 7px;border-radius:6px;background:var(--bad);color:var(--on-bad);line-height:1.6}
+.oside .foot{margin-top:auto;padding:12px;font-size:.75rem;color:var(--mute);line-height:1.45}
+.omain{display:flex;flex-direction:column;gap:20px;min-width:0}
+.qtop{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.kpis{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;background:var(--card);box-shadow:var(--shadow)}
+.kpi{flex:1 1 120px;padding:12px 16px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--line)}
+.kpi:first-child{border-left:0}
+@media (max-width:1023px){.kpi.kx{display:none}.kpi{flex:1 1 0;padding:10px 12px}.kpi strong{font-size:1.25rem}}
+.kpi span{font-size:.75rem;color:var(--mute);font-weight:600}
+.kpi strong{font-size:1.375rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi.hot strong{color:var(--bad)}
+.qwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+.qbar2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+.otabs{display:inline-flex;gap:2px;padding:3px;border-radius:9px;background:var(--panel);border:1px solid var(--line)}
+.otabs button{border:0;background:transparent;color:var(--mute);font:600 .875rem var(--f-body);padding:6px 12px;border-radius:7px;cursor:pointer;min-height:32px;display:inline-flex;gap:6px;align-items:center}
+.otabs button:hover{color:var(--ink)}
+.otabs button.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 0 0 1px var(--line)}
+.otabs .n{font-variant-numeric:tabular-nums;color:var(--mute);font-weight:600}
+.osel{width:auto;font:600 .875rem var(--f-body);color:var(--ink);background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:6px 10px;min-height:34px}
+.qtable{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.qrow{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:4px 12px;align-items:center;width:100%;padding:12px 14px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.qrow:first-child{border-top:0}
+.qrow:hover{background:var(--hov)}
+.qrow.sel{background:var(--sel)}
+.qrow.qh span{font-size:.75rem!important}
+.qrow.qh{display:none;cursor:default;background:var(--bg);font-size:.75rem;font-weight:600;color:var(--mute);padding-block:8px}
+.qrow .sd{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+.qrow .sd.crit{background:var(--bad)}.qrow .sd.warn{background:var(--amber)}
+.qrow .id{display:none;font-size:.8125rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.qrow .is b{display:block;font-weight:700;font-size:.9375rem;line-height:1.35}
+.qrow .is>span{font-size:.8125rem;color:var(--mute)}
+.qrow .cl,.qrow .ow,.qrow .stc{display:none;font-size:.875rem;min-width:0}
+.qrow .cl{align-items:center;gap:8px}
+.qrow .cl span,.qrow .ow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qrow .du{font-size:.8125rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;color:var(--mute)}
+.qrow .du.over{color:var(--bad)}.qrow .du.soon{color:var(--warn)}.qrow .du.ok{color:var(--ok)}
+.qempty{padding:28px 16px;text-align:center;color:var(--mute)}
+.qdetail{display:none}
+.dpane{display:flex;flex-direction:column;gap:20px}
+.dpane .dh{display:flex;flex-direction:column;gap:8px}
+.dpane .ref{font-size:.8125rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.dpeople{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dperson{display:flex;gap:10px;align-items:center;min-width:0}
+.dperson b{display:block;font-size:.875rem;line-height:1.25}.dperson span{font-size:.75rem;color:var(--mute)}
+.dsec{display:flex;flex-direction:column;gap:8px}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.tool{display:flex;align-items:center;gap:8px;min-height:38px;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--card);color:var(--ink);font:600 .8125rem var(--f-body);text-decoration:none;cursor:pointer;text-align:left}
+.tool:hover{border-color:var(--brand);background:var(--hov)}
+.tool .ic{width:16px;height:16px;color:var(--mute);flex:none}
+.tool .x2{margin-left:auto;width:14px;height:14px}
+.tool span{min-width:0}
+.ops .tlog div::before{background:var(--card)}
+.ops textarea{border-radius:8px}
+@media (min-width:1024px){
+ .ops main{max-width:none;padding:0}
+ .ops #nav{display:none!important}
+ .ops #app{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto 1fr;gap:0;min-height:calc(100vh - 58px)}
+ .ops .ohead{grid-column:1/-1;height:56px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--line)}
+ .ops .tenant{display:inline-flex}
+ .ops .oside{display:flex}
+ .ops .omain{padding:24px 28px 40px}
+ .qwrap{grid-template-columns:minmax(0,1fr) minmax(360px,400px)}
+ .qrow{grid-template-columns:10px 64px minmax(0,1fr) 92px 132px 96px;padding:10px 14px}
+ .qrow .mst{display:none}
+ .qrow.qh{display:grid}
+ .qrow .id,.qrow .ow,.qrow .stc{display:block}
+ .qdetail{display:block;position:sticky;top:72px;max-height:calc(100vh - 88px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+}
+@media (min-width:1024px) and (max-width:1279px){.qwrap{grid-template-columns:minmax(0,1fr) 340px}.qrow{grid-template-columns:10px minmax(0,1fr) 96px}.qrow .id,.qrow .ow,.qrow .stc{display:none!important}.qrow .mst{display:inline}}
+
+/* ---------- base stack: customers, providers, modules ---------- */
+.sd.hol{background:transparent!important;border:2px solid var(--mute);width:10px!important;height:10px!important}
+.clist .sd{background:var(--line2)}.clist .sd.crit{background:var(--bad)}.clist .sd.warn{background:var(--amber)}.clist .sd.okd{background:var(--ok)}
+.sd.okd{background:var(--ok)}
+.mtag{display:inline-flex;align-items:center;font-size:.6875rem;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;line-height:1.6;background:var(--panel);color:var(--mute)}
+:root.ops{--mp-bg:#E1EEEA;--mp-fg:#1D5649;--mc-bg:#F6E3E8;--mc-fg:#872C46;--mn-bg:#E6E7F4;--mn-fg:#363A80}
+@media (prefers-color-scheme:dark){:root.ops:not([data-theme="light"]){--mp-bg:#173029;--mp-fg:#8FD2C0;--mc-bg:#3A2029;--mc-fg:#F2A9BD;--mn-bg:#24264A;--mn-fg:#B7BAF2}}
+:root.ops[data-theme="dark"]{--mp-bg:#173029;--mp-fg:#8FD2C0;--mc-bg:#3A2029;--mc-fg:#F2A9BD;--mn-bg:#24264A;--mn-fg:#B7BAF2}
+.m-platform{background:var(--mp-bg);color:var(--mp-fg)}.m-care{background:var(--mc-bg);color:var(--mc-fg)}.m-plan{background:var(--mn-bg);color:var(--mn-fg)}
+.mods{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.qrow .is .mtag{margin-left:6px;vertical-align:1px}
+.lrow{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:4px 12px;align-items:center;width:100%;padding:12px 14px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.lrow:first-child{border-top:0}.lrow:hover{background:var(--hov)}
+.lrow.lh{display:none;cursor:default;background:var(--bg);font-size:.75rem;font-weight:600;color:var(--mute);padding-block:8px}
+.lrow.lh:hover{background:var(--bg)}
+.lrow .is b{display:block;font-weight:700;font-size:.9375rem}.lrow .is>span{font-size:.8125rem;color:var(--mute)}
+.lrow .mods,.lrow .lc{display:none;font-size:.875rem;min-width:0}
+.lrow .du{font-size:.875rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;color:var(--mute)}
+.lrow .du.over{color:var(--bad)}
+.back{display:inline-flex;align-items:center;gap:4px;border:0;background:none;color:var(--mute);font:600 .875rem var(--f-body);cursor:pointer;padding:4px 0}
+.back:hover{color:var(--ink)}.back .ic{width:16px;height:16px}
+.phead{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+.phead .mods{margin-top:8px}
+.phead .acts .ic{width:16px;height:16px}
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+.pcol{display:flex;flex-direction:column;gap:20px;min-width:0}
+.psec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px;min-width:0}
+.ops .psec h2{font-size:1rem}
+.dl{display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px 16px;margin:0}
+.dl dt{color:var(--mute);font-size:.8125rem;font-weight:600;padding-top:2px}.dl dd{margin:0}
+.clist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.clist li{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.clist li:first-child{border-top:0;padding-top:0}
+.clist b{display:block;font-size:.875rem}.clist .m{font-size:.8125rem}
+.plink{display:flex;gap:10px;align-items:center;width:100%;border:0;background:none;padding:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.plink:hover b{color:var(--brand)}.plink>.ic{width:16px;height:16px;color:var(--mute)}
+.ctable{display:flex;flex-direction:column}
+.crow{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.crow:first-child{border-top:0;padding-top:0}
+.crow b{display:block;font-size:.875rem}.crow .m{display:block;font-size:.75rem}.crow p{font-size:.875rem;margin-top:4px}
+.cic{width:32px;height:32px;border-radius:8px;background:var(--panel);display:grid;place-items:center;flex:none;color:var(--mute)}.cic .ic{width:16px;height:16px}
+.cdt{font-size:.75rem;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cform{display:flex;flex-direction:column;gap:12px}
+.cform label{display:flex;flex-direction:column;gap:4px;font-size:.8125rem;font-weight:600;color:var(--mute)}
+.cf-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cform .osel{width:100%}
+.oin{font:400 .9375rem var(--f-body);color:var(--ink);background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;min-height:38px}
+.drow{display:flex;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.drow:first-child{border-top:0}
+.drow b{display:block;font-size:.9375rem}.drow .m{font-size:.8125rem}
+.ic-w{color:var(--mute);display:grid}.ic-w .ic{width:18px;height:18px}
+.lnk{border:0;background:none;color:var(--brand);font:700 .8125rem var(--f-body);cursor:pointer;padding:0}
+.ptabs{align-self:flex-start;flex-wrap:wrap}
+.omods{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding:14px 12px;border-top:1px solid var(--line)}
+.omods>.m{font-size:.75rem;font-weight:700}
+.mt{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.mt input{margin-top:3px;accent-color:var(--brand);width:16px;height:16px}
+.mt b{display:block;font-size:.8125rem;line-height:1.3}.mt .m{display:block;font-size:.6875rem;line-height:1.35}
+.oside .foot{margin-top:0}
+.dperson.btnp{border:0;background:none;padding:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.dperson.btnp:hover b{color:var(--brand)}
+@media (min-width:1024px){
+ .pgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+ .lrow{grid-template-columns:32px minmax(0,1fr) 260px 130px 110px 84px;padding:10px 14px}
+ .lrow.lh{display:grid}
+ .lrow .mods{display:flex}.lrow .lc{display:block}
+}
+@media (max-width:1023px){.cf-row{grid-template-columns:1fr}.drow{flex-wrap:wrap}.dl{grid-template-columns:1fr;gap:2px 0}.dl dd{margin-bottom:8px}.phead .acts{width:100%}}
+
+/* ---------- tools launcher, KPI filters, mobile tabs ---------- */
+button.kpi{font:inherit;color:inherit;text-align:left;background:transparent;border:0;border-left:1px solid var(--line);cursor:pointer}
+button.kpi:first-child{border-left:0}
+button.kpi:hover{background:var(--hov)}
+button.kpi.on{background:var(--sel);box-shadow:inset 0 -3px 0 var(--brand)}
+.kpis{overflow:hidden}
+.fchip{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:4px 6px 4px 10px;border-radius:8px;background:var(--sel);font-size:.8125rem;font-weight:600}
+.fchip button{border:0;background:var(--card);color:var(--ink);border-radius:6px;padding:2px 8px;font:600 .75rem var(--f-body);cursor:pointer;min-height:26px}
+.otabs{max-width:100%;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+.otabs::-webkit-scrollbar{display:none}
+.otabs button{white-space:nowrap;flex:none}
+.tgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.tlk{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font:inherit;text-align:left;cursor:pointer;width:100%;min-width:0}
+.tlk:hover{border-color:var(--brand);background:var(--hov)}
+.tlk .tki{width:36px;height:36px;border-radius:8px;background:var(--panel);display:grid;place-items:center;flex:none;color:var(--ink)}
+.tlk .tki .ic{width:18px;height:18px}
+.tlk b{display:block;font-size:.9375rem;line-height:1.3}.tlk .m{display:block;font-size:.8125rem;line-height:1.4}
+.tlk>.ic{width:16px;height:16px;color:var(--mute);flex:none}
+.tlk .mods{flex:none}
+.tsearch{max-width:360px;width:100%}
+.ohead .iconbtn{width:38px;height:38px}
+@media (min-width:720px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1023px){.qbar2{flex-direction:column;align-items:stretch}.qbar2 .osel{width:100%}.tlk .mods{display:none}.ohead .iconbtn{display:none}}
+
+/* ---------- forced desktop view (test bar), for showing the console on a phone ---------- */
+:root.fd.ops main{max-width:none;padding:0}
+:root.fd.ops #nav{display:none!important}
+:root.fd.ops #app{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto 1fr;gap:0;min-height:calc(100vh - 58px)}
+:root.fd.ops .ohead{grid-column:1/-1;height:56px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--line)}
+:root.fd.ops .tenant{display:inline-flex}
+:root.fd.ops .oside{display:flex}
+:root.fd.ops .omain{padding:24px 28px 40px}
+:root.fd .qwrap{grid-template-columns:minmax(0,1fr) minmax(360px,400px)}
+:root.fd .qrow{grid-template-columns:10px 64px minmax(0,1fr) 92px 132px 96px;padding:10px 14px}
+:root.fd .qrow .mst{display:none}
+:root.fd .qrow.qh{display:grid}
+:root.fd .qrow .id,:root.fd .qrow .ow,:root.fd .qrow .stc{display:block}
+:root.fd .qdetail{display:block;position:sticky;top:72px;max-height:calc(100vh - 88px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+:root.fd .pgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+:root.fd .lrow{grid-template-columns:32px minmax(0,1fr) 260px 130px 110px 84px;padding:10px 14px}
+:root.fd .lrow.lh{display:grid}
+:root.fd .lrow .mods{display:flex}
+:root.fd .lrow .lc{display:block}
+:root.fd main{width:1440px;max-width:none;zoom:var(--fz,1)}
+:root.fd .qbar2{flex-direction:row;align-items:center}:root.fd .qbar2 .osel{width:auto}
+:root.fd .kpi.kx{display:flex}:root.fd .kpi{flex:1 1 120px;padding:12px 16px}:root.fd .kpi strong{font-size:1.375rem}
+:root.fd .cf-row{grid-template-columns:repeat(3,minmax(0,1fr))}:root.fd .drow{flex-wrap:nowrap}
+:root.fd .dl{grid-template-columns:132px minmax(0,1fr);gap:10px 16px}:root.fd .dl dd{margin-bottom:0}
+:root.fd .phead .acts{width:auto}:root.fd .tlk .mods{display:flex}:root.fd .ohead .iconbtn{display:grid}
+:root.fd .tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:1024px){.fdbtn{display:none}}
+
+/* ---------- budgets and accounts ---------- */
+.pill.neu{background:var(--panel);color:var(--mute)}
+.bnums{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.bnums div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bnums span{font-size:.75rem;font-weight:600;color:var(--mute)}
+.bnums strong{font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.25}
+.bnums em{font-style:normal;font-size:.75rem;color:var(--mute)}
+.bbar{display:flex;height:10px;border-radius:5px;background:var(--panel);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.bbar i{display:block;height:100%}
+.bbar .sp{background:var(--brand)}.bbar .bk{background:color-mix(in srgb,var(--brand) 38%,var(--card))}.bbar .cm{background:var(--mute)}
+.blegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.75rem;color:var(--mute)}
+.blegend span{display:inline-flex;align-items:center;gap:6px}
+.blegend i{width:10px;height:10px;border-radius:3px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line2)}
+.blegend i.sp{background:var(--brand);box-shadow:none}.blegend i.bk{background:color-mix(in srgb,var(--brand) 38%,var(--card));box-shadow:none}.blegend i.cm{background:var(--mute);box-shadow:none}
+.btab,.ltab{display:flex;flex-direction:column;font-size:.875rem}
+.btab>div,.ltab>div{display:grid;gap:4px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.btab>div{grid-template-columns:minmax(0,1.6fr) .8fr 1fr 1fr 1.1fr}
+.btab>div>span:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.btab .bh,.ltab .lh{border-top:0;padding-top:0;font-size:.75rem;font-weight:600;color:var(--mute)}
+.btab .bt{font-weight:700}
+.btab em,.ltab em{display:block;font-style:normal;font-size:.75rem;color:var(--mute)}
+.ltab>div{grid-template-columns:64px minmax(0,1.6fr) minmax(0,1fr) 92px 92px 170px}
+.ltab .num{text-align:right}.ltab .lh>span:nth-child(4),.ltab .lh>span:nth-child(5){text-align:right}
+.ltab .lpay{background:color-mix(in srgb,var(--ok) 7%,transparent)}
+.bcat{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid var(--line)}
+.bcat:first-of-type{border-top:0}
+.bcat .pill{align-self:flex-start}
+.bwrap{position:relative}
+.bmark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);border-radius:1px;transform:translateX(-1px)}
+@media (max-width:1023px){
+ .btab>div{grid-template-columns:minmax(0,1fr) auto auto}.btab>div>span:nth-child(2),.btab>div>span:nth-child(4){display:none}
+ .ltab .lh{display:none}.ltab>div{grid-template-columns:minmax(0,1fr) auto}.ltab>div>span:nth-child(1),.ltab>div>span:nth-child(3),.ltab>div>span:nth-child(5){display:none}.ltab>div>span:nth-child(6){grid-column:1/-1}
+}
+:root.fd .btab>div{grid-template-columns:minmax(0,1.6fr) .8fr 1fr 1fr 1.1fr}:root.fd .btab>div>span{display:block!important}
+:root.fd .ltab .lh{display:grid}:root.fd .ltab>div{grid-template-columns:64px minmax(0,1.6fr) minmax(0,1fr) 92px 92px 170px}:root.fd .ltab>div>span{display:block!important}:root.fd .ltab>div>span:nth-child(6){grid-column:auto}
+
+/* ---------- claims and invoices ---------- */
+.wsplit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wsplit div{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.wsplit span{font-size:.75rem;color:var(--mute);font-weight:600}.wsplit strong{font-size:1.125rem;font-variant-numeric:tabular-nums}
+.ichk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ichk li{display:flex;gap:10px;align-items:flex-start}
+.ichk li>.ic{width:18px;height:18px;flex:none;margin-top:1px;border-radius:50%;padding:2px}
+.ichk li.cy>.ic{color:var(--ok);background:var(--ok-soft)}.ichk li.cn>.ic{color:var(--warn);background:var(--warn-soft)}
+.ichk b{display:block;font-size:.875rem}.ichk .m{font-size:.8125rem}
+.bgrp{padding:14px 0;border-top:1px solid var(--line)}.bgrp:first-of-type{border-top:0}
+.psec .clist li .btn{flex:none}
+@media (max-width:1023px){.psec .clist li{flex-wrap:wrap}}
 </style>
 
 <div id="test"></div>
@@ -398,6 +675,8 @@ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><pat
 trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
 gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
 logout:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
+ext:'<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
 lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
 };
 const ico=(n,c='')=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`;
@@ -1075,6 +1354,8 @@ function prmsg(){const o=S.pob,c=CAPS[o.cat],r=+o.rate;if(!c)return '<p class="m
 
 /* ---------- sheets ---------- */
 function sheetHTML(){const s=S.sheet,x=`<button class="x" data-a="close" aria-label="Close">${ico('x')}</button>`;
+ if(s.type=='tix')return tixSheet(s.k,x);
+ if(s.type=='inv')return invSheet(s.k,x);
  if(s.type=='info'){const[t,b]=INFO[s.k];return `<div class="sheet-h"><h2>${t}</h2>${x}</div><p>${b}</p><button class="btn p" data-a="close">Got it</button>`}
  if(s.type=='notes'){const ns=S.notes.filter(n=>n.role==roleKey());const un=ns.filter(n=>!n.read);
   return `<div class="sheet-h"><h2>Notifications</h2>${x}</div>${un.length?`<button class="btn sm ghost" data-a="readall" style="align-self:flex-start">Mark all as read</button>`:''}
@@ -1162,7 +1443,7 @@ function addNote(role,lvl,t,b,go){S.notes.unshift(N(role,lvl,t,b,go))}
 /* ---------- actions ---------- */
 function act(a,v,el){const b=S.bk;
  switch(a){
- case'role':S.role=v;S.sheet=null;S.tab=v=='family'?'home':'pjobs';S.chat=[];S.chatUnread=0;window.scrollTo(0,0);break;
+ case'role':S.role=v;S.sheet=null;S.tab=v=='family'?'home':v=='staff'?'squeue':'pjobs';S.chat=[];S.chatUnread=0;window.scrollTo(0,0);break;
  case'stage':S.stage=v;S.sheet=null;if(v=='new'){S.ob.step=0;S.pob.step=0}window.scrollTo(0,0);break;
  case'reset':location.reload();return;
  case'tab':goto(v);return;
@@ -1283,7 +1564,7 @@ function act(a,v,el){const b=S.bk;
  case'pabn':{const s=$('#pabn').value,d=s.replace(/\D/g,'');S.pob.abn=s;if(d.length!=11){S.pob.abnOk=false;break}const w=[10,1,3,5,7,9,11,13,15,17,19],n=d.split('').map(Number);n[0]-=1;S.pob.abnOk=n.reduce((a,x,i)=>a+x*w[i],0)%89==0;break}
  case'pobday':{const d=S.pob.days,i=d.indexOf(+v);i<0?d.push(+v):d.splice(i,1);break}
  case'pobfinish':S.stage='setup';S.tab='pjobs';toast('Welcome to Carer Hub');window.scrollTo(0,0);break;
- default:if(act2(a,v,el)===false)return;
+ default:{const st=staffAct(a,v,el);if(st===false)return;if(st==='na'&&act2(a,v,el)===false)return;}
  }
  R();
 }
@@ -1347,23 +1628,23 @@ const govUnread=()=>S.gov.filter(g=>!g.read).length+S.disputes.filter(d=>d.st=='
 const ORG={NDIA:['NDIA','ndia'],'My Aged Care':['MAC',''],'Services Australia':['SA','sa'],'Carer Hub':['CH','']};
 
 /* ---- header, test bar, render ---- */
-function appHead(){const fam=S.role=='family',me=fam?'sarah':S.persona,n=fam?govUnread():0;
- return `<div class="apphead">${brand()}<div class="row" style="gap:10px">${fam?`<button class="iconbtn mailbadge" data-a="tab" data-v="inbox" aria-label="Inbox${n?`, ${n} new`:''}">${ico('mail')}${n?`<span class="n">${n}</span>`:''}</button>`:''}<button class="iconbtn" data-a="tab" data-v="settings" aria-label="Settings">${ico('gear')}</button><button class="avbtn" data-a="tab" data-v="${fam?'profile':S.persona=='fresh'?'bme':'pme'}" aria-label="Your profile">${face(me,44)}</button></div></div>`}
-function testBar(){const fam=S.role=='family';
+function appHead(){const fam=S.role=='family',me=fam?'sarah':S.role=='staff'?'kim':S.persona,n=fam?govUnread():0;
+ return `<div class="apphead">${brand()}<div class="row" style="gap:10px">${fam?`<button class="iconbtn mailbadge" data-a="tab" data-v="inbox" aria-label="Inbox${n?`, ${n} new`:''}">${ico('mail')}${n?`<span class="n">${n}</span>`:''}</button>`:''}<button class="iconbtn" data-a="tab" data-v="settings" aria-label="Settings">${ico('gear')}</button><button class="avbtn" data-a="tab" data-v="${fam?'profile':S.role=='staff'?'srules':S.persona=='fresh'?'bme':'pme'}" aria-label="Your profile">${face(me,44)}</button></div></div>`}
+function testBar(){const fam=S.role=='family',stf=S.role=='staff';
  return `<div class="tb"><span class="tb-label">${ico('tool')}Testing only, sample data</span>
- <div class="tb-seg" role="group" aria-label="View as">${[['family','Family carer'],['provider','Provider']].map(([v,l])=>`<button data-a="role" data-v="${v}" class="${S.role==v?'on':''}" aria-pressed="${S.role==v}">${l}</button>`).join('')}</div>
- ${fam?'':`<div class="tb-seg" role="group" aria-label="Provider type">${[['priya','Sole trader'],['fresh','Business']].map(([v,l])=>`<button data-a="persona" data-v="${v}" class="${S.persona==v?'on':''}" aria-pressed="${S.persona==v}">${l}</button>`).join('')}</div>`}
- <div class="tb-seg" role="group" aria-label="Account stage">${[['new',fam?'New customer':'New provider'],['setup',fam?'Set-up customer':'Set-up provider']].map(([v,l])=>`<button data-a="stage" data-v="${v}" class="${S.stage==v?'on':''}" aria-pressed="${S.stage==v}">${l}</button>`).join('')}</div>
+ <div class="tb-seg" role="group" aria-label="View as">${[['family','Family carer'],['provider','Provider'],['staff','Provider staff']].map(([v,l])=>`<button data-a="role" data-v="${v}" class="${S.role==v?'on':''}" aria-pressed="${S.role==v}">${l}</button>`).join('')}</div>
+ ${fam||stf?'':`<div class="tb-seg" role="group" aria-label="Provider type">${[['priya','Sole trader'],['fresh','Business']].map(([v,l])=>`<button data-a="persona" data-v="${v}" class="${S.persona==v?'on':''}" aria-pressed="${S.persona==v}">${l}</button>`).join('')}</div>`}
+ ${stf?'':`<div class="tb-seg" role="group" aria-label="Account stage">${[['new',fam?'New customer':'New provider'],['setup',fam?'Set-up customer':'Set-up provider']].map(([v,l])=>`<button data-a="stage" data-v="${v}" class="${S.stage==v?'on':''}" aria-pressed="${S.stage==v}">${l}</button>`).join('')}</div>`}
  <label style="display:inline-flex;gap:6px;align-items:center">Pricing model <select id="tbmodel" aria-label="Pricing model">${[['gov','Paid from funding'],['sub','Subscription'],['pct','% per service']].map(([v,l])=>`<option value="${v}" ${S.model==v?'selected':''}>${l}</option>`).join('')}</select></label>
- <button class="tb-btn" data-a="reset">Reset demo</button></div>`}
+ ${S.role=='staff'?`<button class="tb-btn fdbtn" data-a="fdesk" aria-pressed="${!!S.fd}">${S.fd?'Phone view':'Desktop view'}</button>`:''}<button class="tb-btn" data-a="reset">Reset demo</button></div>`}
 const BT=[['borders','Orders','inbox'],['bteam','Team','users'],['bmenu','Menu','meal'],['bbill','Invoices','file'],['bme','Profile','user']];
-function tabsNow(){return S.role=='family'?FT:S.persona=='fresh'?BT:PT}
+function tabsNow(){return S.role=='family'?FT:S.role=='staff'?ST:S.persona=='fresh'?BT:PT}
 function R(){
- applyTheme();document.documentElement.classList.toggle('big',S.big);
+ applyTheme();document.documentElement.classList.toggle('big',S.big);document.documentElement.classList.toggle('ops',S.role=='staff');document.documentElement.classList.toggle('fd',S.role=='staff'&&!!S.fd);document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));
  $('#test').innerHTML=testBar();
- const onb=S.stage=='new',T=tabsNow(),lo=S.loggedOut;
+ const onb=S.stage=='new'&&S.role!='staff',T=tabsNow(),lo=S.loggedOut;
  if(!onb&&!lo&&!['settings','inbox'].includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
- $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):appHead()+V[S.tab]();
+ $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):(S.role=='staff'?opsShell():appHead()+V[S.tab]());
  const nav=$('#nav');nav.hidden=onb||lo;nav.innerHTML=onb||lo?'':`<div class="in">${T.map(([k,l,ic])=>`<button data-a="tab" data-v="${k}" class="${S.tab==k?'on':''}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span></button>`).join('')}</div>`;
  const un=S.notes.filter(n=>n.role==roleKey()&&!n.read&&(S.set.predict||!n.t.startsWith('Predicted'))),bell=$('#bell');bell.hidden=onb||lo||!un.length;
  if(un.length){const crit=un.some(n=>n.lvl=='crit');bell.className='fab '+(crit?'crit':'amb');bell.innerHTML=`${ico('excl')}<span class="n">${un.length}</span>`;bell.setAttribute('aria-label',`${un.length} unread notification${un.length>1?'s':''}${crit?', including critical':''}`)}
@@ -1726,6 +2007,449 @@ const tip=$('#tip');
 function showTip(el,x,y){tip.textContent=el.dataset.tip;tip.hidden=false;const w=tip.offsetWidth;tip.style.left=Math.max(8,Math.min(innerWidth-w-8,x-w/2))+'px';tip.style.top=(y-44)+'px'}
 document.addEventListener('pointermove',e=>{const el=e.target.closest&&e.target.closest('[data-tip]');if(el)showTip(el,e.clientX,e.clientY);else tip.hidden=true});
 document.addEventListener('focusin',e=>{const el=e.target.closest&&e.target.closest('[data-tip]');if(el){const r=el.getBoundingClientRect();showTip(el,r.left+r.width/2,r.top)}else tip.hidden=true});
+
+/* ---------- staff console: escalation tickets (demo data, resets on reload) ---------- */
+P.kim={name:'Kim Nguyen',first:'Kim',title:'Care coordinator',skin:'#E8B98F',hair:'bob',hc:'#1A1210',shirt:'#2F8A5B',bg:'#E3F1E7'};
+const ST=[['squeue','Queue','inbox'],['scust','Customers','users'],['sclaims','Claims','wallet'],['sprov','Providers','user'],['stools','Tools','link'],['srules','Rules','gear']];
+const TRULES={
+ nocover:{name:'Cancelled visit, no cover',sev:'crit',trig:'A worker cancels and the app finds no cover 2 hours before the visit.',target:60,tlab:'1 hour',act:'Phone other vetted workers, then tell the family who is coming.'},
+ checkout:{name:'Check-out missing',sev:'warn',trig:'No check-out 2 hours after the visit should have ended.',target:240,tlab:'Same day',act:'Call the worker, then the family, and record what happened.'},
+ invoice:{name:'Invoice fails a check',sev:'warn',trig:'Over a price limit or cap, wrong support item, no matching visit, or missing ABN or GST.',target:2880,tlab:'2 days',act:'Send it back to the provider with the reason in plain words.'},
+ claim:{name:'Claim rejected',sev:'warn',trig:'The NDIA rejects a family claim, or the partner provider\'s Support at Home claim fails.',target:2880,tlab:'2 days',act:'Fix the claim pack and help the family or partner resubmit.'},
+ payment:{name:'Payment overdue',sev:'warn',trig:'A provider is not paid 5 business days after the claim was paid.',target:1440,tlab:'1 day',act:'Chase the payer and keep the provider and family updated.'},
+ complaint:{name:'Complaint, scam or crisis',sev:'crit',trig:'A family or provider raises a complaint, a suspected scam or a safety concern.',target:240,tlab:'Same day',act:'Handle it, record it, and refer serious matters to the right commission or Scamwatch.'}};
+const TIX_ACTS={
+ nocover:[{k:'offer-lena',l:'Offer to Lena Petrova',log:'Offered the visit to Lena Petrova (Cert III, 3.4 km away).',st:'wait'},{k:'offer-omar',l:'Offer to Omar Haddad',log:'Offered the visit to Omar Haddad (4.1 km away).',st:'wait'},{k:'covered',l:'Cover confirmed',log:'Cover confirmed. Sarah told who is coming.',st:'done',fam:['note','Visit covered','Lena Petrova will do Margaret\'s visit instead of Priya.']}],
+ checkout:[{k:'call-w',l:'Call Lena: 0412 555 204',log:'Called Lena Petrova. Visit finished at 9:40 am; she forgot to check out.',st:'prog'},{k:'confirm',l:'Visit happened',log:'Visit confirmed and check-out time added: 9:40 am.',st:'done'},{k:'nohap',l:'Visit did not happen',log:'Visit did not happen. Removed from the invoice and Sarah told.',st:'done',fam:['crit','A visit did not happen','Lena could not make Mum\'s visit. It will not be charged.']}],
+ invoice:[{k:'sendback',l:'Send back to Marcus',log:'Sent back to Marcus T.: $65.00/hr is over the $60.10/hr NDIS limit for house cleaning.',st:'wait'},{k:'atlimit',l:'Approve at $60.10/hr',log:'Marcus re-issued the invoice at $60.10/hr. Approved.',st:'done'}],
+ claim:[{k:'fixpack',l:'Fix the claim pack',log:'Claim pack fixed: support item changed to House or yard maintenance (01_019_0120_1_1).',st:'prog'},{k:'tosarah',l:'Send to Sarah to resubmit',log:'Sent the fixed claim pack to Sarah for the my NDIS app.',st:'wait',fam:['note','Claim ready to resubmit','We fixed the support item on Jamie\'s yard claim. Tap to resubmit.']},{k:'paid',l:'NDIA paid',log:'NDIA paid the resubmitted claim.',st:'done'}],
+ payment:[{k:'chase',l:'Chase accounts team',log:'Chased our accounts team: Lena is in tomorrow\'s payment run.',st:'wait'},{k:'tell',l:'Tell Lena and Sarah',log:'Told Lena and Sarah the payment lands tomorrow.',st:'prog'},{k:'markpaid',l:'Mark as paid',log:'Lena confirmed she has been paid.',st:'done'}],
+ complaint:[{k:'callback',l:'Call Sarah back',log:'Called Sarah. Text asked for bank details and was not from the NDIS. She did not reply to it.',st:'prog'},{k:'scamwatch',l:'Report to Scamwatch',log:'Reported to Scamwatch with Sarah\'s permission.',st:'prog'},{k:'close',l:'Close with outcome',log:'Closed: no money lost. Sarah sent the scam tips page.',st:'done'}]};
+const TST={open:['Open','bad'],prog:['In progress','warn'],wait:['Waiting on others','info'],done:['Resolved','ok']};
+const NOW0=Date.now(),mAgo=m=>NOW0-m*60000;
+S.tix=[
+ {id:'CH-1047',type:'nocover',who:'margaret',pid:'priya',title:'Margaret: cleaning tomorrow has no worker',body:'Priya Nair cancelled (unwell) for tomorrow, 10:00 am. The app offered it to 3 standby workers; none accepted.',raised:mAgo(35),st:'open',owner:null,log:[{t:mAgo(35),by:'app',x:'Raised automatically: worker cancelled, no cover 2 hours before the visit window.'}]},
+ {id:'CH-1046',type:'checkout',who:'margaret',pid:'lena',title:'Margaret: no check-out from this morning',body:'Lena Petrova checked in at 8:02 am for showering and dressing (1.5 hrs). No check-out yet.',raised:mAgo(70),st:'open',owner:null,log:[{t:mAgo(70),by:'app',x:'Raised automatically: no check-out 2 hours after the visit should have ended.'}]},
+ {id:'CH-1044',type:'complaint',who:'jamie',pid:null,title:'Sarah reported a suspected scam text',body:'Sarah got a text claiming to be from the NDIS, asking her to confirm bank details by link.',raised:mAgo(190),st:'prog',owner:'kim',log:[{t:mAgo(190),by:'app',x:'Raised from the family app: "Report a scam".'},{t:mAgo(150),by:'Kim Nguyen',x:'Assigned to me.'}]},
+ {id:'CH-1041',type:'payment',who:'margaret',pid:'lena',title:'Lena not paid for October visits',body:'Our Support at Home claim for Margaret\'s October services was paid 6 business days ago. Lena has not been paid $432.',raised:mAgo(300),st:'open',owner:null,log:[{t:mAgo(300),by:'app',x:'Raised automatically: provider unpaid 5 business days after the claim was paid.'}]},
+ {id:'CH-1038',type:'invoice',who:'noah',pid:'marcus',title:'Marcus T. invoice over the NDIS limit',body:'House cleaning, 3 hrs at $65.00/hr. The NDIS price limit is $60.10/hr, so it is $14.70 over.',raised:mAgo(1500),st:'open',owner:null,log:[{t:mAgo(1500),by:'app',x:'Raised automatically: invoice check failed (over price limit).'}]},
+ {id:'CH-1035',type:'claim',who:'jamie',pid:'dale',title:'Jamie: yard maintenance claim rejected',body:'The NDIA rejected Sarah\'s claim for Dale Roberts: the support item did not match the plan category.',raised:mAgo(3300),st:'wait',owner:'kim',log:[{t:mAgo(3300),by:'app',x:'Raised automatically: NDIA rejected the claim.'},{t:mAgo(3200),by:'Kim Nguyen',x:'Assigned to me. Checking the support item.'}]},
+ {id:'CH-1031',type:'nocover',who:'jamie',pid:'omar',title:'Jamie: outing covered after Omar\'s car broke down',body:'Omar Haddad cancelled Saturday\'s outing at short notice.',raised:mAgo(2900),st:'done',owner:'kim',closed:mAgo(2860),log:[{t:mAgo(2900),by:'app',x:'Raised automatically: worker cancelled, no cover found.'},{t:mAgo(2880),by:'Kim Nguyen',x:'Offered the outing to Lena Petrova.'},{t:mAgo(2860),by:'Kim Nguyen',x:'Cover confirmed. Sarah told who is coming.'}]}];
+S.tq='open';
+function tixDue(t){return t.due??(t.raised+RULEOF(t.type).target*60000)}
+function durTxt(ms){const m=Math.max(1,Math.round(Math.abs(ms)/60000));if(m<60)return m+' min';const h=Math.round(m/60);if(h<48)return h+' h';return Math.round(h/24)+' days'}
+function tixDuePill(t){if(t.st=='done')return `<span class="pill ok">${ico('check')}Resolved ${durTxt(Date.now()-t.closed)} ago</span>`;const left=tixDue(t)-Date.now();
+ return left<0?`<span class="pill bad">${ico('clock')}Overdue ${durTxt(left)}</span>`:`<span class="pill ${left<3600000?'warn':'info'}">${ico('clock')}Due in ${durTxt(left)}</span>`}
+function tixSort(a,b){return (a.st=='done')-(b.st=='done')||(a.st=='done'?b.closed-a.closed:tixDue(a)-tixDue(b))}
+/* ---------- base stack: modules, scheduled work, customers, providers, correspondence ---------- */
+const MODS={platform:{n:'Platform',d:'Bookings, workers and cover'},care:{n:'Care management',d:'Support at Home care partners'},plan:{n:'Plan management',d:'NDIS invoices, claims and statements'}};
+S.mods={platform:true,care:true,plan:true};S.tq='all';S.tqd=null;S.tqk='open';
+const modOn=m=>!m||m=='core'||!!S.mods[m];
+const modTag=m=>m&&m!='core'?`<span class="mtag m-${m}">${MODS[m].n}</span>`:'';
+const EMOD={nocover:'platform',checkout:'platform',invoice:'plan',claim:'platform',payment:'care',complaint:'core'};
+Object.entries(EMOD).forEach(([k,m])=>{TRULES[k].mod=m;TRULES[k].kind='esc'});
+const SRULES={
+ checkin:{name:'Monthly check-in',kind:'sched',mod:'care',sev:'hol',trig:'Every Support at Home client needs direct contact from their care partner at least once a month. Raised 7 days before it falls due.',tlab:'Monthly',act:'Call or visit in the way agreed with the client, then record what you discussed.'},
+ budget:{name:'Quarterly budget review',kind:'sched',mod:'care',sev:'hol',trig:'Raised when a quarter is more than 60% committed, or 3 weeks before the quarter ends.',tlab:'Quarterly',act:'Review spending against the care plan with the client or their representative.'},
+ carerev:{name:'Care plan review',kind:'sched',mod:'care',sev:'hol',trig:'Care plans are reviewed at least yearly, or sooner when needs change.',tlab:'Yearly',act:'Book the review, update goals and services, and get the plan agreed.'},
+ statement:{name:'Monthly statement',kind:'sched',mod:'plan',sev:'hol',trig:'Plan-managed participants get a statement of spending and remaining funds every month.',tlab:'Monthly',act:'Check the month\'s paid invoices, then send the statement.'},
+ planend:{name:'Plan reassessment prep',kind:'sched',mod:'plan',sev:'hol',trig:'Raised 12 weeks before an NDIS plan ends. Due 6 weeks before.',tlab:'6 weeks before end',act:'Prepare a spending summary and evidence for the reassessment.'},
+ screen:{name:'Worker check expiring',kind:'sched',mod:'platform',sev:'hol',trig:'Raised 6 weeks before a worker screening check, insurance or first aid certificate expires.',tlab:'Before expiry',act:'Remind the worker, and pause new bookings if it lapses.'}};
+const RULEOF=k=>TRULES[k]||SRULES[k];
+const tMod=t=>t.mod||RULEOF(t.type).mod;
+P.arthur={name:'Arthur Wells',first:'Arthur',prog:'sah',age:88,skin:'#EFC7A5',hair:'short',hc:'#E4E0DA',shirt:'#4E6A8C',bg:'#E6EDF5',glasses:1,sub:'Support at Home, classification 5 (sample)',suburb:'Karrinyup WA'};
+P.marcus.title=P.marcus.title||'House cleaning';
+P.noah={name:'Noah Patel',first:'Noah',prog:'ndis',age:34,skin:'#C08B62',hair:'short',hc:'#161010',shirt:'#B5654A',bg:'#F8E7DF',sub:'NDIS, plan managed',suburb:'Joondalup WA'};
+const hA=h=>NOW0+h*3600000,dAgo=d=>NOW0-d*864e5;
+S.tix.forEach(t=>t.kind=t.kind||'esc');
+S.tix.push(
+ {id:'CH-2051',kind:'sched',type:'checkin',who:'margaret',pid:null,title:'Margaret: monthly check-in with Sarah',body:'Last direct contact was 29 days ago (phone call with Sarah). Agreed contact: monthly phone call with Sarah, plus a home visit each quarter.',raised:dAgo(7),due:hA(5),st:'open',owner:'kim',log:[{t:dAgo(7),by:'app',x:'Scheduled: monthly care management contact falls due in 7 days.'}]},
+ {id:'CH-2052',kind:'sched',type:'checkin',who:'arthur',pid:null,title:'Arthur: monthly check-in',body:'Last direct contact was 28 days ago (home visit). Agreed contact: home visit every second month, phone call in between. This month is a phone call.',raised:dAgo(5),due:hA(48),st:'open',owner:'kim',log:[{t:dAgo(5),by:'app',x:'Scheduled: monthly care management contact falls due in 7 days.'}]},
+ {id:'CH-2053',kind:'sched',type:'statement',who:'noah',pid:null,title:'Noah: October statement',body:'14 invoices paid in October, $2,318 in total. $9,640 of plan funding left until the plan ends on 21 Jan 2027.',raised:dAgo(2),due:hA(54),st:'open',owner:null,log:[{t:dAgo(2),by:'app',x:'Scheduled: monthly statement for October.'}]},
+ {id:'CH-2054',kind:'sched',type:'budget',who:'margaret',pid:null,title:'Margaret: quarterly budget review',body:'October to December is 62% committed with 7 weeks left. Review the services in the care plan with Sarah.',raised:dAgo(1),due:hA(144),st:'open',owner:'kim',log:[{t:dAgo(1),by:'app',x:'Scheduled: quarter is more than 60% committed.'}]},
+ {id:'CH-2055',kind:'sched',type:'screen',who:null,pid:'omar',title:'Omar Haddad: worker screening check expires',body:'Omar\'s NDIS worker screening check expires on 23 Dec 2026. He can\'t take new bookings after that without a renewed check.',raised:dAgo(3),due:hA(336),st:'open',owner:null,log:[{t:dAgo(3),by:'app',x:'Scheduled: worker check expires within 6 weeks.'}]},
+ {id:'CH-2056',kind:'sched',type:'planend',who:'noah',pid:null,title:'Noah: plan ends 21 Jan 2027',body:'Prepare a spending summary and evidence of progress against goals for the plan reassessment.',raised:dAgo(4),due:hA(744),st:'open',owner:null,log:[{t:dAgo(4),by:'app',x:'Scheduled: plan ends in 12 weeks.'}]},
+ {id:'CH-2057',kind:'sched',type:'carerev',who:'arthur',pid:null,title:'Arthur: yearly care plan review',body:'Last full review was 11 months ago. Arthur has asked about a bathroom grab rail, so include home modifications.',raised:dAgo(6),due:hA(504),st:'open',owner:'kim',log:[{t:dAgo(6),by:'app',x:'Scheduled: yearly care plan review due within 4 weeks.'}]});
+Object.assign(TIX_ACTS,{
+ checkin:[{k:'ok',l:'Call done: no changes',log:'Monthly check-in completed. No changes to care needed.',st:'done',corr:{ch:'call',dir:'out',sub:'Monthly check-in',note:'No changes to care needed.'}},
+  {k:'fu',l:'Call done: follow-up needed',log:'Monthly check-in completed. Follow-up needed; noted on the care plan.',st:'prog',corr:{ch:'call',dir:'out',sub:'Monthly check-in',note:'Follow-up needed. See work item.'}},
+  {k:'na',l:'No answer: try tomorrow',log:'Called, no answer. Left a voicemail; will try again tomorrow.',st:'prog',corr:{ch:'call',dir:'out',sub:'Check-in attempt',note:'No answer. Voicemail left.'}}],
+ statement:[{k:'check',l:'Invoices checked',log:'Checked 14 paid invoices against the plan.',st:'prog'},{k:'send',l:'Send statement',log:'October statement sent by email.',st:'done',corr:{ch:'email',dir:'out',sub:'October statement',note:'Monthly statement of spending and remaining funds.'}}],
+ budget:[{k:'book',l:'Book review call',log:'Review call booked with Sarah for Thursday, 10:30 am.',st:'wait',corr:{ch:'email',dir:'out',sub:'Budget review booked',note:'Call booked for Thursday, 10:30 am.'}},{k:'done',l:'Review complete',log:'Budget reviewed. Cleaning moved from weekly to fortnightly to stay within budget.',st:'done',corr:{ch:'call',dir:'out',sub:'Quarterly budget review',note:'Cleaning moved to fortnightly.'}}],
+ carerev:[{k:'book',l:'Book review visit',log:'Review home visit booked for 24 Nov, 10:00 am.',st:'wait',corr:{ch:'letter',dir:'out',sub:'Care plan review booked',note:'Home visit 24 Nov, 10:00 am.'}},{k:'done',l:'Review complete',log:'Care plan reviewed and agreed. Grab rail added under assistive technology.',st:'done'}],
+ planend:[{k:'summary',l:'Prepare spending summary',log:'Spending summary prepared for the reassessment.',st:'prog'},{k:'send',l:'Send to Noah',log:'Summary sent to Noah ahead of the reassessment.',st:'done',corr:{ch:'email',dir:'out',sub:'Plan reassessment pack',note:'Spending summary and evidence checklist.'}}],
+ screen:[{k:'remind',l:'Send reminder',log:'Reminder sent to Omar with the renewal link.',st:'wait',corr:{ch:'sms',dir:'out',sub:'Worker screening renewal',note:'Renewal reminder with link.'}},{k:'renewed',l:'Renewal received',log:'Renewed clearance recorded.',st:'done'}]});
+TIX_ACTS.nocover[0].corr={to:'p:lena',ch:'sms',dir:'out',sub:'Shift offer',note:'Offered Margaret\'s visit tomorrow, 10:00 am.'};
+TIX_ACTS.nocover[1].corr={to:'p:omar',ch:'sms',dir:'out',sub:'Shift offer',note:'Offered Margaret\'s visit tomorrow, 10:00 am.'};
+TIX_ACTS.nocover[2].corr={ch:'sms',dir:'out',sub:'Visit covered',note:'Told Sarah that Lena will do tomorrow\'s visit.'};
+TIX_ACTS.checkout[0].corr={to:'p:lena',ch:'call',dir:'out',sub:'Missing check-out',note:'Visit finished 9:40 am; check-out forgotten.'};
+TIX_ACTS.invoice[0].corr={to:'p:marcus',ch:'email',dir:'out',sub:'Invoice returned',note:'$65.00/hr is over the $60.10/hr NDIS limit. Please re-issue.'};
+TIX_ACTS.complaint[0].corr={ch:'call',dir:'out',sub:'Scam text follow-up',note:'Text was not from the NDIS. Sarah did not reply or click the link.'};
+TIX_ACTS.payment[1].corr={to:'p:lena',ch:'sms',dir:'out',sub:'Payment update',note:'You\'re in tomorrow\'s payment run.'};
+
+const CH={call:['phone','Call'],email:['mail','Email'],sms:['chat','Text'],app:['tablet','App'],letter:['file','Letter'],visit:['home','Visit']};
+const STL={ok:['ok','Current'],due:['warn','Due soon'],bad:['bad','Action needed']};
+const CUST={
+ margaret:{id:'C-1023',mods:['care','platform'],since:'Mar 2026',addr:'Duncraig WA 6023',rep:'sarah',repRole:'daughter, enduring power of attorney',phone:'0412 555 018',email:'sarah.chen@example.com',fund:'Support at Home, classification 3',fundD:'$5,500 a quarter (sample), 10% care management',partner:'kim',pref:'Phone Sarah after 10 am. Margaret prefers morning visits.',contact:{last:29,mode:'Monthly phone call with Sarah, home visit each quarter'},providers:['lena','priya'],
+  docs:[['Service agreement','core','ok','Signed 12 Mar 2026'],['Care plan','care','ok','Reviewed 14 Oct 2026'],['Quarterly budget, Oct to Dec','care','ok','62% committed'],['Enduring power of attorney','core','ok','On file'],['Consent to share information','core','ok','Signed 12 Mar 2026'],['Home safety check','care','due','Due 30 Nov 2026']]},
+ jamie:{id:'C-1031',mods:['platform'],since:'Sep 2026',addr:'Duncraig WA 6023',rep:'sarah',repRole:'mother, child representative',phone:'0412 555 018',email:'sarah.chen@example.com',fund:'NDIS, self-managed',fundD:'Plan 15 Mar 2026 to 14 Mar 2027',partner:null,pref:'Text Sarah first. Jamie likes outings on Saturdays.',contact:null,providers:['omar','dale'],
+  docs:[['Service agreement','core','ok','Signed 30 Sep 2026'],['NDIS plan','core','ok','Ends 14 Mar 2027'],['Child representative evidence','core','ok','On file'],['Claim pack, October','platform','bad','Needs fixing']]},
+ arthur:{id:'C-1007',mods:['care'],since:'Jul 2025',addr:'Karrinyup WA 6018',rep:null,repRole:'Speaks for himself',phone:'0401 555 377',email:'',fund:'Support at Home, classification 5',fundD:'$9,400 a quarter (sample), 10% care management',partner:'kim',pref:'Phone mornings only. Hard of hearing: speak slowly and confirm by letter.',contact:{last:28,mode:'Home visit every second month, phone call in between'},providers:['grace','lena'],
+  docs:[['Service agreement','core','ok','Signed 1 Jul 2025'],['Care plan','care','due','Review due 30 Nov 2026'],['Consent to share information','core','ok','Signed 1 Jul 2025'],['Grab rail quote','care','due','Waiting on OT']]},
+ noah:{id:'C-1044',mods:['plan'],since:'Feb 2026',addr:'Joondalup WA 6027',rep:null,repRole:'Manages his own plan decisions',phone:'0433 555 612',email:'noah.p@example.com',fund:'NDIS, plan managed',fundD:'Plan ends 21 Jan 2027, $9,640 left',partner:null,pref:'Email preferred. Statements as PDF.',contact:null,providers:['bright','marcus'],
+  docs:[['Service agreement','core','ok','Signed 2 Feb 2026'],['NDIS plan','core','ok','Ends 21 Jan 2027'],['October statement','plan','due','Due 11 Nov 2026'],['September statement','plan','ok','Sent 1 Oct 2026']]}};
+const PD=(scr,extra)=>[['NDIS worker screening check','platform',scr[0],scr[1]],...extra];
+const PROV={
+ lena:{type:'Sole trader',abn:'51 824 753 556',reg:'Unregistered NDIS provider',since:'Feb 2026',phone:'0412 555 204',email:'lena.p@example.com',clients:['margaret','arthur'],
+  docs:PD(['ok','Expires 14 Aug 2029'],[['Certificate III in Individual Support','platform','ok','Verified'],['First aid certificate','platform','ok','Expires Oct 2029'],['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN and GST','core','ok','Active, registered for GST'],['Agreement with Banksia','core','ok','Signed 3 Feb 2026']])},
+ priya:{type:'Sole trader',abn:'23 619 004 871',reg:'Unregistered NDIS provider',since:'Jan 2026',phone:'0412 555 101',email:'priya.n@example.com',clients:['margaret'],
+  docs:PD(['ok','Expires 2 Mar 2030'],[['First aid certificate','platform','ok','Expires Jun 2028'],['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active, not registered for GST'],['Agreement with Banksia','core','ok','Signed 20 Jan 2026']])},
+ omar:{type:'Sole trader',abn:'68 102 559 340',reg:'Unregistered NDIS provider',since:'Apr 2026',phone:'0412 555 330',email:'omar.h@example.com',clients:['jamie'],
+  docs:PD(['due','Expires 23 Dec 2026'],[['Driver licence and car insurance','platform','ok','Expires May 2027'],['First aid certificate','platform','ok','Expires Feb 2028'],['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 9 Apr 2026']])},
+ marcus:{type:'Sole trader',abn:'84 336 210 975',reg:'Unregistered NDIS provider',since:'Oct 2026',phone:'0412 555 412',email:'marcus.t@example.com',clients:['noah'],
+  docs:PD(['ok','Expires 11 Jul 2030'],[['Public liability insurance','platform','bad','Certificate missing'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 2 Oct 2026']])},
+ dale:{type:'Sole trader',abn:'37 905 118 642',reg:'Unregistered NDIS provider',since:'Mar 2026',phone:'0412 555 266',email:'dale.r@example.com',clients:['jamie'],
+  docs:PD(['ok','Expires 5 Sep 2028'],[['Public liability insurance','platform','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 14 Mar 2026']])},
+ grace:{type:'Sole trader',abn:'12 447 980 315',reg:'Registered nurse (AHPRA)',since:'Aug 2025',phone:'0412 555 588',email:'grace.n@example.com',clients:['arthur'],
+  docs:[['AHPRA registration','care','ok','Renews 31 May 2027'],['Professional indemnity insurance','care','ok','Expires 30 Jun 2027'],['ABN','core','ok','Active'],['Agreement with Banksia','core','ok','Signed 4 Aug 2025']]},
+ bright:{type:'Company',abn:'59 618 223 704',reg:'Registered NDIS provider',since:'Feb 2026',phone:'08 9555 0190',email:'accounts@brightsteps.example.com',clients:['noah'],
+  docs:[['NDIS registration','core','ok','Registered until 2028'],['Public liability insurance','plan','ok','Expires 30 Jun 2027'],['ABN and GST','core','ok','Active, registered for GST']]}};
+S.corr=[
+ {e:'c:margaret',t:dAgo(29),ch:'call',dir:'out',w:'sarah',sub:'Monthly check-in',note:'Margaret settled after a short hospital stay. Keep Tuesday showering visits.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:margaret',t:dAgo(20),ch:'email',dir:'out',w:'sarah',sub:'September statement and budget update',note:'Statement sent. Quarter on track.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:margaret',t:dAgo(12),ch:'sms',dir:'in',w:'sarah',sub:'Change of cleaning day',note:'Asked to move Friday cleaning to Thursday. Changed in the app.',by:'Kim Nguyen',mod:'platform'},
+ {e:'c:margaret',t:dAgo(.03),ch:'app',dir:'in',w:'priya',sub:'Visit cancelled',note:'Priya Nair cancelled tomorrow\'s 10:00 am visit (unwell).',by:'Carer Hub app',mod:'platform'},
+ {e:'c:jamie',t:dAgo(40),ch:'email',dir:'out',w:'sarah',sub:'Welcome and service agreement',note:'Signed agreement returned the same day.',by:'Kim Nguyen',mod:'core'},
+ {e:'c:jamie',t:dAgo(2),ch:'call',dir:'in',w:'sarah',sub:'Rejected yard claim',note:'Sarah asked why the NDIA rejected the claim for Dale\'s visit.',by:'Kim Nguyen',mod:'platform'},
+ {e:'c:jamie',t:dAgo(.13),ch:'app',dir:'in',w:'sarah',sub:'Scam text reported',note:'Reported a text asking for bank details.',by:'Carer Hub app',mod:'core'},
+ {e:'c:arthur',t:dAgo(28),ch:'visit',dir:'out',w:'arthur',sub:'Home visit: monthly check-in',note:'Walking well with his frame. Asked about a bathroom grab rail.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:arthur',t:dAgo(9),ch:'letter',dir:'out',w:'arthur',sub:'Care plan review coming up',note:'Letter explaining the yearly review and what to expect.',by:'Kim Nguyen',mod:'care'},
+ {e:'c:noah',t:dAgo(39),ch:'email',dir:'out',w:'noah',sub:'September statement',note:'Monthly statement of spending and remaining funds.',by:'Kim Nguyen',mod:'plan'},
+ {e:'c:noah',t:dAgo(3),ch:'call',dir:'in',w:'noah',sub:'Therapy funding question',note:'Asked how much Capacity Building funding is left: $3,120.',by:'Kim Nguyen',mod:'plan'},
+ {e:'p:lena',t:dAgo(15),ch:'email',dir:'in',w:'lena',sub:'First aid certificate renewed',note:'New certificate uploaded, expires Oct 2029.',by:'Kim Nguyen',mod:'platform'},
+ {e:'p:priya',t:dAgo(.03),ch:'app',dir:'in',w:'priya',sub:'Sick leave',note:'Cancelled tomorrow\'s visit for Margaret.',by:'Carer Hub app',mod:'platform'},
+ {e:'p:marcus',t:dAgo(1.1),ch:'email',dir:'in',w:'marcus',sub:'October invoice',note:'House cleaning for Noah, 3 hrs at $65.00/hr.',by:'Carer Hub app',mod:'plan'},
+ {e:'p:omar',t:dAgo(3),ch:'app',dir:'out',w:'omar',sub:'Check expiry notice',note:'Automatic notice: worker screening check expires 23 Dec 2026.',by:'Carer Hub app',mod:'platform'},
+ {e:'p:dale',t:dAgo(2),ch:'email',dir:'out',w:'dale',sub:'Claim details',note:'Asked Dale to confirm the support item on his invoice.',by:'Kim Nguyen',mod:'platform'},
+ {e:'p:bright',t:dAgo(6),ch:'email',dir:'in',w:'bright',sub:'October invoices',note:'Four physio sessions for Noah.',by:'Carer Hub app',mod:'plan'}];
+const fmtDT=t=>{const d=new Date(t);return d.toLocaleDateString('en-AU',{day:'numeric',month:'short'})+', '+d.toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit'})};
+const tel=p=>'tel:'+String(p).replace(/\s/g,'');
+const TTOOLS={
+ nocover:[{l:'Call Priya Nair',href:'tel:0412555101',ic:'phone'},{l:'Text Sarah Chen',href:'sms:0412555018',ic:'chat'},{l:'Open roster',sys:'rostering system',ic:'calendar'}],
+ checkout:[{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'Open visit record',sys:'visit records',ic:'clock'}],
+ invoice:[{l:'NDIS Pricing Arrangements',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file'},{l:'Email Marcus T.',href:'mailto:marcus.t@example.com?subject=Invoice%20CH-1038',ic:'mail'},{l:'Open invoice',sys:'invoice inbox',ic:'wallet'}],
+ claim:[{l:'NDIS Pricing Arrangements',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file'},{l:'Text Sarah Chen',href:'sms:0412555018',ic:'chat'},{l:'Open claim pack',sys:'claims workspace',ic:'folder'}],
+ payment:[{l:'Aged Care Provider Portal',href:'https://www.servicesaustralia.gov.au/aged-care-provider-portal',ic:'shield'},{l:'Email accounts team',href:'mailto:accounts@example.com?subject=Unpaid%20invoice%20CH-1041',ic:'mail'},{l:'Call Lena Petrova',href:'tel:0412555204',ic:'phone'}],
+ complaint:[{l:'Report to Scamwatch',href:'https://www.scamwatch.gov.au/report-a-scam',ic:'shield'},{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'NDIS Commission',href:'https://www.ndiscommission.gov.au/',ic:'shield'}],
+ checkin:t=>{const c=CUST[t.who],w=c.rep||t.who;return [{l:'Call '+P[w].name,href:tel(c.phone),ic:'phone'},{l:'Open care plan',sys:'care plan',ic:'file'},{l:'Support at Home manual',href:'https://www.health.gov.au/resources/publications/support-at-home-program-manual-a-guide-for-registered-providers',ic:'file'}]},
+ budget:[{l:'Call Sarah Chen',href:'tel:0412555018',ic:'phone'},{l:'Open Margaret\'s budget',go:'c:margaret|budget',ic:'wallet'}],
+ carerev:[{l:'Call Arthur Wells',href:'tel:0401555377',ic:'phone'},{l:'Open care plan',sys:'care plan',ic:'file'}],
+ statement:[{l:'Open Noah\'s account',go:'c:noah|acct',ic:'wallet'},{l:'Statement builder',sys:'statement builder',ic:'file'},{l:'Email Noah Patel',href:'mailto:noah.p@example.com?subject=October%20statement',ic:'mail'},{l:'Plan manager guidance',href:'https://www.ndis.gov.au/providers/working-participants/plan-managers/how-support-participants-plan-manager',ic:'file'}],
+ planend:[{l:'Open Noah\'s budget',go:'c:noah|budget',ic:'trend'},{l:'Email Noah Patel',href:'mailto:noah.p@example.com?subject=Plan%20reassessment',ic:'mail'}],
+ screen:[{l:'Text Omar Haddad',href:'sms:0412555330',ic:'chat'},{l:'Open worker record',sys:'worker records',ic:'user'}]};
+const isDesk=()=>(S.role=='staff'&&!!S.fd)||matchMedia('(min-width:1024px)').matches;
+function tixDueTxt(t){if(t.st=='done')return ['Done','ok'];const l=tixDue(t)-Date.now();return l<0?['Overdue '+durTxt(l),'over']:['Due in '+durTxt(l),l<3600000*6?'soon':'']}
+function tixPool(){return S.tix.filter(t=>modOn(tMod(t))&&(!t.who||!CUST[t.who]||CUST[t.who].mods.some(modOn)))}
+function tixList(){const pool=tixPool(),open=pool.filter(t=>t.st!='done');let l=S.tq=='all'?open:S.tq=='esc'?open.filter(t=>t.kind=='esc'):S.tq=='sched'?open.filter(t=>t.kind=='sched'):S.tq=='mine'?open.filter(t=>t.owner=='kim'):pool.filter(t=>t.st=='done');if(S.tqt&&S.tqt!='all')l=l.filter(t=>t.type==S.tqt);const now=Date.now(),eod=new Date();eod.setHours(23,59,59,999);if(S.tqd=='over')l=l.filter(t=>tixDue(t)<now);else if(S.tqd=='today')l=l.filter(t=>tixDue(t)>=now&&tixDue(t)<=eod);else if(S.tqd=='week')l=l.filter(t=>tixDue(t)<now+7*864e5);return l.slice().sort(tixSort)}
+function subjName(t){return t.who?P[t.who].name:t.pid?P[t.pid].name:''}
+function tixRow(t){const r=RULEOF(t.type),[sl,sc]=TST[t.st],[dt,dc]=tixDueTxt(t),sel=isDesk()&&S.tab=='squeue'&&S.tsel==t.id;
+ return `<button class="qrow ${sel?'sel':''}" data-a="tixopen" data-v="${t.id}" aria-label="${esc(t.title)}. ${dt}. ${sl}" ${sel?'aria-current="true"':''}><span class="sd ${r.sev}" title="${r.kind=='sched'?'Scheduled':'Escalation'}"></span><span class="id">${t.id}</span><span class="is"><b>${esc(t.title)}</b><span>${esc(r.name)}${subjName(t)?' · '+esc(subjName(t)):''}<span class="mst"> · ${sl}</span>${modTag(tMod(t))}</span></span><span class="ow">${t.owner?(t.owner=='kim'?'You':esc(P[t.owner].name)):'<span class="m">Unassigned</span>'}</span><span class="stc"><span class="pill ${sc}">${sl}</span></span><span class="du ${dc}">${dt}</span></button>`}
+function tixBody(t){const r=RULEOF(t.type),acts=t.st=='done'?[]:TIX_ACTS[t.type].filter(a=>!t.log.some(l=>l.k==a.k)),tt=TTOOLS[t.type],tools=(typeof tt=='function'?tt(t):tt)||[];
+ const person=(k,role,e)=>k?`<button class="dperson btnp" data-a="sopen" data-v="${e}" aria-label="Open ${esc(P[k].name)}">${face(k,36)}<span class="grow"><b>${esc(P[k].name)}</b><span>${role}</span></span></button>`:'';
+ const crole=t.who&&CUST[t.who]?'Customer · '+CUST[t.who].id:'';
+ return `<div class="dpeople">${person(t.who,crole,'c:'+t.who)}${person(t.pid,'Worker or provider','p:'+t.pid)}</div>
+ <div class="dsec"><p>${esc(t.body)}</p><p class="m">${r.kind=='sched'?'Schedule':'Rule'}: ${esc(r.trig)}</p></div>
+ ${tools.length?`<div class="dsec"><h3>Tools</h3><div class="tools">${tools.map(o=>o.href?`<a class="tool" href="${o.href}" ${o.href.startsWith('http')?'target="_blank" rel="noopener"':''}>${ico(o.ic)}<span>${esc(o.l)}</span>${o.href.startsWith('http')?ico('ext','x2'):''}</a>`:`<button class="tool" data-a="${o.go?'sgo':'tixtool'}" data-v="${esc(o.go||o.sys)}">${ico(o.ic)}<span>${esc(o.l)}</span></button>`).join('')}</div></div>`:''}
+ ${acts.length?`<div class="dsec"><h3>Next steps</h3><p class="m">${esc(r.act)}</p><div class="acts">${acts.map(a=>`<button class="btn sm ${a.st=='done'?'p':'ghost'}" data-a="tixact" data-v="${t.id}|${a.k}">${esc(a.l)}</button>`).join('')}</div>${acts.some(a=>a.corr)?'<p class="m">Calls, texts and emails are saved to the customer or provider record.</p>':''}</div>`:''}
+ ${t.st=='done'?'':`<div class="dsec"><label for="tixnote"><h3>Note</h3></label><textarea id="tixnote" rows="2" placeholder="What did you do or find out?"></textarea><div class="row" style="gap:8px"><button class="btn sm ghost" data-a="tixnote" data-v="${t.id}">Add note</button><button class="btn sm ghost" data-a="tixdone" data-v="${t.id}">Close with note</button></div></div>`}
+ <div class="dsec"><h3>History</h3><div class="tlog">${t.log.slice().reverse().map(l=>`<div class="${l.by=='app'?'sys':''}"><b>${l.by=='app'?'Carer Hub app':esc(l.by)}</b> <span class="m" style="display:inline">${durTxt(Date.now()-l.t)} ago</span><span class="m">${esc(l.x)}</span></div>`).join('')}</div></div>`}
+function tixHead(t){const r=RULEOF(t.type),[sl,sc]=TST[t.st];
+ return `<span class="ref">${t.id} · ${r.kind=='sched'?'Scheduled':'Escalation'} · ${esc(r.name)}</span><h2>${esc(t.title)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span>${modTag(tMod(t))}<span class="grow"></span>${t.st=='done'?'':t.owner=='kim'?`<button class="btn sm ghost" data-a="tixown" data-v="${t.id}">Unassign me</button>`:`<button class="btn sm p" data-a="tixown" data-v="${t.id}">Assign to me</button>`}</div>`}
+function opsShell(){const over=tixPool().filter(t=>t.st!='done'&&tixDue(t)<Date.now()).length,provOn=S.mods.platform||S.mods.plan;
+ const nav=[['squeue','Work queue','inbox'],['scust','Customers','users'],['sclaims','Claims and invoices','wallet'],...(provOn?[['sprov','Workers and providers','user']]:[]),['stools','Tools','link'],['srules','Rules','gear']];
+ return `<header class="ohead"><div class="row" style="gap:6px;align-items:center">${brand()}<span class="tenant">Banksia Home Care</span></div><div class="row" style="gap:14px;align-items:center"><button class="iconbtn" data-a="snav" data-v="stools" aria-label="Tools and portals" title="Tools and portals">${ico('link')}</button><div class="who"><div><b>${esc(P.kim.name)}</b><span class="m">${esc(P.kim.title)}</span></div>${face('kim',36)}</div></div></header>
+ <aside class="oside" aria-label="Console">${nav.map(([k,l,ic])=>`<button class="onav ${S.tab==k?'on':''}" data-a="snav" data-v="${k}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${k=='squeue'&&over?`<span class="cnt" aria-label="${over} overdue">${over}</span>`:''}</button>`).join('')}<button class="onav" data-a="tab" data-v="settings">${ico('gear')}<span>Settings</span></button>
+ <div class="omods"><span class="m">Modules on this account (demo)</span>${Object.entries(MODS).map(([k,m])=>`<label class="mt"><input type="checkbox" data-mod="${k}" ${S.mods[k]?'checked':''}><span><b>${m.n}</b><span class="m">${m.d}</span></span></label>`).join('')}</div>
+ <p class="foot">Demo provider. Sample data resets when you reload.</p></aside>
+ <div class="omain">${V[S.tab]()}</div>`}
+V.squeue=()=>{const pool=tixPool(),open=pool.filter(t=>t.st!='done'),now=Date.now(),eod=new Date();eod.setHours(23,59,59,999);
+ const over=open.filter(t=>tixDue(t)<now),today=open.filter(t=>tixDue(t)>=now&&tixDue(t)<=eod),sched7=open.filter(t=>t.kind=='sched'&&tixDue(t)<now+7*864e5),mine=open.filter(t=>t.owner=='kim'),done=pool.filter(t=>t.st=='done');
+ const list=tixList();if(isDesk()&&(!S.tsel||!list.some(t=>t.id==S.tsel)))S.tsel=list[0]?.id||null;const cur=S.tix.find(t=>t.id==S.tsel);
+ const types=[['all','All types'],...Object.entries({...TRULES,...SRULES}).filter(([k,r])=>modOn(r.mod)).map(([k,r])=>[k,r.name])];
+ const tabs=[['all','All open',open.length],['esc','Escalations',open.filter(t=>t.kind=='esc').length],['sched','Scheduled',open.filter(t=>t.kind=='sched').length],['mine','Mine',mine.length],['done','Done',done.length]];
+ return `<div class="qtop"><div><h1>Work queue</h1><p class="m">Scheduled work and escalations for every customer, most urgent first.</p></div></div>
+ <div class="kpis" role="group" aria-label="Filter the queue">${[['open','Open',open.length,''],['over','Overdue',over.length,over.length?'hot':''],['today','Due today',today.length,''],['week','Scheduled in 7 days',sched7.length,'kx'],['mine','Assigned to you',mine.length,'kx']].map(([k,l,n,c])=>{const on=S.tqk==k;return `<button class="kpi ${c} ${on?'on':''}" data-a="tqk" data-v="${k}" aria-pressed="${on}"><span>${l}</span><strong>${n}</strong></button>`}).join('')}</div>
+ <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${tabs.map(([k,l,n])=>`<button data-a="tq" data-v="${k}" class="${S.tq==k?'on':''}" aria-pressed="${S.tq==k}">${l}<span class="n">${n}</span></button>`).join('')}</div>
+ <select id="tqtype" class="osel" aria-label="Filter by type">${types.map(([k,l])=>`<option value="${k}" ${(S.tqt||'all')==k?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
+ ${S.tqd?`<div class="fchip">Showing ${{over:'overdue items',today:'items due today',week:'scheduled work due in 7 days'}[S.tqd]} only<button data-a="tqk" data-v="open">Clear</button></div>`:''}<div class="qtable">${list.length?`<div class="qrow qh" aria-hidden="true"><span></span><span class="id">Ref</span><span>Item</span><span class="ow">Owner</span><span class="stc">Status</span><span style="text-align:right">Due</span></div>`+list.map(tixRow).join(''):`<p class="qempty">${S.tq=='mine'?'Nothing assigned to you. Pick an item from All open and assign it to yourself.':S.tq=='done'?'Nothing closed yet.':'All clear. New work appears here as it falls due or the app raises it.'}</p>`}</div>
+ <p class="m" style="margin-top:10px">Filled dot: escalation the app raised. Hollow dot: scheduled work.</p></div>
+ <aside class="qdetail" aria-label="Item detail">${cur?`<div class="dpane"><div class="dh">${tixHead(cur)}</div>${tixBody(cur)}</div>`:'<p class="qempty">Select an item to see the details.</p>'}</aside></div>`};
+const ruleRows=o=>Object.values(o).filter(r=>modOn(r.mod)).map(r=>`<div class="qrow" style="cursor:default;grid-template-columns:10px minmax(0,1fr) auto"><span class="sd ${r.sev}"></span><span class="is"><b>${esc(r.name)}</b><span>${esc(r.trig)} ${esc(r.act)}${modTag(r.mod)}</span></span><span class="du">${esc(r.tlab)}</span></div>`).join('');
+V.srules=()=>`<div class="qtop"><div><h1>Rules</h1><p class="m">What creates work in the queue, and how fast it should be done. Set with each provider during implementation.</p></div></div>
+ <div class="psec" style="padding:0;gap:0"><div style="padding:16px 20px 8px"><h2>Scheduled work</h2><p class="m">Recurring obligations, raised before they fall due.</p></div><div class="qtable" style="border:0;box-shadow:none;border-top:1px solid var(--line);border-radius:0 0 10px 10px">${ruleRows(SRULES)}</div></div>
+ <div class="psec" style="padding:0;gap:0"><div style="padding:16px 20px 8px"><h2>Escalations</h2><p class="m">Raised when the app can't finish a job on its own.</p></div><div class="qtable" style="border:0;box-shadow:none;border-top:1px solid var(--line);border-radius:0 0 10px 10px">${ruleRows(TRULES)}</div></div>
+ <p class="m">Rules for modules this account doesn't use are hidden. Target times are starting points; tune them once real volumes are known.</p>`;
+function tixSheet(id,x){const t=S.tix.find(z=>z.id==id);return `<div class="sheet-h"><div class="dh" style="display:flex;flex-direction:column;gap:6px">${tixHead(t)}</div>${x}</div><div class="dpane">${tixBody(t)}</div>`}
+
+
+/* ---------- tools launcher: government portals and the provider's own systems ---------- */
+const TOOLS=[
+ {g:'NDIS',items:[
+  {l:'myplace provider portal',d:'Service bookings and payment claims for registered providers and plan managers.',href:'https://www.ndis.gov.au/providers/working-provider/myplace-provider-portal-and-resources',ic:'wallet',mod:'plan'},
+  {l:'NDIS Pricing Arrangements',d:'Price limits and support items, for checking invoices and claims.',href:'https://www.ndis.gov.au/providers/pricing-arrangements',ic:'file',mod:'plan'},
+  {l:'Plan manager guidance',d:'NDIA rules for paying providers and monthly statements.',href:'https://www.ndis.gov.au/providers/working-participants/plan-managers/how-support-participants-plan-manager',ic:'file',mod:'plan'},
+  {l:'NDIS Commission: registered providers',d:'Registration, audits and the worker screening database.',href:'https://www.ndiscommission.gov.au/registered-ndis-providers-portal-login',ic:'shield',mod:'core'},
+  {l:'NDIS Commission: unregistered providers',d:'Worker screening database access for unregistered providers.',href:'https://www.ndiscommission.gov.au/unregistered-providers-portal-login',ic:'shield',mod:'platform'}]},
+ {g:'Aged care',items:[
+  {l:'Aged Care Provider Portal',d:'Support at Home claims and payment statements with Services Australia.',href:'https://www.servicesaustralia.gov.au/aged-care-provider-portal',ic:'wallet',mod:'care'},
+  {l:'My Aged Care service and support portal',d:'Referrals, client details and service information.',href:'https://www.health.gov.au/resources/apps-and-tools/my-aged-care-service-provider-portal',ic:'users',mod:'care'},
+  {l:'Government Provider Management System',d:'Provider registration details and reporting.',href:'https://www.health.gov.au/resources/apps-and-tools/government-provider-management-system',ic:'folder',mod:'care'},
+  {l:'Support at Home program manual',d:'Care management, budgets and claiming rules.',href:'https://www.health.gov.au/resources/publications/support-at-home-program-manual-a-guide-for-registered-providers',ic:'file',mod:'care'},
+  {l:'Aged Care Quality and Safety Commission',d:'Quality standards, complaints and incident reporting.',href:'https://www.agedcarequality.gov.au/',ic:'shield',mod:'care'}]},
+ {g:'Logins and checks',items:[
+  {l:'PRODA',d:'Government login used by many provider portals.',href:'https://proda.humanservices.gov.au/',ic:'lock',mod:'core'},
+  {l:'Relationship Authorisation Manager',d:'Give staff access to portals for your business.',href:'https://info.authorisationmanager.gov.au/',ic:'users',mod:'core'},
+  {l:'ABN Lookup',d:'Check a worker or provider\'s ABN and GST status.',href:'https://abr.business.gov.au/',ic:'search',mod:'core'},
+  {l:'Report a scam to Scamwatch',d:'For customers who get suspicious texts, calls or emails.',href:'https://www.scamwatch.gov.au/report-a-scam',ic:'shield',mod:'core'}]},
+ {g:'Your systems',note:'Connected during implementation. Each opens the provider\'s own tool.',items:[
+  {l:'Rostering',d:'Shifts, cover and worker availability.',sys:'rostering system',ic:'calendar',mod:'platform'},
+  {l:'Invoices and payments',d:'Incoming invoices, approvals and payment runs.',sys:'finance system',ic:'wallet',mod:'core'},
+  {l:'Document store',d:'Signed agreements, care plans and certificates.',sys:'document store',ic:'folder',mod:'core'},
+  {l:'Phone and SMS',d:'Calls and texts, logged to the customer record.',sys:'phone system',ic:'phone',mod:'core'},
+  {l:'Care plans',d:'Goals, services and reviews for Support at Home clients.',sys:'care planning tool',ic:'heart',mod:'care'}]}];
+V.stools=()=>{const groups=TOOLS.map(g=>({...g,items:g.items.filter(t=>modOn(t.mod))})).filter(g=>g.items.length);
+ return `<div class="qtop"><div><h1>Tools</h1><p class="m">Government portals and your own systems in one place. Links open in a new tab.</p></div></div>
+ ${groups.map(g=>`<section class="psec"><div><h2>${esc(g.g)}</h2>${g.note?`<p class="m">${esc(g.note)}</p>`:''}</div><div class="tgrid">${g.items.map(t=>t.href?`<a class="tlk" href="${t.href}" target="_blank" rel="noopener"><span class="tki">${ico(t.ic)}</span><span class="grow"><b>${esc(t.l)}</b><span class="m">${esc(t.d)}</span></span><span class="mods">${modTag(t.mod)}</span>${ico('ext')}</a>`:`<button class="tlk" data-a="tixtool" data-v="${esc(t.sys)}"><span class="tki">${ico(t.ic)}</span><span class="grow"><b>${esc(t.l)}</b><span class="m">${esc(t.d)}</span></span><span class="mods">${modTag(t.mod)}</span>${ico('chev')}</button>`).join('')}</div></section>`).join('')}
+ <p class="m">Tools for modules this account doesn't use are hidden.</p>`};
+/* ---------- budgets and customer accounts (sample figures) ---------- */
+const BUD={
+ margaret:{prog:'sah',mod:'care',period:'October to December 2026',left:'7 weeks left in the quarter',budget:5500,carry:320,cm:550,cmUsed:183.33,
+  cats:[{n:'Clinical care',d:'Nursing and allied health',rate:0,spent:0,booked:0},{n:'Independence',d:'Personal care',rate:.05,spent:864,booked:864},{n:'Everyday living',d:'Cleaning',rate:.175,spent:870,booked:460}],athm:{tier:'Medium',amt:2000,used:0,ends:'30 Jun 2027'}},
+ arthur:{prog:'sah',mod:'care',period:'October to December 2026',left:'7 weeks left in the quarter',budget:9400,carry:0,cm:940,cmUsed:313.33,
+  cats:[{n:'Clinical care',d:'Nursing',rate:0,spent:440,booked:440},{n:'Independence',d:'Personal care',rate:.05,spent:864,booked:1296},{n:'Everyday living',d:'None booked',rate:.175,spent:0,booked:0}],athm:{tier:'Low',amt:500,used:0,ends:'30 Jun 2027'}},
+ noah:{prog:'ndis',mod:'plan',mgmt:'Plan managed',plan:'22 Jan 2026 to 21 Jan 2027',elapsed:.8,
+  cats:[{n:'Core',d:'Daily living and household help',a:18000,spent:12960},{n:'Capacity Building',d:'Therapy and plan management',a:6500,spent:3380},{n:'Capital',d:'Assistive technology',a:1480,spent:0}]},
+ jamie:{prog:'ndis',mod:'platform',mgmt:'Self-managed (the family claims)',plan:'15 Mar 2026 to 14 Mar 2027',elapsed:.65,
+  cats:[{n:'Core',d:'Daily living, outings and household help',a:14200,spent:10500},{n:'Capacity Building',d:'Therapy and skills',a:4500,spent:1950},{n:'Capital',d:'Assistive technology',a:1200,spent:0}]}};
+const LEDG={
+ margaret:[
+  {d:'2026-11-06',i:'Cleaning, 1 visit',p:'priya',b:'Everyday living',gov:143.55,cust:30.45,st:'unclaimed',inv:'INV-3105'},
+  {d:'2026-11-05',i:'Personal care, 2 visits',p:'lena',b:'Independence',gov:205.20,cust:10.80,st:'unclaimed',inv:'INV-3104'},
+  {d:'2026-11-04',i:'Payment from Sarah Chen, direct debit',pay:120},
+  {d:'2026-10-31',i:'Personal care, 6 visits',p:'lena',b:'Independence',gov:615.60,cust:32.40,st:'paid'},
+  {d:'2026-10-31',i:'Cleaning, 4 visits',p:'priya',b:'Everyday living',gov:574.20,cust:121.80,st:'paid'},
+  {d:'2026-10-31',i:'Care management, October',p:null,b:'Care management',gov:183.33,cust:0,st:'paid'}],
+ arthur:[
+  {d:'2026-11-04',i:'Personal care, 2 visits',p:'lena',b:'Independence',gov:205.20,cust:10.80,st:'unclaimed',inv:'INV-3107'},
+  {d:'2026-10-31',i:'Nursing visits, 4',p:'grace',b:'Clinical care',gov:440,cust:0,st:'paid'},
+  {d:'2026-10-31',i:'Personal care, 6 visits',p:'lena',b:'Independence',gov:615.60,cust:32.40,st:'paid'},
+  {d:'2026-10-31',i:'Care management, October',p:null,b:'Care management',gov:313.33,cust:0,st:'paid'},
+  {d:'2026-10-15',i:'Payment from Arthur Wells, bank transfer',pay:100}],
+ noah:[
+  {d:'2026-11-08',i:'House cleaning, 3 hrs',p:'marcus',b:'Core',gov:195,cust:0,st:'held'},
+  {d:'2026-11-01',i:'Plan management fee, October',p:null,b:'Capacity Building',gov:104.45,cust:0,st:'paid'},
+  {d:'2026-10-31',i:'Physiotherapy, 4 sessions',p:'bright',b:'Capacity Building',gov:720,cust:0,st:'paid'}],
+ jamie:[
+  {d:'2026-11-02',i:'Yard maintenance, 2 hrs',p:'dale',b:'Core',gov:114,cust:0,st:'rejected'},
+  {d:'2026-10-29',i:'House cleaning, 3 hrs',p:'priya',b:'Core',gov:174,cust:0,st:'reimb'},
+  {d:'2026-10-26',i:'Community outing, 4 hrs',p:'omar',b:'Core',gov:240,cust:0,st:'reimb'}]};
+const STLD={paid:['ok','Claim paid'],claimed:['info','Claimed, awaiting payment'],unclaimed:['neu','Not yet claimed'],held:['warn','Held: over price limit'],rejected:['bad','Claim rejected'],reimb:['ok','Reimbursed to family']};
+const budOn=k=>BUD[k]&&modOn(BUD[k].mod)&&CUST[k].mods.includes(BUD[k].mod);
+function sahNums(b){const total=b.budget+b.carry,spent=b.cats.reduce((a,c)=>a+c.spent,0),booked=b.cats.reduce((a,c)=>a+c.booked,0),free=total-b.cm-spent-booked,share=b.cats.reduce((a,c)=>a+c.spent*c.rate,0);return {total,spent,booked,free,share,pct:(b.cm+spent+booked)/total}}
+function ndisNums(b){const a=b.cats.reduce((x,c)=>x+c.a,0),spent=b.cats.reduce((x,c)=>x+c.spent,0);return {a,spent,left:a-spent}}
+function acctNums(k){const l=LEDG[k]||[],sum=(f,g)=>l.filter(f).reduce((a,x)=>a+g(x),0);
+ const gov=x=>x.pay==null,billed=sum(x=>gov(x)&&['paid','claimed'].includes(x.st),x=>x.cust),toBill=sum(x=>gov(x)&&x.st=='unclaimed',x=>x.cust),paid=sum(x=>x.pay!=null,x=>x.pay);
+ return {gPaid:sum(x=>gov(x)&&['paid','reimb'].includes(x.st),x=>x.gov),gWait:sum(x=>gov(x)&&x.st=='claimed',x=>x.gov),gNot:sum(x=>gov(x)&&x.st=='unclaimed',x=>x.gov),gProb:sum(x=>gov(x)&&['held','rejected'].includes(x.st),x=>x.gov),billed,toBill,paid,bal:paid-billed}}
+const bar=segs=>`<div class="bbar" role="img" aria-label="${esc(segs.map(s=>s.l+' '+Math.round(s.v*100)+'%').join(', '))}">${segs.map(s=>`<i class="${s.c}" style="width:${Math.max(0,Math.min(100,s.v*100)).toFixed(1)}%"></i>`).join('')}</div>`;
+const balTxt=n=>Math.abs(n)<.005?['Nothing owing','ok']:n>0?['In credit '+money(n),'ok']:['Owing '+money(-n),'warn'];
+function budGlance(k){if(!budOn(k))return '';const b=BUD[k];let rows='';
+ if(b.prog=='sah'){const n=sahNums(b),a=acctNums(k),[bt,bc]=balTxt(a.bal);rows=`<li><div class="grow"><b>${money(n.free)} not yet committed</b><span class="m">${esc(b.period)}, ${Math.round(n.pct*100)}% committed</span></div></li><li><div class="grow"><b>Customer contributions</b><span class="m">${money(a.billed)} billed, ${money(a.paid)} paid</span></div><span class="pill ${bc}">${bt}</span></li>`}
+ else{const n=ndisNums(b),ahead=b.cats.filter(c=>c.spent/c.a>b.elapsed+.05);rows=`<li><div class="grow"><b>${money(n.left)} left in the plan</b><span class="m">${esc(b.mgmt)}. Plan ${Math.round(b.elapsed*100)}% through.</span></div></li>${ahead.length?`<li><div class="grow"><b>${esc(ahead.map(c=>c.n).join(', '))} spending ahead of plan time</b><span class="m">Check upcoming bookings with the family.</span></div><span class="pill warn">Watch</span></li>`:''}`}
+ return `<div class="psec"><div class="row" style="justify-content:space-between;align-items:center"><h2>Funding at a glance</h2><button class="lnk" data-a="ctab" data-v="budget">Open budget</button></div><ul class="clist">${rows}</ul></div>`}
+function budTab(k){const b=BUD[k];if(!budOn(k))return '<div class="psec"><p class="m">No budget for this customer on the modules this account uses.</p></div>';
+ if(b.prog=='sah'){const n=sahNums(b);
+  return `<div class="psec"><div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><h2>Support at Home quarter: ${esc(b.period)}</h2><p class="m">${esc(b.left)}. Sample figures.</p></div>${modTag('care')}</div>
+  <div class="bnums"><div><span>Available</span><strong>${money(n.total)}</strong><em>${b.carry?`incl. ${money(b.carry)} carried over`:'quarterly budget'}</em></div><div><span>Care management</span><strong>${money(b.cm)}</strong><em>10% of the quarterly budget</em></div><div><span>Spent</span><strong>${money(n.spent)}</strong><em>on services so far</em></div><div><span>Booked</span><strong>${money(n.booked)}</strong><em>rest of the quarter</em></div><div><span>Not yet committed</span><strong>${money(n.free)}</strong><em>${Math.round(n.pct*100)}% committed</em></div></div>
+  ${bar([{c:'cm',v:b.cm/n.total,l:'Care management'},{c:'sp',v:n.spent/n.total,l:'Spent'},{c:'bk',v:n.booked/n.total,l:'Booked'}])}
+  <div class="blegend"><span><i class="cm"></i>Care management</span><span><i class="sp"></i>Spent</span><span><i class="bk"></i>Booked</span><span><i></i>Not yet committed</span></div></div>
+  <div class="pgrid"><div class="psec"><h2>By service type</h2><p class="m">The customer pays a contribution on some service types. Rates shown are this customer's sample rates.</p>
+  <div class="btab"><div class="bh"><span>Service type</span><span>Contribution</span><span>Spent</span><span>Booked</span><span>Customer pays so far</span></div>${b.cats.map(c=>`<div><span><b>${esc(c.n)}</b><em>${esc(c.d)}</em></span><span>${c.rate?(Math.round(c.rate*1000)/10)+'%':'None'}</span><span>${money(c.spent)}</span><span>${money(c.booked)}</span><span>${money(Math.round(c.spent*c.rate*100)/100)}</span></div>`).join('')}<div class="bt"><span><b>Total</b></span><span></span><span>${money(n.spent)}</span><span>${money(n.booked)}</span><span>${money(Math.round(n.share*100)/100)}</span></div></div></div>
+  <div class="pcol"><div class="psec"><h2>Care management</h2><p>${money(b.cmUsed)} of ${money(b.cm)} used this quarter.</p>${bar([{c:'sp',v:b.cmUsed/b.cm,l:'Used'}])}<p class="m">Taken from the quarterly budget for care partner work, including monthly check-ins.</p></div>
+  <div class="psec"><h2>Assistive technology and home modifications</h2><p>${esc(b.athm.tier)} tier: ${money(b.athm.amt)} (sample). ${money(b.athm.used)} used.</p>${bar([{c:'sp',v:b.athm.used/b.athm.amt,l:'Used'}])}<p class="m">Separate from the quarterly budget. Available until ${esc(b.athm.ends)}.</p></div>
+  <div class="psec"><h2>Unspent funds</h2><p class="m">Some unspent budget carries over to the next quarter, within program limits. ${b.carry?`${money(b.carry)} carried over from July to September.`:'Nothing carried over from last quarter.'}</p></div></div></div>`}
+ const n=ndisNums(b);
+ return `<div class="psec"><div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><h2>NDIS plan: ${esc(b.plan)}</h2><p class="m">${esc(b.mgmt)}. Plan is ${Math.round(b.elapsed*100)}% through. Sample figures.</p></div>${modTag(b.mod)}</div>
+ <div class="bnums"><div><span>Plan funding</span><strong>${money(n.a)}</strong><em>all budgets</em></div><div><span>Spent</span><strong>${money(n.spent)}</strong><em>${Math.round(n.spent/n.a*100)}% of funding</em></div><div><span>Left</span><strong>${money(n.left)}</strong><em>until the plan ends</em></div></div></div>
+ <div class="psec"><h2>By budget</h2><p class="m">The marker shows how far through the plan we are. A bar past the marker means spending is ahead of plan time.</p>
+ ${b.cats.map(c=>{const p=c.spent/c.a,ahead=p>b.elapsed+.05;return `<div class="bcat"><div class="row" style="justify-content:space-between;gap:8px;align-items:flex-start"><div><b>${esc(c.n)}</b><span class="m" style="display:block">${esc(c.d)}</span></div><div style="text-align:right"><b class="num">${money(c.a-c.spent)} left</b><span class="m" style="display:block">${money(c.spent)} of ${money(c.a)} spent</span></div></div><div class="bwrap">${bar([{c:'sp',v:p,l:'Spent'}])}<span class="bmark" style="left:${(b.elapsed*100).toFixed(1)}%" aria-hidden="true"></span></div>${ahead?'<span class="pill warn">Spending ahead of plan time</span>':p<b.elapsed-.25?'<span class="pill neu">Underused</span>':'<span class="pill ok">On track</span>'}</div>`}).join('')}</div>`}
+function acctTab(k){const l=LEDG[k];if(!budOn(k)||!l)return '<div class="psec"><p class="m">No account for this customer on the modules this account uses.</p></div>';
+ const b=BUD[k],a=acctNums(k),[bt,bc]=balTxt(a.bal),sah=b.prog=='sah',self=!!(b.mgmt&&b.mgmt.startsWith('Self'));
+ const govLab=sah?'Support at Home funding':self?'NDIS, paid by the family':'NDIS plan funding';
+ return `<div class="pgrid"><div class="psec"><h2>${govLab}</h2><dl class="dl"><dt>${self?'Reimbursed':'Claim paid'}</dt><dd class="num">${money(a.gPaid)}</dd><dt>Awaiting payment</dt><dd class="num">${money(a.gWait)}</dd><dt>Not yet claimed</dt><dd class="num">${money(a.gNot)}</dd><dt>Needs attention</dt><dd class="num">${a.gProb?`<span class="pill warn">${money(a.gProb)}</span>`:money(0)}</dd></dl></div>
+ <div class="psec"><h2>Customer account</h2>${sah?`<dl class="dl"><dt>Contributions billed</dt><dd class="num">${money(a.billed)}</dd><dt>Payments received</dt><dd class="num">${money(a.paid)}</dd><dt>Balance</dt><dd><span class="pill ${bc}">${bt}</span></dd><dt>Next statement</dt><dd class="num">${money(a.toBill)} to bill</dd></dl><div class="acts"><button class="btn sm ghost" data-a="tixtool" data-v="finance system">${ico('plus')}Record payment</button><button class="btn sm ghost" data-a="tixtool" data-v="statement builder">${ico('mail')}Send statement</button></div>`:`<p class="m">${self?'The family pays providers and claims from the NDIA. The hub tracks each claim so nothing is missed.':'No customer contributions on NDIS. Invoices are paid from the plan.'}</p>`}</div></div>
+ <div class="psec"><h2>Transactions</h2><p class="m">Each service is split by who pays: the government program and the customer.</p>
+ <div class="ltab"><div class="lh"><span>Date</span><span>Item</span><span>Funding bucket</span><span>${sah?'Government':'Plan'}</span><span>Customer</span><span>Status</span></div>${l.map(x=>x.pay!=null?`<div class="lpay"><span>${fmtS(x.d)}</span><span><b>${esc(x.i)}</b></span><span>Customer payment</span><span></span><span class="num">−${money(x.pay)}</span><span><span class="pill ok">Received</span></span></div>`:`<div><span>${fmtS(x.d)}</span><span><b>${esc(x.i)}</b>${x.p?`<em>${esc(P[x.p].name)}</em>`:''}</span><span>${esc(x.b)}</span><span class="num">${money(x.gov)}</span><span class="num">${x.cust?money(x.cust):'None'}</span><span><span class="pill ${STLD[x.st][0]}">${STLD[x.st][1]}</span></span></div>`).join('')}</div></div>`}
+/* ---------- claims and invoices inbox (sample data) ---------- */
+const PAYER={ndia:{n:'NDIA',via:'myplace bulk upload',href:'https://www.ndis.gov.au/providers/working-provider/myplace-provider-portal-and-resources'},sa:{n:'Services Australia',via:'Aged Care Provider Portal',href:'https://www.servicesaustralia.gov.au/aged-care-provider-portal'},family:{n:'Family claims',via:'claim pack sent to the family'}};
+const RATEOF={'Independence':.05,'Everyday living':.175,'Clinical care':0};
+S.inv=[
+ {id:'INV-3101',who:'noah',pid:'marcus',item:'House cleaning',code:'01_020_0120_1_1',qty:3,unit:'hrs',rate:65,limit:60.10,d:dAgo(1.1),b:'Core',payer:'ndia',mod:'plan',visit:true,abn:true,st:'held',note:'Sent back: over the NDIS price limit.'},
+ {id:'INV-3102',who:'noah',pid:'bright',item:'Physiotherapy session',code:'15_055_0128_1_3',qty:1,unit:'hr',rate:180,limit:193.99,d:dAgo(.4),b:'Capacity Building',payer:'ndia',mod:'plan',visit:true,abn:true,st:'ready'},
+ {id:'INV-3103',who:'noah',pid:'bright',item:'Physiotherapy session',code:'15_055_0128_1_3',qty:1,unit:'hr',rate:180,limit:193.99,d:dAgo(.4),b:'Capacity Building',payer:'ndia',mod:'plan',visit:true,abn:true,st:'ready'},
+ {id:'INV-3104',who:'margaret',pid:'lena',item:'Personal care, 2 visits',code:'Independence',qty:3,unit:'hrs',rate:72,limit:null,d:dAgo(2),b:'Independence',payer:'sa',mod:'care',visit:true,abn:true,st:'ready'},
+ {id:'INV-3105',who:'margaret',pid:'priya',item:'Cleaning, 1 visit',code:'Everyday living',qty:3,unit:'hrs',rate:62,limit:null,agreed:58,d:dAgo(1.5),b:'Everyday living',payer:'sa',mod:'care',visit:true,abn:true,st:'review'},
+ {id:'INV-3106',who:'arthur',pid:'grace',item:'Nursing visits, 2',code:'Clinical care',qty:2,unit:'visits',rate:110,limit:null,d:dAgo(3),b:'Clinical care',payer:'sa',mod:'care',visit:true,abn:true,st:'approved'},
+ {id:'INV-3107',who:'arthur',pid:'lena',item:'Personal care, 2 visits',code:'Independence',qty:3,unit:'hrs',rate:72,limit:null,d:dAgo(.8),b:'Independence',payer:'sa',mod:'care',visit:false,abn:true,st:'review'},
+ {id:'INV-3108',who:'jamie',pid:'omar',item:'Community outing, 4 hrs',code:'04_210_0125_6_1',qty:4,unit:'hrs',rate:60,limit:70.23,d:dAgo(2.5),b:'Core',payer:'family',mod:'platform',visit:true,abn:true,st:'ready'},
+ {id:'INV-3109',who:'jamie',pid:'dale',item:'Yard maintenance, 2 hrs',code:'01_019_0120_1_1',qty:2,unit:'hrs',rate:57,limit:null,d:dAgo(7),b:'Core',payer:'family',mod:'platform',visit:true,abn:true,st:'rejected',note:'NDIA rejected: support item did not match the plan category.'},
+ {id:'INV-3110',who:'margaret',pid:'lena',item:'Personal care, 6 visits',code:'Independence',qty:9,unit:'hrs',rate:72,limit:null,d:dAgo(12),b:'Independence',payer:'sa',mod:'care',visit:true,abn:true,st:'paid',batch:'CB-0418'}];
+S.batches=[{id:'CB-0418',payer:'sa',d:dAgo(10),ids:['INV-3110'],st:'paid',provPaid:true}];
+S.cq='open';S.isel=null;
+const IST={review:['warn','Needs review'],ready:['info','Ready to approve'],approved:['ok','In next claim batch'],claimed:['info','Claimed, awaiting payment'],paid:['ok','Paid'],held:['warn','Held'],rejected:['bad','Rejected']};
+const invAmt=v=>Math.round(v.qty*v.rate*100)/100;
+function invSplit(v){const amt=invAmt(v),r=v.payer=='sa'?(RATEOF[v.b]||0):0,cust=Math.round(amt*r*100)/100;return {amt,cust,gov:Math.round((amt-cust)*100)/100,r}}
+function invChecks(v){const c=[];
+ if(v.limit!=null)c.push([v.rate<=v.limit,'Price within NDIS limit',v.rate<=v.limit?`${money(v.rate)}/hr, limit ${money(v.limit)}/hr (sample)`:`${money(v.rate)}/hr is over the ${money(v.limit)}/hr limit by ${money(Math.round((v.rate-v.limit)*v.qty*100)/100)}`]);
+ if(v.agreed!=null)c.push([v.rate<=v.agreed,'Rate matches the service agreement',v.rate<=v.agreed?`${money(v.rate)}/hr as agreed`:`${money(v.rate)}/hr charged, ${money(v.agreed)}/hr agreed`]);
+ const bud=BUD[v.who];let left=null;if(bud){if(bud.prog=='sah'){const n=sahNums(bud);left=n.free}else{const cat=bud.cats.find(x=>x.n==v.b);left=cat?cat.a-cat.spent:null}}
+ if(left!=null)c.push([left>=invAmt(v),'Funding available',`${money(left)} ${bud.prog=='sah'?'not yet committed this quarter':'left in '+v.b}`]);
+ c.push([v.visit,'Matches confirmed visits',v.visit?'Check-in and check-out recorded for every visit':'1 visit has no check-out recorded']);
+ c.push([v.abn,'Provider details valid','ABN active, GST status matches the invoice']);
+ return c}
+function invPool(){return S.inv.filter(v=>modOn(v.mod)&&(!CUST[v.who]||CUST[v.who].mods.some(modOn)))}
+function invList(){const p=invPool();const f={open:v=>['review','ready'].includes(v.st),review:v=>v.st=='review',ready:v=>v.st=='ready',approved:v=>v.st=='approved',claimed:v=>v.st=='claimed',issues:v=>['held','rejected'].includes(v.st),all:v=>true}[S.cq]||(v=>true);
+ const ord=['review','ready','approved','held','rejected','claimed','paid'];return p.filter(f).sort((a,b)=>ord.indexOf(a.st)-ord.indexOf(b.st)||b.d-a.d)}
+function invRow(v){const[sc,sl]=IST[v.st],sp=invSplit(v),sel=isDesk()&&S.isel==v.id,fails=invChecks(v).filter(c=>!c[0]).length;
+ return `<button class="qrow irow ${sel?'sel':''}" data-a="invopen" data-v="${v.id}" ${sel?'aria-current="true"':''}><span class="sd ${fails?'warn':'okd'}"></span><span class="id">${v.id}</span><span class="is"><b>${esc(P[v.pid].name)}: ${esc(v.item)}</b><span>${esc(P[v.who].name)} · ${esc(v.b)}${modTag(v.mod)}</span></span><span class="ow">${esc(PAYER[v.payer].n)}</span><span class="stc"><span class="pill ${sc}">${sl}</span>${fails&&['review','ready'].includes(v.st)?`<span class="m" style="display:block;font-size:.75rem;margin-top:2px">${fails} check${fails>1?'s':''} failed</span>`:''}</span><span class="du num" style="color:var(--ink)">${money(sp.amt)}</span></button>`}
+function invDetail(v){const[sc,sl]=IST[v.st],sp=invSplit(v),ch=invChecks(v),fails=ch.filter(c=>!c[0]).length;
+ const acts=v.st=='ready'?[['approve','Approve for claim','p']]:v.st=='review'?[['sendback','Send back to provider','ghost'],['approve','Approve anyway','ghost']]:v.st=='approved'?[['unapprove','Remove from batch','ghost']]:v.st=='held'?[['reissued','Corrected invoice received','p']]:v.st=='rejected'?[['fix','Fix and resubmit','p']]:[];
+ return `<div class="dh"><span class="ref">${v.id} · received ${durTxt(Date.now()-v.d)} ago</span><h2>${esc(P[v.pid].name)}: ${esc(v.item)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center"><span class="pill ${sc}">${sl}</span>${modTag(v.mod)}</div></div>
+ <div class="dpeople"><button class="dperson btnp" data-a="sopen" data-v="c:${v.who}">${face(v.who,36)}<span class="grow"><b>${esc(P[v.who].name)}</b><span>Customer · ${esc(CUST[v.who].fund)}</span></span></button><button class="dperson btnp" data-a="sopen" data-v="p:${v.pid}">${face(v.pid,36)}<span class="grow"><b>${esc(P[v.pid].name)}</b><span>${esc(PROV[v.pid]?.type||'Provider')}</span></span></button></div>
+ <div class="dsec"><h3>Invoice</h3><dl class="dl"><dt>Service</dt><dd>${esc(v.item)}<br><span class="m">${esc(v.code)}</span></dd><dt>Quantity</dt><dd class="num">${v.qty} ${v.unit} at ${money(v.rate)}</dd><dt>Total</dt><dd class="num"><b>${money(sp.amt)}</b></dd><dt>Funding bucket</dt><dd>${esc(v.b)}</dd><dt>Claim to</dt><dd>${esc(PAYER[v.payer].n)}, ${esc(PAYER[v.payer].via)}</dd></dl></div>
+ <div class="dsec"><h3>Who pays</h3><div class="wsplit"><div><span>${v.payer=='sa'?'Support at Home':v.payer=='family'?'NDIS, claimed by family':'NDIS plan'}</span><strong>${money(sp.gov)}</strong></div><div><span>Customer contribution${sp.r?` (${Math.round(sp.r*1000)/10}%)`:''}</span><strong>${money(sp.cust)}</strong></div></div></div>
+ <div class="dsec"><h3>Automatic checks</h3><ul class="ichk">${ch.map(([ok,n,d])=>`<li class="${ok?'cy':'cn'}">${ico(ok?'check':'excl')}<div><b>${esc(n)}</b><span class="m">${esc(d)}</span></div></li>`).join('')}</ul>${fails?`<p class="m">${fails} check${fails>1?'s':''} failed. Approve anyway only with a reason in the note.</p>`:''}</div>
+ ${v.note?`<div class="dsec"><h3>Note</h3><p>${esc(v.note)}</p></div>`:''}
+ ${acts.length?`<div class="dsec"><h3>Next step</h3><div class="acts">${acts.map(([k,l,c])=>`<button class="btn sm ${c}" data-a="invact" data-v="${v.id}|${k}">${esc(l)}</button>`).join('')}</div></div>`:''}
+ ${v.batch?`<p class="m">In claim batch ${v.batch}.</p>`:''}`}
+V.sclaims=()=>{const p=invPool(),cnt=f=>p.filter(f).length,sum=f=>p.filter(f).reduce((a,v)=>a+invAmt(v),0);
+ const tab=S.ctabC||'inv';
+ const head=`<div class="qtop"><div><h1>Claims and invoices</h1><p class="m">Check invoices, approve them, then claim from the right payer in batches.</p></div></div>
+ <div class="otabs" role="tablist" style="align-self:flex-start">${[['inv','Invoices',cnt(v=>['review','ready'].includes(v.st))],['batch','Claim batches',cnt(v=>v.st=='approved')]].map(([k,l,n])=>`<button role="tab" data-a="ctabc" data-v="${k}" class="${tab==k?'on':''}" aria-selected="${tab==k}">${l}${n?`<span class="n">${n}</span>`:''}</button>`).join('')}</div>`;
+ if(tab=='batch')return head+batchView();
+ const list=invList();if(isDesk()&&(!S.isel||!list.some(v=>v.id==S.isel)))S.isel=list[0]?.id||null;const cur=S.inv.find(v=>v.id==S.isel);
+ const k=[['review','Needs review',cnt(v=>v.st=='review'),''],['ready','Ready to approve',cnt(v=>v.st=='ready'),''],['approved','In next batch',money(sum(v=>v.st=='approved')),''],['claimed','Awaiting payment',money(sum(v=>v.st=='claimed')),'kx'],['issues','Held or rejected',cnt(v=>['held','rejected'].includes(v.st)),'kx']];
+ return head+`<div class="kpis" role="group" aria-label="Filter invoices">${k.map(([key,l,n,c])=>`<button class="kpi ${c} ${S.cq==key?'on':''} ${key=='review'&&n?'hot':''}" data-a="cq" data-v="${key}" aria-pressed="${S.cq==key}"><span>${l}</span><strong>${n}</strong></button>`).join('')}</div>
+ <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${[['open','To do'],['all','All'],['claimed','Claimed'],['issues','Held or rejected']].map(([key,l])=>`<button data-a="cq" data-v="${key}" class="${S.cq==key?'on':''}" aria-pressed="${S.cq==key}">${l}</button>`).join('')}</div></div>
+ <div class="qtable">${list.length?`<div class="qrow qh irow" aria-hidden="true"><span></span><span class="id">Ref</span><span>Invoice</span><span class="ow">Claim to</span><span class="stc">Status</span><span style="text-align:right">Amount</span></div>`+list.map(invRow).join(''):'<p class="qempty">Nothing here. New invoices arrive by email or upload and are checked automatically.</p>'}</div></div>
+ <aside class="qdetail" aria-label="Invoice detail">${cur?`<div class="dpane">${invDetail(cur)}</div>`:'<p class="qempty">Select an invoice.</p>'}</aside></div>`};
+function batchView(){const p=invPool(),ready=['ndia','sa','family'].map(k=>({k,items:p.filter(v=>v.st=='approved'&&v.payer==k)})).filter(g=>g.items.length),bs=S.batches.filter(b=>b.ids.some(id=>p.some(v=>v.id==id))).slice().sort((a,b)=>b.d-a.d);
+ return `<div class="psec"><h2>Ready to claim</h2><p class="m">Approved invoices, grouped by who you claim from.</p>${ready.length?ready.map(g=>{const pay=PAYER[g.k],tot=g.items.reduce((a,v)=>a+invSplit(v).gov,0);return `<div class="bgrp"><div class="row" style="justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><b>${esc(pay.n)}</b><span class="m" style="display:block">${g.items.length} invoice${g.items.length>1?'s':''} · ${esc(pay.via)}</span></div><div class="row" style="gap:12px;align-items:center"><strong class="num">${money(tot)}</strong><button class="btn sm p" data-a="mkbatch" data-v="${g.k}">${g.k=='family'?'Send claim packs':'Create claim batch'}</button></div></div><ul class="clist" style="margin-top:8px">${g.items.map(v=>`<li><div class="grow"><b>${esc(P[v.pid].name)}: ${esc(v.item)}</b><span class="m">${esc(P[v.who].name)} · ${esc(v.b)}</span></div><span class="num">${money(invSplit(v).gov)}</span></li>`).join('')}</ul></div>`}).join(''):'<p class="m">Nothing approved yet. Approve invoices on the Invoices tab.</p>'}</div>
+ <div class="psec"><h2>Claim batches</h2>${bs.length?`<ul class="clist">${bs.map(b=>{const items=S.inv.filter(v=>b.ids.includes(v.id)),tot=items.reduce((a,v)=>a+invSplit(v).gov,0),pay=PAYER[b.payer];return `<li><span class="ic-w">${ico('folder')}</span><div class="grow"><b>${b.id} · ${esc(pay.n)}</b><span class="m">${items.length} invoice${items.length>1?'s':''} · ${fmtDT(b.d)}</span></div><span class="num" style="font-weight:700">${money(tot)}</span><span class="pill ${b.st=='paid'?'ok':'info'}">${b.st=='paid'?(b.provPaid?'Paid, providers paid':'Paid'):b.payer=='family'?'Sent to family':'Submitted'}</span>${b.st!='paid'?`<button class="btn sm ghost" data-a="bpaid" data-v="${b.id}">${b.payer=='family'?'Family claimed':'Mark paid'}</button>`:!b.provPaid?`<button class="btn sm p" data-a="bprov" data-v="${b.id}">Pay providers</button>`:''}${pay.href&&b.st!='paid'?`<a class="btn sm ghost" href="${pay.href}" target="_blank" rel="noopener">${ico('ext')}Portal</a>`:''}</li>`}).join('')}</ul>`:'<p class="m">No batches yet.</p>'}
+ <p class="m">In a live setup, a batch creates the bulk upload file for the portal, and payment results are matched back automatically.</p></div>`}
+function invSheet(id,x){const v=S.inv.find(z=>z.id==id);return `<div class="sheet-h"><span></span>${x}</div><div class="dpane">${invDetail(v)}</div>`}
+function claimAct(a,v){switch(a){
+ case'ctabc':S.ctabC=v;return;
+ case'cq':S.cq=v;S.ctabC='inv';return;
+ case'invopen':if(isDesk()){S.isel=v;S.sheet=null}else S.sheet={type:'inv',k:v};return;
+ case'invact':{const[id,k]=v.split('|'),i=S.inv.find(z=>z.id==id);
+  if(k=='approve'){i.st='approved';toast('Approved. Added to the next claim batch.')}
+  else if(k=='unapprove'){i.st='ready';toast('Removed from the batch')}
+  else if(k=='sendback'){i.st='held';i.note='Sent back to the provider with the failed checks.';S.corr.push({e:'p:'+i.pid,t:Date.now(),ch:'email',dir:'out',w:i.pid,sub:'Invoice '+i.id+' returned',note:invChecks(i).filter(c=>!c[0]).map(c=>c[2]).join('. ')+'.',by:'Kim Nguyen',mod:i.mod});toast('Sent back and saved to the provider record')}
+  else if(k=='reissued'){if(i.limit!=null)i.rate=i.limit;if(i.agreed!=null)i.rate=i.agreed;i.visit=true;i.st='ready';i.note='Corrected invoice received.';toast('Corrected. Ready to approve.')}
+  else if(k=='fix'){i.code='01_019_0120_1_1 (corrected category)';i.st='approved';i.note='Support item fixed. Included in the next family claim pack.';toast('Fixed and added to the next batch')}
+  if(S.sheet&&S.sheet.type=='inv'&&!['approve'].includes(k))S.sheet={type:'inv',k:id};else if(S.sheet&&S.sheet.type=='inv')S.sheet=null;return}
+ case'mkbatch':{const ids=invPool().filter(x=>x.st=='approved'&&x.payer==v).map(x=>x.id);if(!ids.length)return false;const id='CB-0'+(418+S.batches.length);S.batches.push({id,payer:v,d:Date.now(),ids,st:'submitted',provPaid:false});
+  ids.forEach(z=>{const i=S.inv.find(y=>y.id==z);i.st='claimed';i.batch=id;const sp=invSplit(i),L=LEDG[i.who];if(L){const ex=L.find(l=>l.inv==i.id);if(ex){ex.st='claimed';ex.gov=sp.gov;ex.cust=sp.cust}else L.unshift({d:iso(new Date()),i:i.item,p:i.pid,b:i.b,gov:sp.gov,cust:sp.cust,st:'claimed',inv:i.id})}});
+  toast(v=='family'?'Claim packs sent to the family':'Claim batch '+id+' created');return}
+ case'bpaid':{const b=S.batches.find(z=>z.id==v);if(!b)return false;b.st='paid';b.ids.forEach(z=>{const i=S.inv.find(y=>y.id==z);i.st='paid';(LEDG[i.who]||[]).forEach(l=>{if(l.inv==i.id)l.st=b.payer=='family'?'reimb':'paid'})});toast('Payment recorded');return}
+ case'bprov':{const b=S.batches.find(z=>z.id==v);if(!b)return false;b.provPaid=true;toast('Provider payments sent');return}
+ }return 'na'}
+/* ---------- records: correspondence and documents (shared by customers and providers) ---------- */
+function corrList(e,n){const l=S.corr.filter(c=>c.e==e&&modOn(c.mod)).sort((a,b)=>b.t-a.t).slice(0,n||999);
+ return l.length?`<div class="ctable">${l.map(c=>`<div class="crow"><span class="cic">${ico(CH[c.ch][0])}</span><div class="grow"><b>${esc(c.sub)}</b><span class="m">${CH[c.ch][1]} ${c.dir=='in'?'from':'to'} ${esc(P[c.w]?.name||'')} · logged by ${esc(c.by)}</span><p>${esc(c.note)}</p></div><span class="cdt">${fmtDT(c.t)}</span></div>`).join('')}</div>`:'<p class="m">No correspondence yet.</p>'}
+function corrForm(e){const[k,id]=e.split(':'),opts=k=='c'?[CUST[id].rep,id].filter(Boolean):[id];
+ return `<div class="cform"><div class="cf-row"><label>Channel<select id="cf-ch" class="osel">${Object.entries(CH).filter(([c])=>c!='app').map(([c,[,l]])=>`<option value="${c}">${l}</option>`).join('')}</select></label><label>Direction<select id="cf-dir" class="osel"><option value="out">Outgoing</option><option value="in">Incoming</option></select></label><label>With<select id="cf-w" class="osel">${[...new Set(opts)].map(o=>`<option value="${o}">${esc(P[o].name)}</option>`).join('')}</select></label></div>
+ <label>Subject<input id="cf-sub" class="oin" placeholder="For example, Monthly check-in"></label><label>Summary<textarea id="cf-note" rows="3" placeholder="What was discussed or agreed"></textarea></label><div><button class="btn sm p" data-a="corradd" data-v="${e}">Save to record</button></div></div>`}
+function docsTable(docs){const l=docs.filter(d=>modOn(d[1]));
+ return `<div class="qtable">${l.map(([n,m,st,d])=>`<div class="drow"><span class="ic-w">${ico('file')}</span><div class="grow"><b>${esc(n)}</b><span class="m">${esc(d)}</span></div>${modTag(m)}<span class="pill ${STL[st][0]}">${STL[st][1]}</span><button class="btn sm ghost" data-a="docview">View</button></div>`).join('')}</div><div><button class="btn sm ghost" data-a="docup">${ico('upload')}Upload document</button></div>`}
+const openOf=(fn)=>tixPool().filter(fn);
+const compRows=l=>l.length?`<ul class="clist">${l.map(([n,d,st,m])=>`<li><span class="sd ${st=='bad'?'crit':st=='due'?'warn':'okd'}" style="width:8px;height:8px;border-radius:50%;flex:none"></span><div class="grow"><b>${esc(n)}</b><span class="m">${esc(d)}</span></div>${modTag(m)}</li>`).join('')}</ul>`:'<p class="m">Everything is up to date.</p>';
+function profTabs(cur,tabs,act){return `<div class="otabs ptabs" role="tablist">${tabs.map(([v,l,n])=>`<button role="tab" data-a="${act}" data-v="${v}" class="${cur==v?'on':''}" aria-selected="${cur==v}">${l}${n?`<span class="n">${n}</span>`:''}</button>`).join('')}</div>`}
+
+V.scust=()=>{if(S.cust&&CUST[S.cust]&&CUST[S.cust].mods.some(modOn))return custProfile(S.cust);S.cust=null;
+ const ks=Object.keys(CUST).filter(k=>CUST[k].mods.some(modOn));
+ return `<div class="qtop"><div><h1>Customers</h1><p class="m">Everyone this account supports, with their services, contacts and open work.</p></div></div>
+ <div class="qtable"><div class="lrow lh" aria-hidden="true"><span></span><span>Customer</span><span>Services</span><span>Main contact</span><span>Last contact</span><span style="text-align:right">Open items</span></div>
+ ${ks.map(k=>{const c=CUST[k],p=P[k],open=openOf(t=>t.who==k&&t.st!='done'),last=S.corr.filter(x=>x.e=='c:'+k&&x.ch!='app').sort((a,b)=>b.t-a.t)[0];
+  return `<button class="lrow" data-a="sopen" data-v="c:${k}">${face(k,32)}<span class="is"><b>${esc(p.name)}</b><span>${c.id} · ${esc(c.fund)}</span></span><span class="mods">${c.mods.filter(modOn).map(modTag).join('')}</span><span class="lc">${esc(P[c.rep||k].name)}</span><span class="lc">${last?durTxt(Date.now()-last.t)+' ago':'None'}</span><span class="du ${open.some(t=>tixDue(t)<Date.now())?'over':''}">${open.length}</span></button>`}).join('')}</div>`};
+function custProfile(k){const c=CUST[k],p=P[k],e='c:'+k,rep=c.rep?P[c.rep]:null,tab=S.ctab||'over',items=openOf(t=>t.who==k),nOpen=items.filter(t=>t.st!='done').length;
+ return `<div><button class="back" data-a="sback" data-v="scust">${ico('chevl')}All customers</button></div>
+ <div class="phead">${face(k,56)}<div class="grow"><h1>${esc(p.name)}</h1><p class="m">${c.id} · ${esc(c.fund)} · ${esc(c.addr)}</p><div class="mods">${c.mods.filter(modOn).map(modTag).join('')}</div></div>
+ <div class="acts"><a class="btn sm ghost" href="${tel(c.phone)}">${ico('phone')}Call ${esc((rep||p).name.split(' ')[0])}</a>${c.email?`<a class="btn sm ghost" href="mailto:${c.email}">${ico('mail')}Email</a>`:''}<button class="btn sm p" data-a="ctab" data-v="corr">${ico('plus')}Log correspondence</button></div></div>
+ ${profTabs(tab,[['over','Overview'],...(budOn(k)?[['budget','Budget'],['acct','Account']]:[]),['corr','Correspondence'],['docs','Documents'],['work','Work items',nOpen]],'ctab')}
+ ${tab=='over'?custOver(k):tab=='budget'?budTab(k):tab=='acct'?acctTab(k):tab=='corr'?`<div class="pgrid"><div class="psec"><h2>Log correspondence</h2>${corrForm(e)}</div><div class="psec"><h2>History</h2>${corrList(e)}</div></div>`:tab=='docs'?`<div class="psec"><h2>Documents</h2>${docsTable(c.docs)}</div>`:`<div class="qtable">${items.length?items.sort(tixSort).map(tixRow).join(''):'<p class="qempty">No work items for this customer.</p>'}</div>`}`}
+function custOver(k){const c=CUST[k],rep=c.rep?P[c.rep]:null,comp=[];
+ if(modOn('care')&&c.contact&&c.mods.includes('care')){const left=30-c.contact.last;comp.push(['Monthly care contact',`Last contact ${c.contact.last?c.contact.last+' days ago':'today'}. ${left<0?'Overdue':left<=1?'Due today':'Due in '+left+' days'}.`,left<=2?'due':'ok','care'])}
+ c.docs.filter(d=>d[2]!='ok'&&modOn(d[1])).forEach(d=>comp.push([d[0],d[3],d[2],d[1]]));
+ openOf(t=>t.who==k&&t.st!='done'&&t.kind=='esc').forEach(t=>comp.push([t.title,tixDueTxt(t)[0],'bad',tMod(t)]));
+ const dl=[['Client ID',c.id],['Funding',c.fund+'\n'+c.fundD],['Address',c.addr],['Main contact',rep?`${rep.name}, ${c.repRole}`:c.repRole],['Phone',c.phone],['Email',c.email||'None. Use phone or letter.'],['Care partner',c.partner?P[c.partner].name:'Not applicable'],['Agreed contact',c.contact?c.contact.mode:'As needed'],['Preferences',c.pref],['Customer since',c.since]];
+ return `<div class="pgrid"><div class="pcol"><div class="psec"><h2>Details</h2><dl class="dl">${dl.map(([a,b])=>`<dt>${a}</dt><dd>${esc(b).replace('\n','<br><span class="m">')+(b.includes('\n')?'</span>':'')}</dd>`).join('')}</dl></div>
+ <div class="psec"><h2>Workers and providers</h2><ul class="clist">${c.providers.filter(x=>PROV[x]).map(x=>`<li><button class="plink" data-a="sopen" data-v="p:${x}">${face(x,32)}<span class="grow"><b>${esc(P[x].name)}</b><span class="m">${esc(P[x].title||'')}</span></span>${ico('chev')}</button></li>`).join('')}</ul></div></div>
+ <div class="pcol">${budGlance(k)}<div class="psec"><h2>Needs attention</h2>${compRows(comp)}</div>
+ <div class="psec"><div class="row" style="justify-content:space-between;align-items:center"><h2>Recent correspondence</h2><button class="lnk" data-a="ctab" data-v="corr">See all</button></div>${corrList('c:'+k,3)}</div></div></div>`}
+
+V.sprov=()=>{if(S.prov&&PROV[S.prov])return provProfile(S.prov);S.prov=null;
+ const ks=Object.keys(PROV);
+ return `<div class="qtop"><div><h1>Workers and providers</h1><p class="m">Everyone who delivers services to your customers, with their checks and paperwork.</p></div></div>
+ <div class="qtable"><div class="lrow lh" aria-hidden="true"><span></span><span>Name</span><span>Registration</span><span>Customers</span><span>Checks</span><span style="text-align:right">Open items</span></div>
+ ${ks.map(k=>{const v=PROV[k],p=P[k],bad=v.docs.filter(d=>d[2]=='bad').length,due=v.docs.filter(d=>d[2]=='due').length,open=openOf(t=>t.pid==k&&t.st!='done');
+  return `<button class="lrow" data-a="sopen" data-v="p:${k}">${face(k,32)}<span class="is"><b>${esc(p.name)}</b><span>${esc(p.title||v.type)}</span></span><span class="lc">${esc(v.reg)}</span><span class="lc">${v.clients.map(x=>esc(P[x].first||P[x].name)).join(', ')}</span><span class="lc">${bad?'<span class="pill bad">Action needed</span>':due?'<span class="pill warn">Due soon</span>':'<span class="pill ok">All current</span>'}</span><span class="du ${open.some(t=>tixDue(t)<Date.now())?'over':''}">${open.length}</span></button>`}).join('')}</div>`};
+function provProfile(k){const v=PROV[k],p=P[k],e='p:'+k,tab=S.ptab||'over',items=openOf(t=>t.pid==k),nOpen=items.filter(t=>t.st!='done').length,nChk=v.docs.filter(d=>d[2]!='ok').length;
+ return `<div><button class="back" data-a="sback" data-v="sprov">${ico('chevl')}All workers and providers</button></div>
+ <div class="phead">${face(k,56)}<div class="grow"><h1>${esc(p.name)}</h1><p class="m">${esc(p.title||'')} · ${esc(v.type)} · ABN ${esc(v.abn)}</p><div class="mods"><span class="mtag">${esc(v.reg)}</span></div></div>
+ <div class="acts"><a class="btn sm ghost" href="${tel(v.phone)}">${ico('phone')}Call</a><a class="btn sm ghost" href="mailto:${v.email}">${ico('mail')}Email</a><button class="btn sm p" data-a="ctab" data-v="corr">${ico('plus')}Log correspondence</button></div></div>
+ ${profTabs(tab,[['over','Overview'],['docs','Checks and documents',nChk],['corr','Correspondence'],['work','Work items',nOpen]],'ctab')}
+ ${tab=='over'?provOver(k):tab=='corr'?`<div class="pgrid"><div class="psec"><h2>Log correspondence</h2>${corrForm(e)}</div><div class="psec"><h2>History</h2>${corrList(e)}</div></div>`:tab=='docs'?`<div class="psec"><h2>Checks and documents</h2>${docsTable(v.docs)}</div>`:`<div class="qtable">${items.length?items.sort(tixSort).map(tixRow).join(''):'<p class="qempty">No work items for this provider.</p>'}</div>`}`}
+const PINV={lena:[['Showering and dressing','margaret',1.5,72]],priya:[['House cleaning','margaret',3,62]],marcus:[['House cleaning','noah',3,65]],dale:[['Yard maintenance','jamie',2,57]],omar:[['Community outing','jamie',4,60]],grace:[['Nursing visit','arthur',1,110]],bright:[['Physiotherapy session','noah',1,180],['Physiotherapy session','noah',1,180]]};
+function provOver(k){const v=PROV[k],p=P[k],invs=(PINV[k]||[]).map(([item,who,hrs,rate])=>({item,who,hrs,rate})).filter(i=>CUST[i.who].mods.some(modOn));
+ const dl=[['Business type',v.type],['ABN',v.abn],['Registration',v.reg],['Services',p.title||''],['Usual rate',p.rate?money(p.rate)+' an hour':'Varies by service'],['Languages',(p.langs||['English']).join(', ')],['Phone',v.phone],['Email',v.email],['Working with us since',v.since]];
+ return `<div class="pgrid"><div class="pcol"><div class="psec"><h2>Details</h2><dl class="dl">${dl.map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join('')}</dl></div>
+ <div class="psec"><h2>Customers</h2><ul class="clist">${v.clients.map(x=>`<li><button class="plink" data-a="sopen" data-v="c:${x}">${face(x,32)}<span class="grow"><b>${esc(P[x].name)}</b><span class="m">${esc(CUST[x]?.fund||'')}</span></span>${ico('chev')}</button></li>`).join('')}</ul></div></div>
+ <div class="pcol"><div class="psec"><h2>Checks needing attention</h2>${compRows(v.docs.filter(d=>d[2]!='ok').map(d=>[d[0],d[3],d[2],d[1]]))}</div>
+ ${invs.length&&(S.mods.plan||S.mods.platform)?`<div class="psec"><h2>Recent invoices</h2><ul class="clist">${invs.map(i=>`<li><span class="ic-w">${ico('wallet')}</span><div class="grow"><b>${esc(i.item)} for ${esc(P[i.who].first)}</b><span class="m">${i.hrs} hrs at ${money(i.rate)}/hr</span></div><span class="num" style="font-weight:700">${money(i.hrs*i.rate)}</span></li>`).join('')}</ul></div>`:''}
+ <div class="psec"><div class="row" style="justify-content:space-between;align-items:center"><h2>Recent correspondence</h2><button class="lnk" data-a="ctab" data-v="corr">See all</button></div>${corrList('p:'+k,3)}</div></div></div>`}
+function tixLog(t,x,k){t.log.push({t:Date.now(),by:'Kim Nguyen',x,k})}
+function addCorr(t,c){const e=c.to||(t.who?'c:'+t.who:'p:'+t.pid),w=c.to?c.to.split(':')[1]:t.who?(CUST[t.who]?.rep||t.who):t.pid;
+ S.corr.push({e,t:Date.now(),ch:c.ch,dir:c.dir,w,sub:c.sub,note:c.note,by:'Kim Nguyen',mod:tMod(t)})}
+function staffAct(a,v,el){const ca=claimAct(a,v);if(ca!=='na')return ca;switch(a){
+ case'fdesk':S.fd=!S.fd;if(S.fd&&S.sheet?.type=='tix'){S.tsel=S.sheet.k}S.sheet=null;window.scrollTo(0,0);return;
+ case'tq':S.tq=v;S.tqd=null;S.tqk=v=='all'?'open':v=='mine'?'mine':null;return;
+ case'tqk':S.tqk=v;S.tqd=['over','today','week'].includes(v)?v:null;S.tq=v=='week'?'sched':v=='mine'?'mine':'all';S.tqt='all';return;
+ case'snav':S.tab=v;if(v=='scust')S.cust=null;if(v=='sprov')S.prov=null;S.sheet=null;window.scrollTo(0,0);return;
+ case'tixopen':{const t=S.tix.find(z=>z.id==v);if(isDesk()){if(S.tab!='squeue'){S.tab='squeue';S.tq=t.st=='done'?'done':'all';S.tqt='all';window.scrollTo(0,0)}S.tsel=v;S.sheet=null}else S.sheet={type:'tix',k:v};return}
+ case'tixtool':toast('In a live setup this opens the provider\'s '+v+'.');return false;
+ case'tixown':{const t=S.tix.find(z=>z.id==v);if(t.owner=='kim'){t.owner=null;tixLog(t,'Unassigned myself.')}else{t.owner='kim';if(t.st=='open')t.st='prog';tixLog(t,'Assigned to me.')}return}
+ case'tixact':{const[id,k]=v.split('|'),t=S.tix.find(z=>z.id==id),ac=TIX_ACTS[t.type].find(z=>z.k==k);if(!t.owner)t.owner='kim';tixLog(t,ac.log,k);t.st=ac.st;if(ac.st=='done')t.closed=Date.now();
+  if(ac.corr)addCorr(t,ac.corr);
+  if(t.type=='checkin'&&(k=='ok'||k=='fu')&&CUST[t.who]?.contact)CUST[t.who].contact.last=0;
+  if(t.type=='checkin'&&k=='na'){t.due=Date.now()+864e5;t.log=t.log.filter(l=>l.k!='na');t.log.push({t:Date.now(),by:'app',x:'Moved to tomorrow after no answer.'})}
+  if(ac.fam)addNote('family',ac.fam[0],ac.fam[1],ac.fam[2],{tab:'home'});toast(ac.st=='done'?'Done':ac.corr?'Logged and saved to record':'Logged');return}
+ case'tixnote':case'tixdone':{const t=S.tix.find(z=>z.id==v),n=($('#tixnote')||{}).value?.trim();if(!n){toast(a=='tixdone'?'Add a note saying how it was closed':'Type a note first');return false}if(!t.owner)t.owner='kim';tixLog(t,n);if(a=='tixdone'){t.st='done';t.closed=Date.now();toast('Done')}else{if(t.st=='open')t.st='prog';toast('Note added')}return}
+ case'sopen':{const[k,id]=v.split(':');if(!id||id=='null'||id=='undefined')return false;if(k=='c'){if(!CUST[id])return false;S.tab='scust';S.cust=id;S.ctab='over'}else{if(!PROV[id])return false;S.tab='sprov';S.prov=id;S.ptab='over'}S.sheet=null;window.scrollTo(0,0);return}
+ case'sgo':{const[e,tb]=v.split('|'),id=e.split(':')[1];if(!CUST[id])return false;S.tab='scust';S.cust=id;S.ctab=tb;S.sheet=null;window.scrollTo(0,0);return}
+ case'sback':if(v=='scust')S.cust=null;else S.prov=null;window.scrollTo(0,0);return;
+ case'ctab':if(S.tab=='sprov')S.ptab=v;else S.ctab=v;return;
+ case'corradd':{const g=id=>($('#'+id)||{}).value?.trim()||'',sub=g('cf-sub'),note=g('cf-note');if(!sub&&!note){toast('Add a subject or summary first');return false}
+  const ch=g('cf-ch'),dir=g('cf-dir'),[k,id]=v.split(':');S.corr.push({e:v,t:Date.now(),ch,dir,w:g('cf-w'),sub:sub||'Note',note,by:'Kim Nguyen',mod:'core'});
+  if(k=='c'&&dir=='out'&&(ch=='call'||ch=='visit')&&CUST[id]?.contact)CUST[id].contact.last=0;toast('Saved to record');return}
+ case'docview':toast('In a live setup this opens the file from the provider\'s document store.');return false;
+ case'docup':toast('In a live setup this uploads the file to the record and asks for an expiry date.');return false;
+ }return 'na'}
+
+setInterval(()=>{const n=document.getElementById('tixnote'),ae=document.activeElement;if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet&&!(n&&n.value)&&!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))R()},60000);
+document.addEventListener('change',e=>{if(e.target.id=='tqtype'){S.tqt=e.target.value;R()}else if(e.target.dataset&&e.target.dataset.mod){S.mods[e.target.dataset.mod]=e.target.checked;R()}});
+{let dw=null;addEventListener('resize',()=>{document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));const d=isDesk();if(S.role=='staff'&&d!==dw){dw=d;if(d&&S.sheet?.type=='tix'){S.tsel=S.sheet.k;S.sheet=null}R()}})}
+
 R();
 </script>
 
