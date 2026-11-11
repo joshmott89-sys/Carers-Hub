@@ -594,6 +594,42 @@ button.kpi.on{background:var(--sel);box-shadow:inset 0 -3px 0 var(--brand)}
 .bgrp{padding:14px 0;border-top:1px solid var(--line)}.bgrp:first-of-type{border-top:0}
 .psec .clist li .btn{flex:none}
 @media (max-width:1023px){.psec .clist li{flex-wrap:wrap}}
+
+/* ---------- today's roster and incidents register ---------- */
+.vrow{display:grid;grid-template-columns:82px minmax(0,1fr);gap:6px 12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line)}
+.vrow:first-child{border-top:0}
+.vrow .tm{font-weight:700;font-variant-numeric:tabular-nums;font-size:.875rem;line-height:1.35}
+.vrow .tm span{display:block;font-weight:600;font-size:.75rem;color:var(--mute)}
+.vrow .is b{display:block;font-size:.9375rem;line-height:1.35}
+.vrow .is span{display:block;font-size:.8125rem;color:var(--mute)}
+.vrow .is .au{display:flex;gap:6px;align-items:flex-start;margin-top:4px;color:var(--ink)}
+.vrow .is .au .ic{width:14px;height:14px;flex:none;margin-top:3px;color:var(--ok)}
+.vrow .ck,.vrow .stc,.vrow .va{grid-column:2}
+.vrow .ck{font-size:.8125rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.vrow .va{display:flex;gap:6px;flex-wrap:wrap}
+.vrow .va .btn{text-decoration:none}
+.vrow.vh{display:none}
+.vsub{padding:8px 14px;font-size:.75rem;font-weight:700;color:var(--mute);background:var(--bg);border-top:1px solid var(--line)}
+.asof{display:inline-flex;align-items:center;gap:6px;font-size:.8125rem;color:var(--mute);font-weight:600}
+.asof .ic{width:14px;height:14px}
+.isug{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:8px;background:var(--panel);border:1px solid var(--line)}
+.isug .ic{width:16px;height:16px;flex:none;margin-top:3px;color:var(--ok)}
+.isug b{display:block;font-size:.8125rem}.isug span{font-size:.875rem}
+.iclock{font-size:.875rem}.iclock b{font-variant-numeric:tabular-nums}
+@media (min-width:1024px){
+ .vrow{grid-template-columns:92px minmax(0,1.3fr) minmax(0,.9fr) 124px minmax(200px,.9fr);align-items:center;padding:10px 14px}
+ .vrow .ck,.vrow .stc,.vrow .va{grid-column:auto}
+ .vrow .va{justify-content:flex-end}
+ .vrow.vh{display:grid;background:var(--bg);font-size:.75rem;font-weight:600;color:var(--mute);padding-block:8px}
+}
+:root.fd .vrow{grid-template-columns:92px minmax(0,1.3fr) minmax(0,.9fr) 124px minmax(200px,.9fr);align-items:center;padding:10px 14px}
+:root.fd .vrow .ck,:root.fd .vrow .stc,:root.fd .vrow .va{grid-column:auto}
+:root.fd .vrow .va{justify-content:flex-end}
+:root.fd .vrow.vh{display:grid;background:var(--bg);font-size:.75rem;font-weight:600;color:var(--mute);padding-block:8px}
+@media (max-width:1023px){:root:not(.fd) .ohead .iconbtn{display:grid}:root:not(.fd) .ohead .who>div{display:none}:root:not(.fd) .ohead>.row{flex-wrap:nowrap}:root:not(.fd).ops #nav button span{font-size:.6875rem;letter-spacing:-.01em}}
+@media (min-width:1280px){.qrow.irow{grid-template-columns:10px 70px minmax(0,1fr) 128px 132px}.qrow.irow .du{white-space:normal}}
+:root.fd .qrow.irow{grid-template-columns:10px 70px minmax(0,1fr) 128px 132px}:root.fd .qrow.irow .du{white-space:normal}
+.qrow.irow .id{white-space:nowrap}
 </style>
 
 <div id="test"></div>
@@ -1654,7 +1690,7 @@ function R(){
  applyTheme();document.documentElement.classList.toggle('big',S.big);document.documentElement.classList.toggle('ops',S.role=='staff');document.documentElement.classList.toggle('fd',S.role=='staff'&&!!S.fd);document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));
  $('#test').innerHTML=testBar();
  const onb=S.stage=='new'&&S.role!='staff',T=tabsNow(),lo=S.loggedOut;
- if(!onb&&!lo&&!['settings','inbox'].concat(S.role=='family'?['profile']:[]).includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
+ if(!onb&&!lo&&!['settings','inbox'].concat(S.role=='family'?['profile']:S.role=='staff'?['stools','srules']:[]).includes(S.tab)&&!T.some(t=>t[0]==S.tab))S.tab=T[0][0];
  $('#app').innerHTML=lo?loggedOutView():onb?(S.role=='family'?fOnb():pOnb()):(S.role=='staff'?opsShell():appHead()+V[S.tab]());
  const nav=$('#nav');nav.hidden=onb||lo;nav.innerHTML=onb||lo?'':`<div class="in">${T.map(([k,l,ic])=>`<button data-a="tab" data-v="${k}" class="${S.tab==k?'on':''}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span></button>`).join('')}</div>`;
  const un=S.notes.filter(n=>n.role==roleKey()&&!n.read&&(S.set.predict||!n.t.startsWith('Predicted'))),bell=$('#bell');bell.hidden=onb||lo||!un.length;
@@ -2101,7 +2137,7 @@ document.addEventListener('focusin',e=>{const el=e.target.closest&&e.target.clos
 
 /* ---------- staff console: escalation tickets (demo data, resets on reload) ---------- */
 P.kim={name:'Kim Nguyen',first:'Kim',title:'Care coordinator',skin:'#E8B98F',hair:'bob',hc:'#1A1210',shirt:'#2F8A5B',bg:'#E3F1E7'};
-const ST=[['squeue','Queue','inbox'],['scust','Customers','users'],['sclaims','Claims','wallet'],['sprov','Providers','user'],['stools','Tools','link'],['srules','Rules','gear']];
+const ST=[['squeue','Queue','inbox'],['stoday','Today','calendar'],['sinc','Incidents','shield'],['scust','Customers','users'],['sclaims','Claims','wallet'],['sprov','Providers','user']];
 const TRULES={
  nocover:{name:'Cancelled visit, no cover',sev:'crit',trig:'A worker cancels and the app finds no cover 2 hours before the visit.',target:60,tlab:'1 hour',act:'Phone other vetted workers, then tell the family who is coming.'},
  checkout:{name:'Check-out missing',sev:'warn',trig:'No check-out 2 hours after the visit should have ended.',target:240,tlab:'Same day',act:'Call the worker, then the family, and record what happened.'},
@@ -2257,9 +2293,9 @@ function tixBody(t){const r=RULEOF(t.type),acts=t.st=='done'?[]:TIX_ACTS[t.type]
 function tixHead(t){const r=RULEOF(t.type),[sl,sc]=TST[t.st];
  return `<span class="ref">${t.id} · ${r.kind=='sched'?'Scheduled':'Escalation'} · ${esc(r.name)}</span><h2>${esc(t.title)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center">${tixDuePill(t)}<span class="pill ${sc}">${sl}</span>${modTag(tMod(t))}<span class="grow"></span>${t.st=='done'?'':t.owner=='kim'?`<button class="btn sm ghost" data-a="tixown" data-v="${t.id}">Unassign me</button>`:`<button class="btn sm p" data-a="tixown" data-v="${t.id}">Assign to me</button>`}</div>`}
 function opsShell(){const over=tixPool().filter(t=>t.st!='done'&&tixDue(t)<Date.now()).length,provOn=S.mods.platform||S.mods.plan;
- const nav=[['squeue','Work queue','inbox'],['scust','Customers','users'],['sclaims','Claims and invoices','wallet'],...(provOn?[['sprov','Workers and providers','user']]:[]),['stools','Tools','link'],['srules','Rules','gear']];
+ const nav=[['squeue','Work queue','inbox'],...(S.mods.platform||S.mods.care?[['stoday','Today\'s visits','calendar']]:[]),['sinc','Incidents','shield'],['scust','Customers','users'],['sclaims','Claims and invoices','wallet'],...(provOn?[['sprov','Workers and providers','user']]:[]),['stools','Tools','link'],['srules','Rules','gear']];
  return `<header class="ohead"><div class="row" style="gap:6px;align-items:center">${brand()}<span class="tenant">Banksia Home Care</span></div><div class="row" style="gap:14px;align-items:center"><button class="iconbtn" data-a="snav" data-v="stools" aria-label="Tools and portals" title="Tools and portals">${ico('link')}</button><div class="who"><div><b>${esc(P.kim.name)}</b><span class="m">${esc(P.kim.title)}</span></div>${face('kim',36)}</div></div></header>
- <aside class="oside" aria-label="Console">${nav.map(([k,l,ic])=>`<button class="onav ${S.tab==k?'on':''}" data-a="snav" data-v="${k}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${k=='squeue'&&over?`<span class="cnt" aria-label="${over} overdue">${over}</span>`:''}</button>`).join('')}<button class="onav" data-a="tab" data-v="settings">${ico('gear')}<span>Settings</span></button>
+ <aside class="oside" aria-label="Console">${nav.map(([k,l,ic])=>`<button class="onav ${S.tab==k?'on':''}" data-a="snav" data-v="${k}" ${S.tab==k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${k=='squeue'&&over?`<span class="cnt" aria-label="${over} overdue">${over}</span>`:''}${k=='stoday'&&rostAtt()?`<span class="cnt" aria-label="${rostAtt()} need attention">${rostAtt()}</span>`:''}${k=='sinc'&&incOpen()?`<span class="cnt" aria-label="${incOpen()} open">${incOpen()}</span>`:''}</button>`).join('')}<button class="onav" data-a="tab" data-v="settings">${ico('gear')}<span>Settings</span></button>
  <div class="omods"><span class="m">Modules on this account (demo)</span>${Object.entries(MODS).map(([k,m])=>`<label class="mt"><input type="checkbox" data-mod="${k}" ${S.mods[k]?'checked':''}><span><b>${m.n}</b><span class="m">${m.d}</span></span></label>`).join('')}</div>
  <p class="foot">Demo provider. Sample data resets when you reload.</p></aside>
  <div class="omain">${V[S.tab]()}</div>`}
@@ -2273,7 +2309,7 @@ V.squeue=()=>{const pool=tixPool(),open=pool.filter(t=>t.st!='done'),now=Date.no
  <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${tabs.map(([k,l,n])=>`<button data-a="tq" data-v="${k}" class="${S.tq==k?'on':''}" aria-pressed="${S.tq==k}">${l}<span class="n">${n}</span></button>`).join('')}</div>
  <select id="tqtype" class="osel" aria-label="Filter by type">${types.map(([k,l])=>`<option value="${k}" ${(S.tqt||'all')==k?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
  ${S.tqd?`<div class="fchip">Showing ${{over:'overdue items',today:'items due today',week:'scheduled work due in 7 days'}[S.tqd]} only<button data-a="tqk" data-v="open">Clear</button></div>`:''}<div class="qtable">${list.length?`<div class="qrow qh" aria-hidden="true"><span></span><span class="id">Ref</span><span>Item</span><span class="ow">Owner</span><span class="stc">Status</span><span style="text-align:right">Due</span></div>`+list.map(tixRow).join(''):`<p class="qempty">${S.tq=='mine'?'Nothing assigned to you. Pick an item from All open and assign it to yourself.':S.tq=='done'?'Nothing closed yet.':'All clear. New work appears here as it falls due or the app raises it.'}</p>`}</div>
- <p class="m" style="margin-top:10px">Filled dot: escalation the app raised. Hollow dot: scheduled work.</p></div>
+ <p class="m" style="margin-top:10px">Filled dot: escalation the app raised. Hollow dot: scheduled work. <button class="btn sm ghost" data-a="snav" data-v="srules">See the rules</button></p></div>
  <aside class="qdetail" aria-label="Item detail">${cur?`<div class="dpane"><div class="dh">${tixHead(cur)}</div>${tixBody(cur)}</div>`:'<p class="qempty">Select an item to see the details.</p>'}</aside></div>`};
 const ruleRows=o=>Object.values(o).filter(r=>modOn(r.mod)).map(r=>`<div class="qrow" style="cursor:default;grid-template-columns:10px minmax(0,1fr) auto"><span class="sd ${r.sev}"></span><span class="is"><b>${esc(r.name)}</b><span>${esc(r.trig)} ${esc(r.act)}${modTag(r.mod)}</span></span><span class="du">${esc(r.tlab)}</span></div>`).join('');
 V.srules=()=>`<div class="qtop"><div><h1>Rules</h1><p class="m">What creates work in the queue, and how fast it should be done. Set with each provider during implementation.</p></div></div>
@@ -2540,6 +2576,123 @@ function staffAct(a,v,el){const ca=claimAct(a,v);if(ca!=='na')return ca;switch(a
 setInterval(()=>{const n=document.getElementById('tixnote'),ae=document.activeElement;if(S.role=='staff'&&S.tab=='squeue'&&!S.sheet&&!(n&&n.value)&&!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))R()},60000);
 document.addEventListener('change',e=>{if(e.target.id=='tqtype'){S.tqt=e.target.value;R()}else if(e.target.dataset&&e.target.dataset.mod){S.mods[e.target.dataset.mod]=e.target.checked;R()}});
 {let dw=null;addEventListener('resize',()=>{document.documentElement.style.setProperty('--fz',String(Math.min(1,innerWidth/1440)));const d=isDesk();if(S.role=='staff'&&d!==dw){dw=d;if(d&&S.sheet?.type=='tix'){S.tsel=S.sheet.k;S.sheet=null}R()}})}
+
+/* ========== v11: today's roster board and incidents register (staff console) ========== */
+/* Roster: a sample day pinned at 10:40 am so the board reads sensibly whenever the demo is opened. */
+const dayAt=(h,m,d=0)=>{const x=new Date();x.setDate(x.getDate()+d);x.setHours(h,m,0,0);return x.getTime()};
+const BNOW=dayAt(10,40);
+const hm=t=>new Date(t).toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit'});
+S.rost=[
+ {id:'V-8801',who:'arthur',pid:'grace',svc:'Wound care',s:dayAt(8,0),e:dayAt(8,45),inAt:dayAt(7,58),outAt:dayAt(8,47)},
+ {id:'V-8802',who:'margaret',pid:'lena',svc:'Showering and dressing',s:dayAt(8,0),e:dayAt(9,30),inAt:dayAt(8,2),tix:'CH-1046'},
+ {id:'V-8803',who:'jamie',pid:'omar',svc:'Community outing',s:dayAt(10,0),e:dayAt(13,0),inAt:dayAt(10,3)},
+ {id:'V-8804',who:'jamie',pid:'dale',svc:'Yard maintenance',s:dayAt(10,15),e:dayAt(12,15),auto:'The app texted Dale 10 minutes after the start time. No reply yet.'},
+ {id:'V-8805',who:'margaret',pid:'fresh',svc:'Meal delivery, 10 meals',s:dayAt(12,0),e:dayAt(12,30)},
+ {id:'V-8806',who:'arthur',pid:'lena',svc:'Personal care',s:dayAt(13,0),e:dayAt(14,30)},
+ {id:'V-8807',who:'margaret',pid:null,was:'priya',svc:'House cleaning',s:dayAt(10,0,1),e:dayAt(13,0,1),tix:'CH-1047',auto:'The app offered this visit to 3 standby workers. None accepted.'}];
+S.rf='all';
+function rostSt(r){if(!r.pid)return'unfilled';if(r.outAt)return'done';if(r.inAt&&r.tix&&S.tix.some(t=>t.id==r.tix&&t.st=='done'))return'done';if(r.inAt)return BNOW>r.e+30*60000?'nocheckout':'live';return BNOW>r.s+10*60000?'late':'next'}
+const RST={done:['ok','Done'],live:['info','On visit'],late:['bad','Late'],nocheckout:['warn','No check-out'],unfilled:['bad','No worker'],next:['neu','Booked']};
+const rostPool=()=>S.rost.filter(r=>CUST[r.who]&&CUST[r.who].mods.some(modOn)&&(!r.tix||S.tix.some(t=>t.id==r.tix&&t.st!='done')||r.pid));
+const isAtt=r=>['late','nocheckout','unfilled'].includes(rostSt(r));
+const rostAtt=()=>rostPool().filter(isAtt).length;
+function rostRow(r){const st=rostSt(r),[pc,pl]=RST[st],w=r.pid?P[r.pid]:null,c=P[r.who],late=Math.round((BNOW-r.s)/60000),rep=CUST[r.who].rep?P[CUST[r.who].rep].name.split(' ')[0]:c.name.split(' ')[0];
+ const ck=st=='done'?(r.outAt?`In ${hm(r.inAt)}, out ${hm(r.outAt)}`:`In ${hm(r.inAt)}, check-out confirmed by staff`):st=='live'?`Checked in ${hm(r.inAt)}`:st=='nocheckout'?`In ${hm(r.inAt)}, no check-out`:st=='late'?'Not checked in':st=='unfilled'?`${esc(P[r.was].name)} cancelled`:'Confirmed';
+ let acts='';
+ if(st=='late')acts=`<a class="btn sm ghost" href="${tel(PROV[r.pid].phone)}">${ico('phone')}Call ${esc(w.name.split(' ')[0])}</a>${r.told?`<span class="pill ok">${ico('check')}${esc(rep)} told</span>`:`<button class="btn sm ghost" data-a="rtell" data-v="${r.id}">Tell ${esc(rep)}</button>`}<button class="btn sm p" data-a="rin" data-v="${r.id}">Arrived</button>`;
+ else if(r.tix&&st!='done'&&st!='live')acts=`<button class="btn sm ghost" data-a="tixopen" data-v="${r.tix}">Open ${r.tix}</button>`;
+ return `<div class="vrow"><span class="tm">${hm(r.s)}<span>to ${hm(r.e)}</span></span>
+ <span class="is"><b>${w?esc(w.name):'No worker yet'} with ${esc(c.name)}</b><span>${esc(r.svc)}</span>${r.auto&&isAtt(r)?`<span class="au">${ico('spark')}<span>${esc(r.auto)}</span></span>`:''}</span>
+ <span class="ck">${ck}</span><span class="stc"><span class="pill ${pc}">${pl}${st=='late'?' '+late+' min':''}</span></span><span class="va">${acts}</span></div>`}
+V.stoday=()=>{const pool=rostPool(),today=pool.filter(r=>r.s<dayAt(23,59)),tmr=pool.filter(r=>r.s>=dayAt(23,59)),n=k=>pool.filter(r=>k=='att'?isAtt(r):rostSt(r)==k).length;
+ const f=r=>S.rf=='all'||(S.rf=='att'?isAtt(r):rostSt(r)==S.rf),tl=today.filter(f).sort((a,b)=>a.s-b.s),ml=tmr.filter(f);
+ const head=`<div class="vrow vh" aria-hidden="true"><span>Time</span><span>Visit</span><span>Check-in</span><span>Status</span><span style="text-align:right">Action</span></div>`;
+ return `<div class="qtop"><div><h1>Today's visits</h1><p class="m">Every visit booked through the hub, as it happens. Problems show here before they become escalations.</p></div><span class="asof">${ico('clock')}Sample day, shown as at ${hm(BNOW)}</span></div>
+ <div class="kpis" role="group" aria-label="Filter visits">${[['all','All visits',pool.length,''],['att','Needs attention',n('att'),n('att')?'hot':''],['live','On visit now',n('live'),''],['next','Still to come',n('next'),'kx'],['done','Done',n('done'),'kx']].map(([k,l,c,cls])=>`<button class="kpi ${cls} ${S.rf==k?'on':''}" data-a="rf" data-v="${k}" aria-pressed="${S.rf==k}"><span>${l}</span><strong>${c}</strong></button>`).join('')}</div>
+ <div class="qtable">${tl.length||ml.length?head+tl.map(rostRow).join('')+(ml.length?`<div class="vsub">Tomorrow</div>`+ml.map(rostRow).join(''):''):`<p class="qempty">${S.rf=='att'?'Nothing needs attention. Late arrivals, missed check-outs and unfilled visits appear here.':'No visits match this filter.'}</p>`}</div>
+ <p class="m">A visit is late 10 minutes after its start time with no check-in. The app texts the worker first, then shows it here.</p>`};
+
+/* Incidents and complaints register. Clocks follow the aged care Serious Incident Response Scheme: Priority 1 in 24 hours, Priority 2 in 30 days. */
+const ICLS={none:['warn','To classify'],clin:['info','Clinical concern'],p1:['bad','SIRS Priority 1'],p2:['warn','SIRS Priority 2'],nr:['neu','Not reportable'],comp:['info','Complaint']};
+const INST={open:['bad','Open'],prog:['warn','In progress'],rep:['info','Reported'],done:['ok','Closed']};
+const SIRS_URL='https://www.agedcarequality.gov.au/provider-handbook/provider-requirements/3g-incident-management-and-serious-incident-response-scheme';
+const hAgo=h=>NOW0-h*3600000;
+S.incs=[
+ {id:'INC-0143',who:'arthur',pid:'lena',cls:'none',st:'open',owner:null,src:'Worker at the door',title:'Arthur did not answer the door for his visit',
+  what:'Lena Petrova arrived for Arthur\'s visit. No answer at the door or on his phone. His car is in the driveway.',
+  sug:'If Arthur cannot be found and there are grounds to call the police, this is a SIRS Priority 1 incident (unexplained absence). Try his emergency contact first.',
+  aware:hAgo(.8),due:hAgo(.8)+3600000,dlab:'Classify',log:[{t:hAgo(.8),by:'app',x:'Raised automatically: the worker reported no answer from the visit screen.'}],
+  acts:[{k:'ec',l:'Call emergency contact',log:'Called Arthur\'s emergency contact, a neighbour with a spare key. She is checking the house now.',st:'prog'},
+   {k:'police',l:'Ask police for a welfare check',log:'Asked WA Police for a welfare check on 131 444. Classified as SIRS Priority 1.',st:'prog',cls:'p1'},
+   {k:'lodge',l:'Record notice as lodged',log:'Priority 1 notice lodged with the Aged Care Quality and Safety Commission.',st:'rep',need:'p1'},
+   {k:'safe',l:'Found safe, close',log:'Arthur was at a neighbour\'s house and is safe. Not a reportable incident. Visit rebooked.',st:'done',cls:'nr'}]},
+ {id:'INC-0142',who:'margaret',pid:'lena',cls:'none',st:'open',owner:null,src:'Visit note from Lena Petrova',title:'Red area on Margaret\'s left heel',
+  what:'Lena wrote after yesterday\'s visit: "Her left heel looks a little red. Worth mentioning to Grace at the next nursing visit."',
+  sug:'This reads as a clinical concern, not a reportable incident. Ask a nurse to look within 2 days and tell Sarah.',
+  aware:hAgo(20),due:hAgo(20)+48*3600000,dlab:'Nurse review',log:[{t:hAgo(20),by:'app',x:'Raised automatically: the visit note mentions a skin change.'}],
+  acts:[{k:'rn',l:'Ask Grace Nguyen RN to review',log:'Asked Grace Nguyen RN to check Margaret\'s heel. Home visit booked for tomorrow.',st:'prog',cls:'clin'},
+   {k:'tell',l:'Tell Sarah',log:'Called Sarah and explained the note and the nurse visit.',st:'prog',corr:['call','Heel redness noted by Lena','Explained Lena\'s note. Grace will review tomorrow.']},
+   {k:'close',l:'Close: nurse reviewed',log:'Grace reviewed: skin intact. Pressure care advice given and added to the care plan.',st:'done',cls:'clin'}]},
+ {id:'INC-0139',who:'jamie',pid:'dale',cls:'comp',st:'prog',owner:'kim',src:'Family app',title:'Sarah: Dale arrived late twice this month',
+  what:'Sarah reported that Dale Roberts was more than 30 minutes late on 29 Oct and 5 Nov, with no message either time.',
+  sug:'Check-in records confirm both late arrivals (34 and 41 minutes). Talk to Dale, then tell Sarah the outcome.',
+  aware:hAgo(30),due:hAgo(30)+72*3600000,dlab:'Outcome',log:[{t:hAgo(30),by:'app',x:'Raised from the family app: "Report a problem".'},{t:hAgo(28),by:'Kim Nguyen',x:'Acknowledged to Sarah by text.'}],
+  acts:[{k:'talk',l:'Talk to Dale',log:'Spoke to Dale. He will text the family if he is running more than 10 minutes late.',st:'prog'},
+   {k:'close',l:'Close with outcome',log:'Told Sarah the outcome. She is happy to continue with Dale.',st:'done',corr:['call','Complaint outcome','Dale will text ahead if late. Sarah is happy to continue.']}]},
+ {id:'INC-0131',who:'jamie',pid:'omar',cls:'nr',st:'done',owner:'kim',src:'Visit note from Omar Haddad',title:'Jamie upset on an outing after a stranger shouted',
+  what:'Omar noted that a stranger shouted near Jamie at the shops. Jamie was distressed for about 20 minutes, then settled.',
+  sug:'',aware:hAgo(150),due:hAgo(150),closed:hAgo(146),dlab:'',log:[{t:hAgo(150),by:'app',x:'Raised automatically: the visit note mentions distress.'},{t:hAgo(148),by:'Kim Nguyen',x:'Classified as not reportable for Banksia: no harm from a worker, and Jamie is self-managed with a worker the family engaged.'},{t:hAgo(146),by:'Kim Nguyen',x:'Sarah told. Omar will use the quieter entrance on future outings.'}],acts:[]}];
+S.incf='open';
+const incPool=()=>S.incs.filter(i=>CUST[i.who]&&CUST[i.who].mods.some(modOn));
+const incOpen=()=>incPool().filter(i=>i.st!='done').length;
+function incClock(i){if(i.st=='done')return['Closed','ok'];if(i.st=='rep')return['Reported','ok'];const l=i.due-Date.now();return l<0?[`${i.dlab} overdue ${durTxt(l)}`,'over']:[`${i.dlab} in ${durTxt(l)}`,l<6*3600000?'soon':'']}
+function incRow(i){const[cc,cl]=ICLS[i.cls],[sc,sl]=INST[i.st],[dt,dc]=incClock(i),sel=isDesk()&&S.insel==i.id;
+ return `<button class="qrow irow ${sel?'sel':''}" data-a="incopen" data-v="${i.id}" aria-label="${esc(i.title)}. ${cl}. ${dt}" ${sel?'aria-current="true"':''}><span class="sd ${i.cls=='p1'||(i.cls=='none'&&i.st!='done')?'crit':i.st=='done'?'okd':'warn'}"></span><span class="id">${i.id}</span><span class="is"><b>${esc(i.title)}</b><span>${esc(P[i.who].name)} · ${esc(i.src)}<span class="mst"> · ${cl}</span></span></span><span class="stc"><span class="pill ${cc}">${cl}</span></span><span class="du ${dc}">${dt}</span></button>`}
+function incHead(i){const[cc,cl]=ICLS[i.cls],[sc,sl]=INST[i.st],[dt,dc]=incClock(i);
+ return `<span class="ref">${i.id} · ${i.cls=='comp'?'Complaint':'Incident'} · ${esc(i.src)}</span><h2>${esc(i.title)}</h2><div class="row" style="flex-wrap:wrap;gap:6px;align-items:center"><span class="pill ${cc}">${cl}</span><span class="pill ${sc}">${sl}</span><span class="pill ${dc=='over'?'bad':dc=='soon'?'warn':dc=='ok'?'ok':'info'}">${ico('clock')}${dt}</span></div>`}
+function incBody(i){const open=i.st!='done',acts=open?i.acts.filter(a=>!i.log.some(l=>l.k==a.k)&&(!a.need||i.cls==a.need)):[];
+ const person=(k,role,e)=>k?`<button class="dperson btnp" data-a="sopen" data-v="${e}" aria-label="Open ${esc(P[k].name)}">${face(k,36)}<span class="grow"><b>${esc(P[k].name)}</b><span>${role}</span></span></button>`:'';
+ const rule=i.cls=='p1'?`<b>Priority 1.</b> Notify the Aged Care Quality and Safety Commission within 24 hours of becoming aware. Due by <b>${fmtDT(i.aware+24*3600000)}</b>. Missing details can follow within 5 days.`:i.cls=='p2'?`<b>Priority 2.</b> Notify the Commission within 30 days of becoming aware. Due by <b>${fmtDT(i.aware+30*864e5)}</b>.`:'';
+ return `<div class="dpeople">${person(i.who,'Customer · '+CUST[i.who].id,'c:'+i.who)}${person(i.pid,'Worker or provider','p:'+i.pid)}</div>
+ <div class="dsec"><h3>What happened</h3><p>${esc(i.what)}</p><p class="m">Became aware ${fmtDT(i.aware)}.</p></div>
+ ${i.sug&&open?`<div class="isug">${ico('spark')}<div><b>Suggested by Carer Hub. A person decides.</b><span>${esc(i.sug)}</span></div></div>`:''}
+ ${open&&i.cls!='comp'?`<div class="dsec"><h3>Classification</h3><div class="acts" role="group" aria-label="Classify this incident">${[['p1','Priority 1'],['p2','Priority 2'],['clin','Clinical concern'],['nr','Not reportable']].map(([k,l])=>`<button class="btn sm ${i.cls==k?'p':'ghost'}" data-a="inccls" data-v="${i.id}|${k}" aria-pressed="${i.cls==k}">${l}</button>`).join('')}</div>${rule?`<p class="iclock">${rule}</p><div class="tools"><a class="tool" href="${SIRS_URL}" target="_blank" rel="noopener">${ico('file')}<span>SIRS reporting rules</span>${ico('ext','x2')}</a></div>`:''}</div>`:''}
+ ${acts.length?`<div class="dsec"><h3>Next steps</h3><div class="acts">${acts.map(a=>`<button class="btn sm ${a.st=='done'||a.st=='rep'?'p':'ghost'}" data-a="incact" data-v="${i.id}|${a.k}">${esc(a.l)}</button>`).join('')}</div></div>`:''}
+ ${open?`<div class="dsec"><label for="incnote"><h3>Note</h3></label><textarea id="incnote" rows="2" placeholder="What did you do or find out?"></textarea><div class="row" style="gap:8px"><button class="btn sm ghost" data-a="incnote" data-v="${i.id}">Add note</button></div></div>`:''}
+ <div class="dsec"><h3>Record</h3><div class="tlog">${i.log.slice().reverse().map(l=>`<div class="${l.by=='app'?'sys':''}"><b>${l.by=='app'?'Carer Hub app':esc(l.by)}</b> <span class="m" style="display:inline">${durTxt(Date.now()-l.t)} ago</span><span class="m">${esc(l.x)}</span></div>`).join('')}</div></div>`}
+V.sinc=()=>{const pool=incPool(),open=pool.filter(i=>i.st!='done'),clock=open.filter(i=>['p1','p2'].includes(i.cls)&&i.st!='rep'),tocls=open.filter(i=>i.cls=='none'),done=pool.filter(i=>i.st=='done');
+ const list=(S.incf=='open'?open:S.incf=='done'?done:pool).slice().sort((a,b)=>(a.st=='done')-(b.st=='done')||a.due-b.due);
+ if(isDesk()&&(!S.insel||!list.some(i=>i.id==S.insel)))S.insel=list[0]?.id||null;const cur=S.incs.find(i=>i.id==S.insel);
+ return `<div class="qtop"><div><h1>Incidents and complaints</h1><p class="m">One record for every incident, clinical concern and complaint, with the reporting clock where one applies.</p></div></div>
+ <div class="kpis" role="group" aria-label="Summary">${[['Open',open.length,''],['To classify',tocls.length,tocls.length?'hot':''],['Report clock running',clock.length,clock.length?'hot':''],['Closed',done.length,'kx']].map(([l,n,c])=>`<div class="kpi ${c}"><span>${l}</span><strong>${n}</strong></div>`).join('')}</div>
+ <div class="qwrap"><div><div class="qbar2"><div class="otabs" role="group" aria-label="Show">${[['open','Open',open.length],['done','Closed',done.length],['all','All',pool.length]].map(([k,l,n])=>`<button data-a="incf" data-v="${k}" class="${S.incf==k?'on':''}" aria-pressed="${S.incf==k}">${l}<span class="n">${n}</span></button>`).join('')}</div></div>
+ <div class="qtable">${list.length?`<div class="qrow irow qh" aria-hidden="true"><span></span><span class="id">Ref</span><span>Record</span><span class="stc">Class</span><span style="text-align:right">Clock</span></div>`+list.map(incRow).join(''):'<p class="qempty">Nothing here. Incidents appear when a worker, a family or the app raises one.</p>'}</div>
+ <p class="m" style="margin-top:10px">The app raises a record when a visit note mentions harm, a skin change, a fall or distress, or when a family reports a problem.</p></div>
+ <aside class="qdetail" aria-label="Record detail">${cur?`<div class="dpane"><div class="dh">${incHead(cur)}</div>${incBody(cur)}</div>`:'<p class="qempty">Select a record to see the details.</p>'}</aside></div>`};
+{const _sh=sheetHTML;sheetHTML=function(){const s=S.sheet;if(s.type!='inc')return _sh();const i=S.incs.find(z=>z.id==s.k);
+ return `<div class="sheet-h"><div class="dh" style="display:flex;flex-direction:column;gap:6px">${incHead(i)}</div><button class="x" data-a="close" aria-label="Close">${ico('x')}</button></div><div class="dpane">${incBody(i)}</div>`}}
+{const _sr=V.srules;V.srules=()=>{const rows=[['crit','SIRS Priority 1 incident','Harm needing treatment, unlawful sexual contact, unexpected death, unexplained absence, or anything with grounds to call the police. Notify the Commission.','24 hours'],['warn','SIRS Priority 2 incident','Any other reportable incident. Notify the Commission.','30 days'],['warn','Clinical concern from a visit note','A worker notes a skin change, fall, confusion or refusal of care. A nurse reviews it and the family is told.','2 days'],['warn','Complaint','Acknowledge within 1 business day, then give the family or worker the outcome.','3 days']];
+ const h=_sr(),k=h.lastIndexOf('<p class="m">');
+ return h.slice(0,k)+`<div class="psec" style="padding:0;gap:0"><div style="padding:16px 20px 8px"><h2>Incidents and complaints</h2><p class="m">Kept in the incidents register, not the work queue, so each has one record and one clock.</p></div><div class="qtable" style="border:0;box-shadow:none;border-top:1px solid var(--line);border-radius:0 0 10px 10px">${rows.map(([sv,n,d,t])=>`<div class="qrow" style="cursor:default;grid-template-columns:10px minmax(0,1fr) auto"><span class="sd ${sv}"></span><span class="is"><b>${n}</b><span>${d}</span></span><span class="du">${t}</span></div>`).join('')}</div></div>\n `+h.slice(k)}}
+{const _act=act;act=function(a,v,el){const ilog=(i,x,k)=>i.log.push({t:Date.now(),by:'Kim Nguyen',x,k});
+ switch(a){
+ case'rf':S.rf=v;R();return;
+ case'rtell':{const r=S.rost.find(z=>z.id==v),c=CUST[r.who],w=P[r.pid].name.split(' ')[0];r.told=true;S.corr.push({e:'c:'+r.who,t:Date.now(),ch:'sms',dir:'out',w:c.rep||r.who,sub:'Worker running late',note:`${w} is running late for the ${hm(r.s)} visit. We are chasing and will confirm a new time.`,by:'Kim Nguyen',mod:'platform'});toast('Text sent and saved to the customer record');R();return}
+ case'rin':{const r=S.rost.find(z=>z.id==v);r.inAt=BNOW;toast(P[r.pid].name.split(' ')[0]+' marked as arrived');R();return}
+ case'incf':S.incf=v;S.insel=null;R();return;
+ case'incopen':if(isDesk()){S.insel=v;S.sheet=null}else S.sheet={type:'inc',k:v};R();return;
+ case'inccls':{const[id,k]=v.split('|'),i=S.incs.find(z=>z.id==id);if(i.cls==k)return;i.cls=k;if(!i.owner)i.owner='kim';if(i.st=='open')i.st='prog';
+  if(k=='p1'){i.due=i.aware+24*3600000;i.dlab='Report'}else if(k=='p2'){i.due=i.aware+30*864e5;i.dlab='Report'}
+  ilog(i,'Classified as '+ICLS[k][1]+'.');R();return}
+ case'incact':{const[id,k]=v.split('|'),i=S.incs.find(z=>z.id==id),ac=i.acts.find(z=>z.k==k);if(!i.owner)i.owner='kim';ilog(i,ac.log,k);i.st=ac.st;
+  if(ac.cls){i.cls=ac.cls;if(ac.cls=='p1'){i.due=i.aware+24*3600000;i.dlab='Report'}}
+  if(ac.st=='done')i.closed=Date.now();
+  if(ac.corr){const c=CUST[i.who];S.corr.push({e:'c:'+i.who,t:Date.now(),ch:ac.corr[0],dir:'out',w:c.rep||i.who,sub:ac.corr[1],note:ac.corr[2],by:'Kim Nguyen',mod:'core'})}
+  toast(ac.st=='done'?'Closed and kept on the record':ac.st=='rep'?'Recorded as reported':'Saved to the record');R();return}
+ case'incnote':{const i=S.incs.find(z=>z.id==v),n=($('#incnote')||{}).value?.trim();if(!n){toast('Type a note first');return}if(!i.owner)i.owner='kim';ilog(i,n);R();return}
+ case'fdesk':if(S.sheet?.type=='inc'){S.insel=S.sheet.k;S.sheet=null}break;
+ }return _act(a,v,el)}}
+
 
 R();
 </script>
