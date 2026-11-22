@@ -656,6 +656,17 @@ const fmt=s=>pd(s).toLocaleDateString('en-AU',{weekday:'short',day:'numeric',mon
 const fmtS=s=>pd(s).toLocaleDateString('en-AU',{day:'numeric',month:'short'});
 const days=(a,b)=>Math.round((b-a)/864e5);
 const SL=['8:00 am','10:00 am','12:00 pm','2:00 pm'];
+/* Visit length. Slots start every 2 hours from 8 am; visits must finish by 6 pm. A visit blocks every slot it overlaps. */
+const SLH=[8,10,12,14],DAYEND=18,DURS=[1,1.5,2,3,4,6];
+const DEFH={dom:3,garden:2,social:3,transport:2,pc:1.5,respite:4,nursing:1,allied:1,skills:2,equip:1,meals:1};
+const hrsTxt=h=>h==1?'1 hr':`${h} hrs`;
+const clk=h=>{const hh=Math.floor(h),mm=Math.round((h-hh)*60),ap=hh>=12?'pm':'am';return `${((hh+11)%12)+1}:${String(mm).padStart(2,'0')} ${ap}`};
+const endT=(t,h)=>clk(SLH[SL.indexOf(t)]+h);
+const blocks=h=>Math.max(1,Math.ceil(h/2));
+const defHrsFor=items=>{let m=0;(items||[]).forEach(it=>{const c=(typeof CATS!='undefined'?CATS:[]).find(c=>c.items.includes(it));if(c)m=Math.max(m,DEFH[c.id]||2)});return m||2};
+const jHrs=j=>j.hrs||defHrsFor(j.items);
+const tR=j=>SL.includes(j.t)?`${j.t} to ${endT(j.t,jHrs(j))}`:j.t;
+const covers=(j,t)=>{const a=SL.indexOf(j.t),b=SL.indexOf(t);return a>=0&&b>=a&&b<a+blocks(jHrs(j))};
 const byDate=(a,b)=>a.d<b.d?-1:a.d>b.d?1:SL.indexOf(a.t)-SL.indexOf(b.t);
 const TODAY=pd('2026-11-07'); /* budget figures are sample data as of this date */
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -926,7 +937,7 @@ function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeou
 function whoSeg(){return `<div class="row" role="group" aria-label="Who you are managing">${S.people.map(k=>`<button class="chip who ${S.who==k?'on':''}" data-a="who" data-v="${k}" aria-pressed="${S.who==k}">${face(k,28)}<span>${esc(P[k].first)} <span class="m">${esc(P[k].rel)}</span></span></button>`).join('')}</div>`}
 const onLeave=(p,d)=>(S.leave[p]||[]).includes(d);
 const gapJobs=()=>S.jobs.filter(j=>j.st=='ok'&&onLeave(j.prov,j.d));
-function nextFree(p){for(let i=1;i<90;i++){const d=addD(i),f=free(p,d);if(f.length)return[iso(d),f[0]]}return null}
+function nextFree(p,hrs=2){for(let i=1;i<90;i++){const d=addD(i),f=free(p,d,hrs);if(f.length)return[iso(d),f[0]]}return null}
 function usual(p,w){const c={};S.jobs.filter(j=>j.prov==p&&j.who==w).forEach(j=>{const k=pd(j.d).getDay()+'|'+j.t;c[k]=(c[k]||0)+1});const best=Object.entries(c).sort((a,b)=>b[1]-a[1])[0];if(!best||best[1]<2)return null;const[dw,t]=best[0].split('|');return{dw:+dw,t}}
 const DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const stars=(r,n)=>n!=null?`${n} visits done`:'Verified';
@@ -1011,7 +1022,7 @@ function famCal(){const c=S.cal,list=S.jobs.filter(j=>(c.all||j.who==S.who)&&j.s
  let h=`<div class="calhead"><div class="seg" role="group" aria-label="Calendar view">${['week','month'].map(m=>`<button class="${c.mode==m?'on':''}" data-a="calmode" data-v="${m}" aria-pressed="${c.mode==m}">${m=='week'?'Week':'Month'}</button>`).join('')}</div>
  <div class="calnav"><button class="iconbtn" data-a="caloff" data-v="-1" aria-label="Previous">${ico('chevl')}</button><b>${nav}</b><button class="iconbtn" data-a="caloff" data-v="1" aria-label="Next">${ico('chev')}</button></div></div>
  <label class="chk" style="padding:0;border:0"><input type="checkbox" id="calall" data-a="calall" ${c.all?'checked':''}><span>Show everyone you care for</span></label>`;
- const evc=j=>`<div class="evc ${jobCls(j)}">${face(j.prov,32)}<div class="grow"><b>${j.t}${c.all?`, ${esc(P[j.who].first)}`:''}</b><p>${esc(P[j.prov].name)}: ${esc(j.items.join(', '))}</p></div>${j.st!='ok'||jobCls(j)?jobPill(j):''}</div>`;
+ const evc=j=>`<div class="evc ${jobCls(j)}">${face(j.prov,32)}<div class="grow"><b>${tR(j)}${c.all?`, ${esc(P[j.who].first)}`:''}</b><p>${esc(P[j.prov].name)}: ${esc(j.items.join(', '))}</p></div>${j.st!='ok'||jobCls(j)?jobPill(j):''}</div>`;
  if(c.mode=='week'){const s=wkStart(c.off);h+='<div class="wk">';
   for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);const k=iso(d),js=list.filter(j=>j.d==k).sort(byDate);
    h+=`<div class="wkday ${k==iso(D0)?'today':''}"><div class="dl"><small>${DOW[d.getDay()].slice(0,3)}</small><strong>${d.getDate()}</strong></div><div class="ev">${js.length?js.map(evc).join(''):'<p class="m" style="padding-top:6px">Nothing booked</p>'}</div></div>`}
@@ -1049,9 +1060,9 @@ V.home=()=>{
   <button data-a="go" data-v="profile|passport">${ib('folder','green')}Share passport</button>
  </div>
  ${homeToday()}
- ${gaps.length?`<section class="sec rule" id="gaps"><div class="alert bad">${ico('excl')}<div class="grow"><b>${gaps.length} visit${gaps.length>1?'s need':' needs'} cover</b>${gaps.map(j=>`<p>${fmt(j.d)}, ${j.t}: ${esc(P[j.prov].name)} is on leave (${esc(P[j.who].first)}).</p>`).join('')}<div class="row" style="margin-top:8px"><button class="btn sm coral" data-a="urgent" data-v="gap">Find cover</button></div></div></div></section>`:''}
+ ${gaps.length?`<section class="sec rule" id="gaps"><div class="alert bad">${ico('excl')}<div class="grow"><b>${gaps.length} visit${gaps.length>1?'s need':' needs'} cover</b>${gaps.map(j=>`<p>${fmt(j.d)}, ${tR(j)}: ${esc(P[j.prov].name)} is on leave (${esc(P[j.who].first)}).</p>`).join('')}<div class="row" style="margin-top:8px"><button class="btn sm coral" data-a="urgent" data-v="gap">Find cover</button></div></div></div></section>`:''}
  ${p.pending?'':`<section class="sec rule">${H2('calendar','Coming up','',`<button class="btn sm ghost" data-a="tab" data-v="book">${ico('calendar')}Calendar</button>`)}
- <div class="card">${up.length?up.map(j=>`<div class="li">${face(j.prov,44)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(P[j.prov].name)}: ${esc(j.items.join(', '))}${j.rep?`. Repeats ${esc(j.rep)}`:''}</p></div>${jobPill(j)}</div>`).join(''):`<p class="m">Nothing booked yet. Book a visit to get started.</p>`}</div></section>`}
+ <div class="card">${up.length?up.map(j=>`<div class="li">${face(j.prov,44)}<div class="grow"><b>${fmt(j.d)}, ${tR(j)}</b><p class="m">${esc(P[j.prov].name)}: ${esc(j.items.join(', '))}${j.rep?`. Repeats ${esc(j.rep)}`:''}</p></div>${jobPill(j)}</div>`).join(''):`<p class="m">Nothing booked yet. Book a visit to get started.</p>`}</div></section>`}
  ${homeRate()}
  ${preds.length&&S.set.predict?`<section class="sec rule">${H2('spark','Worth planning for','green',qbtn('predict'))}${insightsHTML(S.who,1)}${preds.length>1?`<button class="btn sm ghost" style="align-self:flex-start" data-a="go" data-v="support|predicted">${preds.length-1} more in Support${ico('chev')}</button>`:''}</section>`:''}`;
 };
@@ -1074,6 +1085,8 @@ function pendingCard(){const p=P[S.who],o=p.ob,ch=obChecklist(o),dn=ch.filter((_
 
 /* ---------- FAMILY: book ---------- */
 const selItems=()=>Object.keys(S.bk.items).filter(k=>S.bk.items[k]);
+const sugHrs=()=>selItems().reduce((m,k)=>Math.max(m,DEFH[k.split('|')[0]]||2),0)||2;
+const bHrs=()=>S.bk.hrs||sugHrs();
 const needTier=()=>selItems().reduce((m,k)=>Math.max(m,CAT(k.split('|')[0]).tier),0);
 function coverLine(c){
  if(prog(S.who)=='ndis')return c.ndis;
@@ -1096,14 +1109,14 @@ V.book=()=>{
  else if(!cands.length)h+=`<p class="m">No one in this demo offers that mix. Try fewer categories, or search in Find.</p>`;
  else h+=`<div class="stack">${cands.map(k=>{const q=P[k],okT=q.tier>=need;return `<button class="popt ${b.prov==k?'on':''}" data-a="bprov" data-v="${k}" aria-pressed="${b.prov==k}">${face(k,50)}<span class="grow"><b style="display:block;font-family:var(--f-display)">${esc(q.name)}${q.team?' <span class="pill info">Your team</span>':''}</b><span class="m">${esc(q.title)}. ${stars(q.rating)} ${q.km} km${q.rate?`, ${money(q.rate)}/hr`:''}</span>${okT?'':`<span class="pill bad" style="margin-top:4px">Not qualified for ${need==1?'personal care':'clinical tasks'}</span>`}</span></button>`}).join('')}</div><button class="btn sm ghost" style="align-self:flex-start" data-a="tab" data-v="find">${ico('search')}Find more workers</button>`;
  h+=`</section>`;
- if(b.prov){const q=P[b.prov];if(!b.d){const n=nextFree(b.prov);if(n){b.d=n[0];b.t=n[1]}}
+ if(b.prov){const q=P[b.prov],hrs=bHrs();if(b.d&&!free(b.prov,pd(b.d),hrs).includes(b.t)){b.d=null;b.t=null}if(!b.d){const n=nextFree(b.prov,hrs);if(n){b.d=n[0];b.t=n[1]}}
   h+=`<section class="sec"><h2 class="stepn"><span>3</span>When?</h2><div class="card">${slotsUI()}</div>
   <div class="row" role="group" aria-label="Repeat">${['once','weekly','fortnightly','monthly'].map(r=>`<button class="chip ${b.rep==r?'on':''}" data-a="rep" data-v="${r}">${r=='once'?'One visit':r=='weekly'?'Every week':r=='fortnightly'?'Every 2 weeks':'Once a month'}</button>`).join('')}</div>${b.rep!='once'?`<p class="m">${ico('repeat')} This becomes a regular visit. It books itself 10 weeks ahead until you change it.</p>`:''}</section>`;
-  const cost=q.rate?q.rate*2:null,cp=p.prog=='sah'&&cost?sel.reduce((m,k)=>Math.max(m,copay(k.split('|')[0])),0):0,capc=CAPS[selCats[0]];
+  const cost=q.rate?q.rate*hrs:null,cp=p.prog=='sah'&&cost?sel.reduce((m,k)=>Math.max(m,copay(k.split('|')[0])),0):0,capc=CAPS[selCats[0]];
   h+=`<section class="sec"><h2 class="stepn"><span>4</span>Check and send</h2><div class="card"><dl class="sum">
-   <dt>Worker</dt><dd>${esc(q.name)}</dd><dt>When</dt><dd>${b.d?fmt(b.d)+', '+b.t:'Pick a time'}${b.rep!='once'?`, then ${b.rep}`:''}</dd>
+   <dt>Worker</dt><dd>${esc(q.name)}</dd><dt>When</dt><dd>${b.d?`${fmt(b.d)}, ${b.t} to ${endT(b.t,hrs)} (${hrsTxt(hrs)})`:'Pick a time'}${b.rep!='once'?`, then ${b.rep}`:''}</dd>
    <dt>Help</dt><dd>${esc(sel.map(k=>k.split('|')[1]).join(', '))}</dd>
-   <dt>Estimate</dt><dd class="num">${cost?`${money(cost)} for 2 hrs`:esc(q.unit||'Quote')}</dd>
+   <dt>Estimate</dt><dd class="num">${cost?`${money(cost)} for ${hrsTxt(hrs)} at ${money(q.rate)}/hr`:esc(q.unit||'Quote')}</dd>
    <dt>Paid from</dt><dd>${p.prog=='ndis'?esc(CAT(selCats[0]).ndis):`Quarterly budget${cost?`. Margaret pays about ${money(cost*cp)}`:''}`}</dd></dl>
    ${p.prog=='ndis'&&capc&&q.rate?(q.rate<=capc.cap?`<div class="alert ok">${ico('shield')}<div>${money(q.rate)}/hr is within the ${money(capc.cap)}/hr price limit.</div></div>`:`<div class="alert warn">${ico('excl')}<div>${money(q.rate)}/hr is ${money(q.rate-capc.cap)}/hr over the price limit.</div></div>`):''}
    ${p.prog=='ndis'&&cost?`<div class="alert info">${ico('spark')}<div>Predicted: this booking${b.rep!='once'?` series (${b.rep=='weekly'?4:2} visits)`:''} brings Core's run-out date forward by about ${Math.max(1,Math.round(cost*(b.rep=='weekly'?4:b.rep=='fortnightly'?2:1)/ndisPace().recent))} days.</div></div>`:''}
@@ -1112,12 +1125,14 @@ V.book=()=>{
  }
  return h;
 };
-function slotsUI(){const b=S.bk,q=P[b.prov],n=nextFree(b.prov),w=b.w||0,u=usual(b.prov,S.who);
- let h=`<div class="row">${n?`<button class="btn p" data-a="slot" data-v="${n[0]}|${n[1]}">${ico('bolt')}Next available: ${fmt(n[0])}, ${n[1]}</button>`:`<p class="m">${esc(q.name)} has no free times in the next 3 months.</p>`}</div>
+function slotsUI(){const b=S.bk,q=P[b.prov],hrs=bHrs(),n=nextFree(b.prov,hrs),w=b.w||0,u=usual(b.prov,S.who),sugg=sugHrs();
+ let h=q.rate?`<div class="stack" style="gap:8px"><b id="durlbl">How long?</b><div class="row" role="group" aria-labelledby="durlbl">${DURS.map(d=>`<button class="chip ${hrs==d?'on':''}" data-a="dur" data-v="${d}" aria-pressed="${hrs==d}">${hrsTxt(d)}</button>`).join('')}</div>
+ <p class="m">${b.hrs&&b.hrs!=sugg?`Changed from the usual ${hrsTxt(sugg)} for this help.`:`${hrsTxt(sugg)} is usual for this help. Choose longer if there's more to do.`} Times below only show where ${esc(q.name.split(' ')[0])} is free for the whole visit.</p></div>`:'';
+ h+=`<div class="row">${n?`<button class="btn p" data-a="slot" data-v="${n[0]}|${n[1]}">${ico('bolt')}Next available: ${fmt(n[0])}, ${n[1]} to ${endT(n[1],hrs)}</button>`:`<p class="m">${esc(q.name)} has no ${hrsTxt(hrs)} gaps in the next 3 months. Try a shorter visit.</p>`}</div>
  ${u?`<p class="m">${predPill} You usually book ${esc(q.name.split(' ')[0])} on ${DOW[u.dw]}s at ${u.t}. Those times are outlined in green.</p>`:''}`;
  h+=`<div class="row"><button class="btn sm ghost" data-a="wk" data-v="-1" ${w?'':'disabled'}>Earlier</button><span class="m grow" style="text-align:center">${fmtS(iso(addD(w*7+1)))} to ${fmtS(iso(addD(w*7+7)))}</span><button class="btn sm ghost" data-a="wk" data-v="1">Later</button></div><div>`;
- for(let i=1;i<=7;i++){const d=addD(w*7+i),k=iso(d),f=free(b.prov,d);
-  h+=`<div class="slotrow"><b>${fmt(k)}</b><div>${f.length?f.map(t=>`<button class="slot ${b.d==k&&b.t==t?'on':''} ${u&&u.dw==d.getDay()&&u.t==t?'usual':''}" data-a="slot" data-v="${k}|${t}" aria-pressed="${b.d==k&&b.t==t}">${t}</button>`).join(''):`<span class="m" style="padding-top:8px">${onLeave(b.prov,k)?'On leave':'Not available'}</span>`}</div></div>`}
+ for(let i=1;i<=7;i++){const d=addD(w*7+i),k=iso(d),f=free(b.prov,d,hrs);
+  h+=`<div class="slotrow"><b>${fmt(k)}</b><div>${f.length?f.map(t=>`<button class="slot ${b.d==k&&b.t==t?'on':''} ${u&&u.dw==d.getDay()&&u.t==t?'usual':''}" data-a="slot" data-v="${k}|${t}" aria-pressed="${b.d==k&&b.t==t}">${t} to ${endT(t,hrs)}</button>`).join(''):`<span class="m" style="padding-top:8px">${onLeave(b.prov,k)?'On leave':free(b.prov,d).length?`No ${hrsTxt(hrs)} gap`:'Not available'}</span>`}</div></div>`}
  return h+'</div>';
 }
 
@@ -1319,8 +1334,8 @@ V.pjobs=()=>{const mine=S.jobs.filter(j=>j.prov=='priya'),req=mine.filter(j=>j.s
   <div class="ins"><div class="row" style="justify-content:space-between">${ib('trend','green')}<span class="conf">From last year's bookings</span></div><h3>Busy weeks before Christmas</h3><p>Families usually book about 30% more cleaning in mid December. Keep 15 to 19 Dec open?</p><button class="btn sm green" style="align-self:flex-start" data-a="tab" data-v="pcal">Check my calendar</button></div>
   <div class="ins warn"><div class="row" style="justify-content:space-between">${ib('users','warn')}<span class="conf">From your leave</span></div><h3>1 client visit falls in your leave</h3><p>Margaret's cleaning on 22 Dec. Sarah has been told, and standby workers are ready.</p></div></div></section>
  ${urg.length?`<section class="sec">${H2('bolt','Urgent requests nearby','coral')}${urg.map(u=>`<div class="card"><div class="row"><span class="pill bad">Urgent</span><b>${esc(u.when)}</b></div><p>${esc(u.fam)}: ${esc(CAT(u.cat).name.toLowerCase())}, ${u.km} km away.</p><p class="m">Your usual rate applies. The first worker to accept is booked.</p><div class="row"><button class="btn coral" data-a="purg" data-v="${S.purg.indexOf(u)}|ok">Accept</button><button class="btn ghost" data-a="purg" data-v="${S.purg.indexOf(u)}|no">Not this time</button></div></div>`).join('')}</section>`:''}
- <section class="sec">${H2('inbox','Booking requests')}${req.length?req.map(j=>`<div class="card"><div class="li" style="padding:0">${face(j.who,46)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(P[j.who].first)}'s family: ${esc(j.items.join(', '))}${j.rep?`. Repeats ${esc(j.rep)}`:''}</p></div><span class="pill warn">Confirm</span></div><div class="row"><button class="btn p" data-a="pacc" data-v="${j.id}|ok">I'm available</button><button class="btn ghost" data-a="pacc" data-v="${j.id}|no">Can't make it</button></div></div>`).join(''):'<p class="m">No new requests.</p>'}</section>
- <section class="sec">${H2('calendar','Coming up','green')}<div class="card">${up.length?up.map(j=>`<div class="li">${face(j.who,42)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(P[j.who].name)}: ${esc(j.items.join(', '))}</p></div>${onLeave('priya',j.d)?'<span class="pill bad">You\'re on leave</span>':''}</div>`).join(''):'<p class="m">Nothing booked.</p>'}</div></section>`};
+ <section class="sec">${H2('inbox','Booking requests')}${req.length?req.map(j=>`<div class="card"><div class="li" style="padding:0">${face(j.who,46)}<div class="grow"><b>${fmt(j.d)}, ${tR(j)}</b><p class="m">${esc(P[j.who].first)}'s family: ${esc(j.items.join(', '))}${j.rep?`. Repeats ${esc(j.rep)}`:''}</p></div><span class="pill warn">Confirm</span></div><div class="row"><button class="btn p" data-a="pacc" data-v="${j.id}|ok">I'm available</button><button class="btn ghost" data-a="pacc" data-v="${j.id}|no">Can't make it</button></div></div>`).join(''):'<p class="m">No new requests.</p>'}</section>
+ <section class="sec">${H2('calendar','Coming up','green')}<div class="card">${up.length?up.map(j=>`<div class="li">${face(j.who,42)}<div class="grow"><b>${fmt(j.d)}, ${tR(j)}</b><p class="m">${esc(P[j.who].name)}: ${esc(j.items.join(', '))}</p></div>${onLeave('priya',j.d)?'<span class="pill bad">You\'re on leave</span>':''}</div>`).join(''):'<p class="m">Nothing booked.</p>'}</div></section>`};
 V.pcal=()=>{const v=S.pv,l=S.leave.priya;
  const label=v.mode=='week'?(()=>{const s=wkStart(v.w),e=new Date(s);e.setDate(e.getDate()+6);return `${fmtS(iso(s))} to ${fmtS(iso(e))}`})():(()=>{const d=new Date(D0.getFullYear(),D0.getMonth()+v.m,1);return `${MON[d.getMonth()]} ${d.getFullYear()}`})();
  let h=`<section class="sec"><h1>My calendar</h1><p class="m">Your working days come from your profile. Block a day to mark leave. Families see you as unavailable.</p>
@@ -1339,7 +1354,7 @@ V.pclients=()=>{const k=S.pv.client,pr=P.priya,el=S.docs.filter(d=>d.min<=pr.tie
  return `<section class="sec"><h1>Clients</h1><div class="row" role="group" aria-label="Client">${['margaret','jamie'].map(x=>`<button class="chip who ${k==x?'on':''}" data-a="pcl" data-v="${x}">${face(x,28)}${esc(P[x].name)}</button>`).join('')}</div>
  <div class="card"><div class="li" style="padding:0">${face(k,66)}<div class="grow"><h2>${esc(P[k].name)}</h2><p class="m">${esc(P[k].sub)}, ${esc(P[k].suburb)}</p><p class="m">Family contact: Sarah Chen</p></div></div>
  <div class="alert info">${ico('user')}<div><b>What to know</b>${esc(S.need[k])}</div></div></div></section>
- <section class="sec">${H2('calendar','Next visits')}<div class="card">${vis.length?vis.map(j=>`<div class="li"><div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(j.items.join(', '))}</p></div>${jobPill(j)}</div>`).join(''):'<p class="m">No visits booked.</p>'}</div></section>
+ <section class="sec">${H2('calendar','Next visits')}<div class="card">${vis.length?vis.map(j=>`<div class="li"><div class="grow"><b>${fmt(j.d)}, ${tR(j)}</b><p class="m">${esc(j.items.join(', '))}</p></div>${jobPill(j)}</div>`).join(''):'<p class="m">No visits booked.</p>'}</div></section>
  <section class="sec">${H2('file','Invoices','green')}<div class="card">${invs.length?invs.map(v=>{const c=check(v),st=S.invSt[v.id];return `<div class="li"><div class="grow"><b>${esc(v.item)}, ${v.hrs} hrs</b><p class="m num">${money(v.rate)}/hr = ${money(v.rate*v.hrs)}</p></div><span class="pill ${st=='paid'?'ok':st?'info':c.st=='clear'?'ok':'warn'}">${st=='paid'?'Paid':st?'Correction requested':c.st=='clear'?'Waiting for approval':esc(c.bad[0].t)}</span></div>`}).join(''):'<p class="m">No invoices yet.</p>'}<button class="btn sm" style="align-self:flex-start" data-a="tab" data-v="pbill">New invoice</button></div></section>
  <section class="sec">${H2('chat','Messages with Sarah')}<div class="card"><div class="stack">${th.length?th.map(m=>m.me?`<div class="bubrow">${face('sarah',28)}<div class="bub">${esc(m.t)}</div></div>`:`<div class="bub me">${esc(m.t)}</div>`).join(''):'<p class="m">No messages yet.</p>'}</div>
  <div class="row" style="flex-wrap:nowrap"><input id="pm" type="text" placeholder="Message Sarah" aria-label="Message"><button class="btn p" data-a="pmsg" aria-label="Send">${ico('send')}</button></div></div></section>
@@ -1495,7 +1510,7 @@ function act(a,v,el){const b=S.bk;
  case'reset':location.reload();return;
  case'tab':goto(v);return;
  case'go':{const[t,an]=v.split('|');goto(t,an);return}
- case'who':S.who=v;S.hf='all';S.selQ=3;S.selM=null;S.cal.day=null;b.items={};b.prov=null;b.d=null;break;
+ case'who':S.who=v;S.hf='all';S.selQ=3;S.selM=null;S.cal.day=null;b.items={};b.prov=null;b.d=null;b.hrs=null;break;
  case'info':S.sheet={type:'info',k:v};break;
  case'close':S.sheet=null;clearTimeout(urgentTimer.t);break;
  case'bell':S.sheet={type:'notes'};break;
@@ -1512,19 +1527,20 @@ function act(a,v,el){const b=S.bk;
  case'bprov':b.prov=v;b.d=null;b.t=null;b.w=0;if(needTier()>P[v].tier)S.sheet={type:'scope',need:needTier()};break;
  case'slot':{const[d,t]=v.split('|');b.d=d;b.t=t;break}
  case'wk':b.w=Math.max(0,b.w+ +v);break;
+ case'dur':b.hrs=+v;break;
  case'rep':b.rep=v;break;
  case'restrict':Object.keys(b.items).forEach(k=>{if(CAT(k.split('|')[0]).tier>P[b.prov].tier)b.items[k]=false});S.sheet=null;toast('Removed the tasks this worker can\'t do');break;
  case'qualified':b.prov=null;b.d=null;S.sheet=null;R();document.getElementById('step2')?.scrollIntoView({block:'start'});return;
  case'micro2':S.sheet=null;addNote('provider','note','Personal care micro-credential','Sarah Chen sent you a link to the personal care micro-credential.',{tab:'pme'});toast('Link sent. The tasks stay off until they\'re qualified');Object.keys(b.items).forEach(k=>{if(CAT(k.split('|')[0]).tier>P[b.prov].tier)b.items[k]=false});break;
  case'book':{if(needTier()>P[b.prov].tier){S.sheet={type:'scope',need:needTier()};break}
   const items=selItems().map(k=>k.split('|')[1]),reps=b.rep=='weekly'?4:b.rep=='fortnightly'?2:1,gap=b.rep=='weekly'?7:14;
-  if(b.rep!='once'){S.sched.push(SC({who:S.who,prov:b.prov,items,dow:pd(b.d).getDay(),t:b.t,freq:b.rep,start:b.d,pending:1}));genSched();S.jobs.filter(j=>j.sid==S.sched[S.sched.length-1].id).forEach(j=>j.st='new')}else S.jobs.push(J(b.prov,S.who,b.d,b.t,items,'new'));
-  if(b.prov=='priya')addNote('provider','note','New booking request',`Sarah Chen asked you to help ${P[S.who].first} on ${fmt(b.d)}, ${b.t}.`,{tab:'pjobs'});
+  if(b.rep!='once'){S.sched.push(SC({who:S.who,prov:b.prov,items,dow:pd(b.d).getDay(),t:b.t,freq:b.rep,start:b.d,pending:1,hrs:bHrs()}));genSched();S.jobs.filter(j=>j.sid==S.sched[S.sched.length-1].id).forEach(j=>j.st='new')}else S.jobs.push(J(b.prov,S.who,b.d,b.t,items,'new',{hrs:bHrs()}));
+  if(b.prov=='priya')addNote('provider','note','New booking request',`Sarah Chen asked you to help ${P[S.who].first} on ${fmt(b.d)}, ${b.t} to ${endT(b.t,bHrs())} (${hrsTxt(bHrs())}).`,{tab:'pjobs'});
   toast(`Request sent. ${P[b.prov].name.split(' ')[0]} will get a text to confirm.`);
-  S.bk={items:{},open:{},prov:null,d:null,t:null,rep:'once',w:0};S.cal.mode='week';S.cal.off=0;goto('book');return}
- case'again':{const j=S.jobs.find(x=>x.id==v);S.bk={items:{},open:{},prov:j.prov,d:null,t:null,rep:'once',w:0};j.items.forEach(it=>{const c=CATS.find(c=>c.items.includes(it));if(c){S.bk.items[c.id+'|'+it]=true;S.bk.open[c.id]=true}});goto('book','newbk');return}
+  S.bk={items:{},open:{},prov:null,d:null,t:null,rep:'once',w:0,hrs:null};S.cal.mode='week';S.cal.off=0;goto('book');return}
+ case'again':{const j=S.jobs.find(x=>x.id==v);S.bk={items:{},open:{},prov:j.prov,d:null,t:null,rep:'once',w:0,hrs:j.hrs||null};j.items.forEach(it=>{const c=CATS.find(c=>c.items.includes(it));if(c){S.bk.items[c.id+'|'+it]=true;S.bk.open[c.id]=true}});goto('book','newbk');return}
  case'rebook':{const u=usual(v,S.who),last=S.jobs.filter(j=>j.prov==v&&j.who==S.who).sort(byDate).pop();if(!u){toast('No usual time found');return}
-  let made=0,d=new Date(D0);while(made<4){d.setDate(d.getDate()+1);if(d.getDay()==u.dw&&!S.jobs.some(j=>j.prov==v&&j.d==iso(d)&&j.t==u.t)&&!onLeave(v,iso(d))){S.jobs.push(J(v,S.who,iso(d),u.t,last.items,'new',{rep:'weekly'}));made++}}
+  let made=0,d=new Date(D0);while(made<4){d.setDate(d.getDate()+1);if(d.getDay()==u.dw&&!S.jobs.some(j=>j.prov==v&&j.d==iso(d)&&j.t==u.t)&&!onLeave(v,iso(d))){S.jobs.push(J(v,S.who,iso(d),u.t,last.items,'new',{rep:'weekly',hrs:jHrs(last)}));made++}}
   if(v=='priya')addNote('provider','note','4 new booking requests',`Sarah Chen booked ${P[S.who].first}'s usual ${DOW[u.dw]} visits.`,{tab:'pjobs'});toast(`Requested the next 4 ${DOW[u.dw]}s at ${u.t}`);break}
  case'rate':{const[id,n]=v.split('|');const j=S.jobs.find(x=>x.id==id);j.rated=+n;toast(`Thanks. You rated ${P[j.prov].name.split(' ')[0]} ${n} out of 5.`);break}
  case'bookcat':S.bk.open={[v]:true};goto('book','newbk');return;
@@ -1643,14 +1659,16 @@ S.sched=[SC({who:'margaret',prov:'priya',items:['General house cleaning'],dow:2,
  SC({who:'margaret',prov:'fresh',kind:'order',items:['Delivered meals'],qty:10,meal:'Main meal',dow:1,t:'12:00 pm'})];
 S.jobs=S.jobs.filter(j=>!(j.d>=iso(D0)&&(j.prov=='lena'||j.prov=='omar'||(j.prov=='priya'&&j.who=='margaret'&&j.items[0]=='General house cleaning'))));
 const tierOfItems=items=>Math.max(0,...items.map(it=>(CATS.find(c=>c.items.includes(it))||{tier:0}).tier));
-function coverFor(s,d){return PIDS.find(k=>k!=s.prov&&!P[k].biz&&P[k].tier>=tierOfItems(s.items)&&P[k].cats.some(c=>CAT(c).items.some(it=>s.items.includes(it)))&&free(k,d).includes(s.t))}
+function coverFor(s,d){return PIDS.find(k=>k!=s.prov&&!P[k].biz&&P[k].tier>=tierOfItems(s.items)&&P[k].cats.some(c=>CAT(c).items.some(it=>s.items.includes(it)))&&free(k,d,s.hrs||defHrsFor(s.items)).includes(s.t))}
 function genSched(){const t0=iso(D0);S.jobs=S.jobs.filter(j=>!(j.sid&&j.d>=t0&&j.st!='done'));
  S.sched.forEach(s=>{if(!s.on)return;const st=pd(s.start);for(let i=0;i<=70;i++){const d=addD(i),k=iso(d);if(d.getDay()!=s.dow||k<s.start||(s.end&&k>s.end)||s.paused.includes(k))continue;
   const wk=Math.round(days(st,d)/7);if(s.freq=='fortnightly'&&wk%2)continue;if(s.freq=='monthly'&&d.getDate()>7)continue;
-  let prov=s.prov;const x={sid:s.id,rep:s.freq,qty:s.qty};if(onLeave(s.prov,k)&&s.autoCover){const c=coverFor(s,d);if(c){prov=c;x.cover=s.prov}}
+  let prov=s.prov;const x={sid:s.id,rep:s.freq,qty:s.qty,hrs:s.hrs};if(onLeave(s.prov,k)&&s.autoCover){const c=coverFor(s,d);if(c){prov=c;x.cover=s.prov}}
   S.jobs.push(J(prov,s.who,k,s.t,s.items,s.pending?'new':'ok',x))}})}
 function nextOf(s){return S.jobs.filter(j=>j.sid==s.id&&j.d>=iso(D0)).sort(byDate)[0]}
-function free(p,date){const k=iso(date),pr=P[p];if(!pr.days||!pr.days.includes(date.getDay())||onLeave(p,k))return[];return SL.filter(t=>!S.jobs.some(j=>j.prov==p&&j.d==k&&j.t==t&&j.st!='no')&&!S.busy.some(b=>b.p==p&&b.d==k&&b.t==t)&&!otherWork(p,k,t))}
+function free(p,date,hrs=2){const k=iso(date),pr=P[p];if(!pr.days||!pr.days.includes(date.getDay())||onLeave(p,k))return[];
+ const open=t=>!S.jobs.some(j=>j.prov==p&&j.d==k&&j.st!='no'&&covers(j,t))&&!S.busy.some(b=>b.p==p&&b.d==k&&b.t==t)&&!otherWork(p,k,t);
+ return SL.filter((t,i)=>SLH[i]+hrs<=DAYEND&&SL.slice(i,i+blocks(hrs)).every(open))}
 
 /* ---- seeds: a visit today, one to approve, history ---- */
 genSched();
@@ -1726,7 +1744,7 @@ function homeToday(){const w=S.who,out=[];
  return `<section class="sec rule" id="review">${H2('clock','Today and to approve','green')}${out.join('')}</section>`}
 function homeRate(){const j=S.jobs.filter(j=>j.who==S.who&&j.st=='done'&&vOf(j.id)&&['approved','resolved'].includes(vOf(j.id).st)).sort(byDate).pop();if(!j)return'';const p=P[j.prov];
  if(j.rated)return'';
- return `<section class="sec">${H2('star',j.rated?`You rated ${esc(p.name.split(' ')[0])}'s visit`:`How was ${esc(p.name.split(' ')[0])}'s visit?`,'warn')}<div class="card"><div class="li" style="padding:0">${face(j.prov,46)}<div class="grow"><b>${fmt(j.d)}, ${j.t}</b><p class="m">${esc(j.items.join(', '))}</p></div></div>
+ return `<section class="sec">${H2('star',j.rated?`You rated ${esc(p.name.split(' ')[0])}'s visit`:`How was ${esc(p.name.split(' ')[0])}'s visit?`,'warn')}<div class="card"><div class="li" style="padding:0">${face(j.prov,46)}<div class="grow"><b>${fmt(j.d)}, ${tR(j)}</b><p class="m">${esc(j.items.join(', '))}</p></div></div>
  ${j.rated?`<p>${'★'.repeat(j.rated)}${'☆'.repeat(5-j.rated)} <span class="m">Thanks. Ratings go to Carer Hub only and aren't shown on profiles.</span></p>`:`<div class="stars" role="group" aria-label="Rate this visit">${[1,2,3,4,5].map(n=>`<button data-a="ratego" data-v="${j.id}|${n}" aria-label="${n} star${n>1?'s':''}">${ico('star')}</button>`).join('')}</div><p class="m">Stars stay private so feedback is honest. Profiles show facts instead: visits done and on-time rate.</p>`}
  <button class="btn sm" style="align-self:flex-start" data-a="again" data-v="${j.id}">${ico('repeat')}Book again</button></div></section>`}
 
@@ -1872,7 +1890,7 @@ function paySettings(){const fam=S.role=='family',tog=(k,t,d,v,obj='pay')=>`<lab
 
 /* ---- provider (sole trader): today's visit with check-in and check-out, disputes, calendar sync ---- */
 function pToday(){const j=S.jobs.find(x=>x.prov=='priya'&&x.today);if(!j)return'';const v=vOf(j.id),p=P[j.who];
- let b;if(!v)b=`<div class="li" style="padding:0">${face(j.who,48)}<div class="grow"><b>Today, ${j.t}: ${esc(p.name)}</b><p class="m">${esc(p.suburb)}. ${esc(j.items.join(', '))}</p></div></div><div class="alert info">${ico('pin2')}<div>When you arrive, check in. Your location is checked only at check-in and check-out, to confirm the visit for the family.</div></div><button class="btn p" data-a="vin" data-v="${j.id}">${ico('pin2')}Check in</button>`;
+ let b;if(!v)b=`<div class="li" style="padding:0">${face(j.who,48)}<div class="grow"><b>Today, ${tR(j)}: ${esc(p.name)}</b><p class="m">${esc(p.suburb)}. ${esc(j.items.join(', '))}</p></div></div><div class="alert info">${ico('pin2')}<div>When you arrive, check in. Your location is checked only at check-in and check-out, to confirm the visit for the family.</div></div><button class="btn p" data-a="vin" data-v="${j.id}">${ico('pin2')}Check in</button>`;
  else if(v.st=='live')b=`<div class="live"><span class="dotlive" aria-hidden="true"></span><div class="grow"><b style="font-family:var(--f-display)">On a visit with ${esc(p.first)}</b><p class="m">Checked in ${v.inAt}, ${v.km} km from the address. Sarah has been told.</p></div></div>
   <b>Tasks</b>${j.items.map((it,i)=>`<label class="chk"><input type="checkbox" id="vt-${i}" data-a="vtask" data-v="${j.id}|${i}" ${v.tasks[i]?'checked':''}><span>${esc(it)}</span></label>`).join('')}
   <label class="fld" for="vnotes">Notes for the family<textarea id="vnotes" rows="3" placeholder="How did it go? Anything they should know?">${esc(v.notes||'')}</textarea></label>
@@ -1968,7 +1986,7 @@ function act2(a,v,el){switch(a){
  /* visits */
  case'vin':{S.visits.push({jid:v,inAt:nowT(),km:.1,tasks:{},st:'live'});const j=jOf(v);addNote('family','note',`${P[j.prov].name.split(' ')[0]} checked in`,`${P[j.prov].name} arrived at ${P[j.who].first}'s at ${nowT()}, 0.1 km from home.`,{tab:'home',who:j.who,to:'review'});toast('Checked in. Sarah has been told.');return}
  case'vtask':{const[jid,i]=v.split('|');vOf(jid).tasks[i]=el.checked;return}
- case'vout':{const j=jOf(v),vi=vOf(v);vi.notes=$('#vnotes').value;vi.outAt=nowT();vi.hrs=2;vi.amt=P[j.prov].rate*2;vi.st='review';vi.auto=S.pay.win;j.st='done';
+ case'vout':{const j=jOf(v),vi=vOf(v);vi.notes=$('#vnotes').value;vi.outAt=nowT();vi.hrs=jHrs(j);vi.amt=P[j.prov].rate*jHrs(j);vi.st='review';vi.auto=S.pay.win;j.st='done';
   addNote('family','note','Visit finished: please approve',`${P[j.prov].name} checked out of ${P[j.who].first}'s. ${money(vi.amt)} is held until you approve.`,{tab:'home',who:j.who,to:'review'});toast(`Checked out. Invoice for ${money(vi.amt)} created.`);return}
  case'vapprove':{const vi=vOf(v);vi.st='approved';S.rateTmp={n:0,tags:{}};S.sheet={type:'rate',jid:v};toast(`Approved. ${money(vi.amt)} released to ${P[jOf(v).prov].name.split(' ')[0]}.`);if(jOf(v).prov=='priya')addNote('provider','note','Visit approved',`Sarah approved your visit. ${money(vi.amt)} is on its way.`,{tab:'pjobs'});return}
  case'ratego':{const[id,n]=v.split('|');S.rateTmp={n:+n,tags:{}};S.sheet={type:'rate',jid:id};return}
